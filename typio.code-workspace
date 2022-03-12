@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"name": "[source]",
+			"path": "./src",
+		},
+		{
+			"name": "[tests]",
+			"path": "./tests",
+		},
+		{
+			"name": "[root]",
+			"path": ".",
+		}
+	],
+	"settings": {
+		"typescript.preferences.importModuleSpecifierEnding": "js"
+	}
+}
