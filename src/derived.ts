@@ -1,74 +1,72 @@
+import { OptModifier } from "./modifier.js"
 import { typio } from "./typio.js"
 
-type ObjectRequired<Properties extends Record<string, typio>> = { [k in keyof Properties]: Properties[k] extends { $optional: true } ? never : k }[keyof Properties]
-type ObjectOptionals<Properties extends Record<string, typio>> = { [k in keyof Properties]: Properties[k] extends { $optional: true } ? k : never }[keyof Properties]
-type ObjectFromProperties<Properties extends Record<string, typio>, Mode extends '$type' | '$raw'> = { [_ in ObjectRequired<Properties>]: Properties[_][Mode] } & { [_ in ObjectOptionals<Properties>]?: Properties[_][Mode] }
-// Derived : Object
-// TypioObject is typeof 'object'
-export type TypioObject<Properties extends Record<string, typio>> = {
-    $symbol: 'TypioObject',
-    $type: ObjectFromProperties<Properties, '$type'>,
-    $raw: ObjectFromProperties<Properties, '$raw'>,
-    $unwrap(raw: ObjectFromProperties<Properties, '$raw'>): ObjectFromProperties<Properties, '$type'>,
-    $wrap(raw: ObjectFromProperties<Properties, '$type'>): ObjectFromProperties<Properties, '$raw'>,
-    // JSON Schema spec
-    type: 'object',
-    properties: Properties,
-    required: ObjectRequired<Properties>[],
-    additionalProperties: true,
+// Utils
+type Required<Properties extends Record<string, typio>> = { [k in keyof Properties]: Properties[k] extends OptModifier ? never : k }[keyof Properties]
+type Optionals<Properties extends Record<string, typio>> = { [k in keyof Properties]: Properties[k] extends OptModifier ? k : never }[keyof Properties]
+type TypeFromProperties<Properties extends Record<string, typio>> =
+    & { [K in Required<Properties>]: typio.Type<Properties[K]> }
+    & { [K in Optionals<Properties>]?: typio.Type<Properties[K]> }
+type RawFromProperties<Properties extends Record<string, typio>> =
+    & { [K in Required<Properties>]: typio.Raw<Properties[K]> }
+    & { [K in Optionals<Properties>]?: typio.Raw<Properties[K]> }
+
+// Derived : Obj
+export type ObjOption = {}
+export type ObjSchema<Properties extends Record<string, typio>> = { type: 'object', properties: Properties, required: (Required<Properties>)[], additionalProperties: false }
+export const ObjProto: typio<Record<string, any>, Record<string, any>, ObjSchema<Record<string, typio>>, ObjOption> = {
+    $symbol: 'TypioObj',
+    $wrap(raw) {
+        for (const k in raw) {
+            raw[k] = this.properties[k].$wrap(raw[k])
+        }
+        return raw
+    },
+    $unwrap(raw) {
+        for (const k in raw) {
+            raw[k] = this.properties[k].$unwrap(raw[k])
+        }
+        return raw
+    },
+    $strict() {
+        return {
+            type: 'object',
+            properties: Object.fromEntries(
+                Object.entries(this.properties).map(([k, v]) => {
+                    return [
+                        k, v.$strict()
+                    ]
+                })
+            ),
+            required: new Array(...this.required),
+            additionalProperties: false,
+        }
+    },
+}
+export type TypioObj<Properties extends Record<string, typio>> =
+    & typio<RawFromProperties<Properties>, TypeFromProperties<Properties>, ObjSchema<Properties>, ObjOption>
+    & ObjSchema<Properties>
+    & ObjOption
+export const TypioObj = <Properties extends Record<string, typio>>(properties: Properties): TypioObj<Properties> => {
+    return Object.create(ObjProto, {
+        type: { value: 'object' },
+        properties: { value: properties },
+        required: { value: Object.keys(properties).filter(v => (properties[v] as any)['$optional'] !== true) },
+        additionalProperties: { value: false },
+    })
 }
 
-// Derived : Object
-export function TypioObject<Properties extends Record<string, typio>>(props: Properties): TypioObject<Properties> {
-    return Object.assign({
-        $symbol: 'TypioObject',
-        $wrap(raw: any): any {
-            for (const k in raw) {
-                raw[k] = props[k].$wrap(raw[k])
-            }
-            return raw
-        },
-        $unwrap(raw: any): any {
-            for (const k in raw) {
-                raw[k] = props[k].$unwrap(raw[k])
-            }
-            return raw
-        },
-        type: 'object',
-        properties: props,
-        required: Object.keys(props),
-        additionalProperties: true,
-    }, {}) as any
+// Derived : Arr
+
+export type ArrOption = {}
+export type ArrSchema = { type: 'array', items: typio }
+export const ArrProto: typio<any[], any[], ArrSchema, ArrOption> = {
+    $symbol: 'TypioArr',
+    $wrap(raw) { return raw.map(v => this.items.$wrap(v)) },
+    $unwrap(raw) { return raw.map(v => this.items.$unwrap(v)) },
+    $strict() { return { type: 'array', items: this.items.$strict() } },
 }
-
-// Derived : Array
-// Array is list of single type
-// unlike default js array, TypioArray only support one kind of type 
-export type TypioArray<Item extends typio> = {
-    $symbol: 'TypioArray',
-    $type: Item['$type'][],
-    $raw: Item['$raw'][],
-    $wrap(raw: Item['$raw'][]): Item['$type'][],
-    $unwrap(raw: Item['$type'][]): Item['$raw'][],
-    // 
-    $inner: Item,
-    type: 'array',
-    items: Item,
+export type TypioArr<Items extends typio> = typio<typio.Raw<Items>, typio.Type<Items>, ArrSchema, ArrOption> & ArrSchema & ArrOption
+export const TypioArr = <Items extends typio>(items : Items): TypioArr<Items> => {
+    return Object.create(ArrProto, { type: { value: 'array' }, items: { value: items } })
 }
-// Derived : Array
-export function TypioArray<Item extends typio>(inner: Item): TypioArray<Item> {
-    return Object.assign({
-        $symbol: 'TypioArray',
-        type: 'array',
-        items: inner,
-
-        $wrap(raw: Item['$raw'][]): Item['$type'][] {
-            return raw.map(inner.$wrap)
-        },
-        $unwrap(raw: Item['$type'][]): Item['$raw'][] {
-            return raw.map(inner.$unwrap)
-        },
-    }, {}) as any
-}
-
-

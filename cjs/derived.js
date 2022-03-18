@@ -1,40 +1,50 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TypioArray = exports.TypioObject = void 0;
-function TypioObject(props) {
-    return Object.assign({
-        $symbol: 'TypioObject',
-        $wrap(raw) {
-            for (const k in raw) {
-                raw[k] = props[k].$wrap(raw[k]);
-            }
-            return raw;
-        },
-        $unwrap(raw) {
-            for (const k in raw) {
-                raw[k] = props[k].$unwrap(raw[k]);
-            }
-            return raw;
-        },
-        type: 'object',
-        properties: props,
-        required: Object.keys(props),
-        additionalProperties: true,
-    }, {});
-}
-exports.TypioObject = TypioObject;
-function TypioArray(inner) {
-    return Object.assign({
-        $symbol: 'TypioArray',
-        type: 'array',
-        items: inner,
-        $wrap(raw) {
-            return raw.map(inner.$wrap);
-        },
-        $unwrap(raw) {
-            return raw.map(inner.$unwrap);
-        },
-    }, {});
-}
-exports.TypioArray = TypioArray;
+exports.TypioArr = exports.ArrProto = exports.TypioObj = exports.ObjProto = void 0;
+exports.ObjProto = {
+    $symbol: 'TypioObj',
+    $wrap(raw) {
+        for (const k in raw) {
+            raw[k] = this.properties[k].$wrap(raw[k]);
+        }
+        return raw;
+    },
+    $unwrap(raw) {
+        for (const k in raw) {
+            raw[k] = this.properties[k].$unwrap(raw[k]);
+        }
+        return raw;
+    },
+    $strict() {
+        return {
+            type: 'object',
+            properties: Object.fromEntries(Object.entries(this.properties).map(([k, v]) => {
+                return [
+                    k, v.$strict()
+                ];
+            })),
+            required: new Array(...this.required),
+            additionalProperties: false,
+        };
+    },
+};
+const TypioObj = (properties) => {
+    return Object.create(exports.ObjProto, {
+        type: { value: 'object' },
+        properties: { value: properties },
+        required: { value: Object.keys(properties).filter(v => properties[v]['$optional'] !== true) },
+        additionalProperties: { value: false },
+    });
+};
+exports.TypioObj = TypioObj;
+exports.ArrProto = {
+    $symbol: 'TypioArr',
+    $wrap(raw) { return raw.map(v => this.items.$wrap(v)); },
+    $unwrap(raw) { return raw.map(v => this.items.$unwrap(v)); },
+    $strict() { return { type: 'array', items: this.items.$strict() }; },
+};
+const TypioArr = (items) => {
+    return Object.create(exports.ArrProto, { type: { value: 'array' }, items: { value: items } });
+};
+exports.TypioArr = TypioArr;
 //# sourceMappingURL=derived.js.map

@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TypioOption = void 0;
-function TypioOption(inner) {
+exports.TypioOpt = void 0;
+const TypioOpt = (inner) => {
     return Object.assign(inner, { $optional: true });
-}
-exports.TypioOption = TypioOption;
+};
+exports.TypioOpt = TypioOpt;
 //# sourceMappingURL=modifier.js.map

@@ -2,7 +2,6 @@
   "name": "typio",
   "version": "0.0.1",
   "description": "typescript based type define library",
-  
   "main": "./cjs/typio.js",
   "module": "./esm/typio.js",
   "exports": {
@@ -15,9 +14,9 @@
     "./cjs",
     "./esm"
   ],
-
   "scripts": {
-    "tests:hw" : "ts-node \"./tests/hello, world.ts\""
+    "tests:hw": "ts-node \"./tests/std.ts\"",
+    "test": "tap --ts"
   },
   "keywords": [
     "typescript"
@@ -25,6 +24,8 @@
   "author": "egoavara",
   "license": "MIT",
   "devDependencies": {
+    "@types/tap": "^15.0.6",
+    "ajv": "^8.10.0",
     "rimraf": "^3.0.2",
     "tap": "^16.0.0",
     "ts-node": "^10.7.0",

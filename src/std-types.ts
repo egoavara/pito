@@ -1,134 +1,63 @@
+import { typio } from "./typio.js"
 
 
 
 // Std-Types : Date
-export type TypioDate = {
+export type DateOption = {}
+export type DateSchema = { type: 'string', format: 'date' }
+export const DateProto: typio<string, Date, DateSchema, DateOption> = {
     $symbol: 'TypioDate',
-    $type: Date,
-    $raw: string,
-    $unwrap(raw: string): Date,
-    $wrap(raw: Date): string,
-    // 
-    type: 'string',
-    format: 'date'
+    $wrap(raw) { return raw.toISOString().substring(0, 10) },
+    $unwrap(raw) { return new Date(raw) },
+    $strict() { return { type: 'string', format: 'date' } },
+}
+export type TypioDate = typio<string, Date, DateSchema, DateOption> & DateSchema & DateOption
+export const TypioDate = (): TypioDate => {
+    return Object.create(DateProto, { type: { value: 'string' }, format: { value: 'date' } })
 }
 
+
 // Std-Types : Datetime
-export type TypioDatetime = {
+export type DatetimeOption = {}
+export type DatetimeSchema = { type: 'string', format: 'date-time' }
+export const DatetimeProto: typio<string, Date, DatetimeSchema, DatetimeOption> = {
     $symbol: 'TypioDatetime',
-    $type: Date,
-    $raw: string,
-    $unwrap(raw: string): Date,
-    $wrap(raw: Date): string,
-    // 
-    type: 'string',
-    format: 'date-time'
+    $wrap(raw) { return raw.toISOString() },
+    $unwrap(raw) { return new Date(raw) },
+    $strict() { return { type: 'string', format: 'date-time' } },
+}
+export type TypioDatetime = typio<string, Date, DatetimeSchema, DatetimeOption> & DatetimeSchema & DatetimeOption
+export const TypioDatetime = (): TypioDatetime => {
+    return Object.create(DatetimeProto, { type: { value: 'string' }, format: { value: 'date-time' } })
 }
 
 
-// TODO : Std-Types : Time
-// export type TypioTime = {
-//     $symbol: 'TypioTime',
-//     $type: Date,
-//     $raw: string,
-//     $unwrap(raw: string): Date,
-//     $wrap(raw: Date): string,
-//     // 
-//     type: 'string',
-//     format: 'time'
-// }
+
+// Std-Types : Time
+export type TimeOption = {}
+export type TimeSchema = { type: 'string', format: 'time' }
+export const TimeProto: typio<string, Date, TimeSchema, TimeOption> = {
+    $symbol: 'TypioTime',
+    $wrap(raw) { return raw.toISOString().substring(11) },
+    $unwrap(raw) { return new Date(raw) },
+    $strict() { return { type: 'string', format: 'time' } },
+}
+export type TypioTime = typio<string, Date, TimeSchema, TimeOption> & TimeSchema & TimeOption
+export const TypioTime = (): TypioTime => {
+    return Object.create(TimeProto, { type: { value: 'string' }, format: { value: 'time' } })
+}
 
 
 // Std-Types : Url
-export type TypioUrl = {
+export type UrlOption = {}
+export type UrlSchema = { type: 'string', format: 'url' }
+export const UrlProto: typio<string, URL, UrlSchema, UrlOption> = {
     $symbol: 'TypioUrl',
-    $type: URL,
-    $raw: string,
-    $unwrap(raw: string): URL,
-    $wrap(raw: URL): string,
-    // 
-    type: 'string',
-    format: 'url'
+    $wrap(raw) { return raw.toString()},
+    $unwrap(raw) { return new URL(raw) },
+    $strict() { return { type: 'string', format: 'url' } },
 }
-
-
-// Std-Types : Datetime
-export function TypioDate(): TypioDate {
-    return {
-        $symbol: 'TypioDate',
-        type: 'string',
-        format: 'date',
-
-        $unwrap(raw: string): Date {
-            return new Date(raw)
-        },
-        $wrap(raw: Date): string {
-            const YYYY = raw.getFullYear().toString().padStart(4, '0')
-            const MM = raw.getMonth().toString().padStart(2, '0')
-            const DD = raw.getDate().toString().padStart(2, '0')
-            return `${YYYY}-${MM}-${DD}`
-        },
-    } as any
+export type TypioUrl = typio<string, URL, UrlSchema, UrlOption> & UrlSchema & UrlOption
+export const TypioUrl = (): TypioUrl => {
+    return Object.create(UrlProto, { type: { value: 'string' }, format: { value: 'url' } })
 }
-
-
-// Std-Types : Datetime
-export function TypioDatetime(): TypioDatetime {
-    return {
-        $symbol: 'TypioDatetime',
-
-        $unwrap(raw: string): Date {
-            return new Date(raw)
-        },
-        $wrap(raw: Date): string {
-            const YYYY = raw.getFullYear().toString().padStart(4, '0')
-            const MM = raw.getMonth().toString().padStart(2, '0')
-            const DD = raw.getDate().toString().padStart(2, '0')
-            const hh = raw.getHours().toString().padStart(2, '0')
-            const mm = raw.getMinutes().toString().padStart(2, '0')
-            const ss = raw.getSeconds().toString().padStart(2, '0')
-            const tzhh = Math.trunc((-raw.getTimezoneOffset()) / 60).toString().padStart(2, '0')
-            const tzmm = Math.trunc((-raw.getTimezoneOffset()) / 60).toString().padStart(2, '0')
-            return `${YYYY}-${MM}-${DD}T${hh}:${mm}:${ss}+${tzhh}:${tzmm}`
-        },
-        type: 'string',
-        format: 'date-time',
-    } as any
-}
-// TODO : Std-Types : Time
-// export function TypioTime(): TypioTime {
-//     return {
-//         $symbol: 'TypioTime',
-
-//         $unwrap(raw: string): Date {
-//             return new Date(raw)
-//         },
-//         $wrap(raw: Date): string {
-//             const hh = raw.getHours().toString().padStart(2, '0')
-//             const mm = raw.getMinutes().toString().padStart(2, '0')
-//             const ss = raw.getSeconds().toString().padStart(2, '0')
-//             const tzhh = Math.trunc((-raw.getTimezoneOffset()) / 60).toString().padStart(2, '0')
-//             const tzmm = Math.trunc((-raw.getTimezoneOffset()) / 60).toString().padStart(2, '0')
-//             return `${hh}:${mm}:${ss}+${tzhh}:${tzmm}`
-//         },
-//         type: 'string',
-//         format: 'time',
-//     } as any
-// }
-
-// Std-Types : Url
-export function TypioUrl(): TypioUrl {
-    return {
-        $symbol: 'TypioUrl',
-        type: 'string',
-        format: 'url',
-
-        $unwrap(raw: string): URL {
-            return new URL(raw)
-        },
-        $wrap(raw: URL): string {
-            return raw.toString()
-        },
-    } as any
-}
-

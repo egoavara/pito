@@ -1,9 +1,7 @@
-import { TypioArray, TypioObject } from './derived.js';
-import { TypioOption } from './modifier.js';
-import { TypioBoolean, TypioLiteral, TypioNumber, TypioString } from './primitives.js';
-import { TypioInteger, TypioRegex } from './std-primitives.js';
+import { TypioBool, TypioInt, TypioLit, TypioNum, TypioRegex, TypioStr } from './primitives.js';
 import { TypioDate, TypioDatetime, TypioUrl } from './std-types.js';
-export const __name__ = 'typio';
+import { TypioOpt } from './modifier.js';
+import { TypioArr, TypioObj } from './derived.js';
 export var typio;
 (function (typio) {
     function wrap(t, data) {
@@ -14,22 +12,25 @@ export var typio;
         return t.$unwrap(data);
     }
     typio.unwrap = unwrap;
-    typio.lit = TypioLiteral;
-    typio.str = TypioString;
-    typio.num = TypioNumber;
-    typio.bool = TypioBoolean;
-    typio.obj = TypioObject;
-    typio.arr = TypioArray;
-    typio.opt = TypioOption;
-    typio.int = TypioInteger;
+    function strict(t) {
+        return t.$strict();
+    }
+    typio.strict = strict;
+    typio.lit = TypioLit;
+    typio.str = TypioStr;
     typio.regex = TypioRegex;
+    typio.num = TypioNum;
+    typio.int = TypioInt;
+    typio.bool = TypioBool;
+    typio.opt = TypioOpt;
+    typio.obj = TypioObj;
+    typio.arr = TypioArr;
     typio.date = TypioDate;
     typio.datetime = TypioDatetime;
     typio.url = TypioUrl;
 })(typio || (typio = {}));
-export * from './primitives.js';
 export * from './derived.js';
-export * from './modifier.js';
-export * from './std-primitives.js';
 export * from './std-types.js';
+export * from './modifier.js';
+export * from './primitives.js';
 //# sourceMappingURL=typio.js.map

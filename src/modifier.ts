@@ -1,14 +1,11 @@
 import { typio } from "./typio.js"
 
 
-export type Modifier = {
-    $optional? : boolean,
-}
+export type Modifiers =
+    & Partial<OptModifier>
 // Modifier : Option
-// Optional type of type 
-export type TypioOption<T extends typio> = T & { $optional: true }
-
-// Modifier : Option
-export function TypioOption<T extends typio>(inner: T): TypioOption<T> {
-    return Object.assign(inner, {$optional : true}) as any
+export type OptModifier = { $optional: true }
+export type TypioOpt<T extends typio> = T & OptModifier
+export const TypioOpt = <T extends typio>(inner: T): TypioOpt<T> => {
+    return Object.assign(inner, { $optional: true }) as any
 }

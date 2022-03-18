@@ -1,9 +1,8 @@
 import { typio } from "./typio.js";
-export declare type Modifier = {
-    $optional?: boolean;
-};
-export declare type TypioOption<T extends typio> = T & {
+export declare type Modifiers = Partial<OptModifier>;
+export declare type OptModifier = {
     $optional: true;
 };
-export declare function TypioOption<T extends typio>(inner: T): TypioOption<T>;
+export declare type TypioOpt<T extends typio> = T & OptModifier;
+export declare const TypioOpt: <T extends typio<any, any, any, any>>(inner: T) => TypioOpt<T>;
 //# sourceMappingURL=modifier.d.ts.map

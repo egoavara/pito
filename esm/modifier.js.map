@@ -1,1 +1,1 @@
-{"version":3,"file":"modifier.js","sourceRoot":"","sources":["../src/modifier.ts"],"names":[],"mappings":"AAWA,MAAM,UAAU,WAAW,CAAkB,KAAQ;IACjD,OAAO,MAAM,CAAC,MAAM,CAAC,KAAK,EAAE,EAAC,SAAS,EAAG,IAAI,EAAC,CAAQ,CAAA;AAC1D,CAAC"}
+{"version":3,"file":"modifier.js","sourceRoot":"","sources":["../src/modifier.ts"],"names":[],"mappings":"AAQA,MAAM,CAAC,MAAM,QAAQ,GAAG,CAAkB,KAAQ,EAAe,EAAE;IAC/D,OAAO,MAAM,CAAC,MAAM,CAAC,KAAK,EAAE,EAAE,SAAS,EAAE,IAAI,EAAE,CAAQ,CAAA;AAC3D,CAAC,CAAA"}

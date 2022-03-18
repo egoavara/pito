@@ -11,6 +11,7 @@ export declare type TypioRegex = {
     $raw: string;
     $wrap(raw: string): string;
     $unwrap(raw: string): string;
+    $strict(): any;
     type: 'string';
     pattern: string;
 };
@@ -20,6 +21,7 @@ export declare type TypioInteger = {
     $raw: number;
     $wrap(raw: number): number;
     $unwrap(raw: number): number;
+    $strict(): any;
     type: 'integer';
 };
 export declare function TypioRegex(pattern: string): TypioRegex;

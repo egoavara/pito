@@ -7,6 +7,12 @@ export function TypioRegex(pattern) {
         $unwrap(raw) {
             return raw;
         },
+        $strict() {
+            return {
+                type: 'string',
+                pattern: this.pattern,
+            };
+        },
         type: 'string',
         pattern,
     }, {});
@@ -19,6 +25,12 @@ export function TypioInteger(option) {
         },
         $unwrap(raw) {
             return raw;
+        },
+        $strict() {
+            return {
+                type: 'integer',
+                ...option,
+            };
         },
         type: 'integer',
     }, option ?? {});

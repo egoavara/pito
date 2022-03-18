@@ -1,51 +1,37 @@
-export function TypioDate() {
-    return {
-        $symbol: 'TypioDate',
-        type: 'string',
-        format: 'date',
-        $unwrap(raw) {
-            return new Date(raw);
-        },
-        $wrap(raw) {
-            const YYYY = raw.getFullYear().toString().padStart(4, '0');
-            const MM = raw.getMonth().toString().padStart(2, '0');
-            const DD = raw.getDate().toString().padStart(2, '0');
-            return `${YYYY}-${MM}-${DD}`;
-        },
-    };
-}
-export function TypioDatetime() {
-    return {
-        $symbol: 'TypioDatetime',
-        $unwrap(raw) {
-            return new Date(raw);
-        },
-        $wrap(raw) {
-            const YYYY = raw.getFullYear().toString().padStart(4, '0');
-            const MM = raw.getMonth().toString().padStart(2, '0');
-            const DD = raw.getDate().toString().padStart(2, '0');
-            const hh = raw.getHours().toString().padStart(2, '0');
-            const mm = raw.getMinutes().toString().padStart(2, '0');
-            const ss = raw.getSeconds().toString().padStart(2, '0');
-            const tzhh = Math.trunc((-raw.getTimezoneOffset()) / 60).toString().padStart(2, '0');
-            const tzmm = Math.trunc((-raw.getTimezoneOffset()) / 60).toString().padStart(2, '0');
-            return `${YYYY}-${MM}-${DD}T${hh}:${mm}:${ss}+${tzhh}:${tzmm}`;
-        },
-        type: 'string',
-        format: 'date-time',
-    };
-}
-export function TypioUrl() {
-    return {
-        $symbol: 'TypioUrl',
-        type: 'string',
-        format: 'url',
-        $unwrap(raw) {
-            return new URL(raw);
-        },
-        $wrap(raw) {
-            return raw.toString();
-        },
-    };
-}
+export const DateProto = {
+    $symbol: 'TypioDate',
+    $wrap(raw) { return raw.toISOString().substring(0, 10); },
+    $unwrap(raw) { return new Date(raw); },
+    $strict() { return { type: 'string', format: 'date' }; },
+};
+export const TypioDate = () => {
+    return Object.create(DateProto, { type: { value: 'string' }, format: { value: 'date' } });
+};
+export const DatetimeProto = {
+    $symbol: 'TypioDatetime',
+    $wrap(raw) { return raw.toISOString(); },
+    $unwrap(raw) { return new Date(raw); },
+    $strict() { return { type: 'string', format: 'date-time' }; },
+};
+export const TypioDatetime = () => {
+    return Object.create(DatetimeProto, { type: { value: 'string' }, format: { value: 'date-time' } });
+};
+export const TimeProto = {
+    $symbol: 'TypioTime',
+    $wrap(raw) { return raw.toISOString().substring(11); },
+    $unwrap(raw) { return new Date(raw); },
+    $strict() { return { type: 'string', format: 'time' }; },
+};
+export const TypioTime = () => {
+    return Object.create(TimeProto, { type: { value: 'string' }, format: { value: 'time' } });
+};
+export const UrlProto = {
+    $symbol: 'TypioUrl',
+    $wrap(raw) { return raw.toString(); },
+    $unwrap(raw) { return new URL(raw); },
+    $strict() { return { type: 'string', format: 'url' }; },
+};
+export const TypioUrl = () => {
+    return Object.create(UrlProto, { type: { value: 'string' }, format: { value: 'url' } });
+};
 //# sourceMappingURL=std-types.js.map

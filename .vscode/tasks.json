@@ -4,7 +4,7 @@
         {
             "label": "tsc-watch",
             "dependsOrder": "parallel",
-            "dependsOn":[
+            "dependsOn": [
                 "tsc-watch:cjs",
                 "tsc-watch:esm",
             ],
@@ -18,7 +18,9 @@
             "type": "typescript",
             "tsconfig": "./cjs/tsconfig.json",
             "option": "watch",
-            "problemMatcher": ["$tsc-watch"],
+            "problemMatcher": [
+                "$tsc-watch"
+            ],
             "group": "build"
         },
         {
@@ -26,7 +28,9 @@
             "type": "typescript",
             "tsconfig": "esm/tsconfig.json",
             "option": "watch",
-            "problemMatcher": ["$tsc-watch"],
+            "problemMatcher": [
+                "$tsc-watch"
+            ],
             "group": "build",
         }
     ]
