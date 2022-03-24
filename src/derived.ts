@@ -14,7 +14,7 @@ type RawFromProperties<Properties extends Record<string, typio>> =
 // Derived : Obj
 export type ObjOption = {}
 export type ObjSchema<Properties extends Record<string, typio>> = { type: 'object', properties: Properties, required: (Required<Properties>)[], additionalProperties: false }
-export const ObjProto: typio<Record<string, any>, Record<string, any>, ObjSchema<Record<string, typio>>, ObjOption> = {
+export const ObjProto: Partial<typio<Record<string, any>, Record<string, any>, ObjSchema<Record<string, typio>>, ObjOption>> = {
     $symbol: 'TypioObj',
     $wrap(raw) {
         for (const k in raw) {
@@ -43,10 +43,7 @@ export const ObjProto: typio<Record<string, any>, Record<string, any>, ObjSchema
         }
     },
 }
-export type TypioObj<Properties extends Record<string, typio>> =
-    & typio<RawFromProperties<Properties>, TypeFromProperties<Properties>, ObjSchema<Properties>, ObjOption>
-    & ObjSchema<Properties>
-    & ObjOption
+export type TypioObj<Properties extends Record<string, typio>> = typio<RawFromProperties<Properties>, TypeFromProperties<Properties>, ObjSchema<Properties>, ObjOption>
 export const TypioObj = <Properties extends Record<string, typio>>(properties: Properties): TypioObj<Properties> => {
     return Object.create(ObjProto, {
         type: { value: 'object' },
@@ -60,13 +57,13 @@ export const TypioObj = <Properties extends Record<string, typio>>(properties: P
 
 export type ArrOption = {}
 export type ArrSchema = { type: 'array', items: typio }
-export const ArrProto: typio<any[], any[], ArrSchema, ArrOption> = {
+export const ArrProto: Partial<typio<any[], any[], ArrSchema, ArrOption>> = {
     $symbol: 'TypioArr',
     $wrap(raw) { return raw.map(v => this.items.$wrap(v)) },
     $unwrap(raw) { return raw.map(v => this.items.$unwrap(v)) },
     $strict() { return { type: 'array', items: this.items.$strict() } },
 }
-export type TypioArr<Items extends typio> = typio<typio.Raw<Items>, typio.Type<Items>, ArrSchema, ArrOption> & ArrSchema & ArrOption
-export const TypioArr = <Items extends typio>(items : Items): TypioArr<Items> => {
+export type TypioArr<Items extends typio> = typio<typio.Raw<Items>, typio.Type<Items>, ArrSchema, ArrOption>
+export const TypioArr = <Items extends typio>(items: Items): TypioArr<Items> => {
     return Object.create(ArrProto, { type: { value: 'array' }, items: { value: items } })
 }

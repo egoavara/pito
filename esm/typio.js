@@ -17,11 +17,11 @@ export var typio;
     }
     typio.strict = strict;
     typio.lit = TypioLit;
-    typio.str = TypioStr;
-    typio.regex = TypioRegex;
-    typio.num = TypioNum;
-    typio.int = TypioInt;
     typio.bool = TypioBool;
+    typio.num = TypioNum;
+    typio.str = TypioStr;
+    typio.int = TypioInt;
+    typio.regex = TypioRegex;
     typio.opt = TypioOpt;
     typio.obj = TypioObj;
     typio.arr = TypioArr;

@@ -23,16 +23,16 @@ export declare type ObjSchema<Properties extends Record<string, typio>> = {
     required: (Required<Properties>)[];
     additionalProperties: false;
 };
-export declare const ObjProto: typio<Record<string, any>, Record<string, any>, ObjSchema<Record<string, typio>>, ObjOption>;
-export declare type TypioObj<Properties extends Record<string, typio>> = typio<RawFromProperties<Properties>, TypeFromProperties<Properties>, ObjSchema<Properties>, ObjOption> & ObjSchema<Properties> & ObjOption;
+export declare const ObjProto: Partial<typio<Record<string, any>, Record<string, any>, ObjSchema<Record<string, typio>>, ObjOption>>;
+export declare type TypioObj<Properties extends Record<string, typio>> = typio<RawFromProperties<Properties>, TypeFromProperties<Properties>, ObjSchema<Properties>, ObjOption>;
 export declare const TypioObj: <Properties extends Record<string, typio<any, any, any, any>>>(properties: Properties) => TypioObj<Properties>;
 export declare type ArrOption = {};
 export declare type ArrSchema = {
     type: 'array';
     items: typio;
 };
-export declare const ArrProto: typio<any[], any[], ArrSchema, ArrOption>;
-export declare type TypioArr<Items extends typio> = typio<typio.Raw<Items>, typio.Type<Items>, ArrSchema, ArrOption> & ArrSchema & ArrOption;
+export declare const ArrProto: Partial<typio<any[], any[], ArrSchema, ArrOption>>;
+export declare type TypioArr<Items extends typio> = typio<typio.Raw<Items>, typio.Type<Items>, ArrSchema, ArrOption>;
 export declare const TypioArr: <Items extends typio<any, any, any, any>>(items: Items) => TypioArr<Items>;
 export {};
 //# sourceMappingURL=derived.d.ts.map

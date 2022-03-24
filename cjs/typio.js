@@ -34,11 +34,11 @@ var typio;
     }
     typio.strict = strict;
     typio.lit = primitives_js_1.TypioLit;
-    typio.str = primitives_js_1.TypioStr;
-    typio.regex = primitives_js_1.TypioRegex;
-    typio.num = primitives_js_1.TypioNum;
-    typio.int = primitives_js_1.TypioInt;
     typio.bool = primitives_js_1.TypioBool;
+    typio.num = primitives_js_1.TypioNum;
+    typio.str = primitives_js_1.TypioStr;
+    typio.int = primitives_js_1.TypioInt;
+    typio.regex = primitives_js_1.TypioRegex;
     typio.opt = modifier_js_1.TypioOpt;
     typio.obj = derived_js_1.TypioObj;
     typio.arr = derived_js_1.TypioArr;

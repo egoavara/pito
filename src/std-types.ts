@@ -5,13 +5,13 @@ import { typio } from "./typio.js"
 // Std-Types : Date
 export type DateOption = {}
 export type DateSchema = { type: 'string', format: 'date' }
-export const DateProto: typio<string, Date, DateSchema, DateOption> = {
+export const DateProto: Partial<typio<string, Date, DateSchema, DateOption>> = {
     $symbol: 'TypioDate',
     $wrap(raw) { return raw.toISOString().substring(0, 10) },
     $unwrap(raw) { return new Date(raw) },
     $strict() { return { type: 'string', format: 'date' } },
 }
-export type TypioDate = typio<string, Date, DateSchema, DateOption> & DateSchema & DateOption
+export type TypioDate = typio<string, Date, DateSchema, DateOption>
 export const TypioDate = (): TypioDate => {
     return Object.create(DateProto, { type: { value: 'string' }, format: { value: 'date' } })
 }
@@ -20,13 +20,13 @@ export const TypioDate = (): TypioDate => {
 // Std-Types : Datetime
 export type DatetimeOption = {}
 export type DatetimeSchema = { type: 'string', format: 'date-time' }
-export const DatetimeProto: typio<string, Date, DatetimeSchema, DatetimeOption> = {
+export const DatetimeProto: Partial<typio<string, Date, DatetimeSchema, DatetimeOption>> = {
     $symbol: 'TypioDatetime',
     $wrap(raw) { return raw.toISOString() },
     $unwrap(raw) { return new Date(raw) },
     $strict() { return { type: 'string', format: 'date-time' } },
 }
-export type TypioDatetime = typio<string, Date, DatetimeSchema, DatetimeOption> & DatetimeSchema & DatetimeOption
+export type TypioDatetime = typio<string, Date, DatetimeSchema, DatetimeOption>
 export const TypioDatetime = (): TypioDatetime => {
     return Object.create(DatetimeProto, { type: { value: 'string' }, format: { value: 'date-time' } })
 }
@@ -36,13 +36,13 @@ export const TypioDatetime = (): TypioDatetime => {
 // Std-Types : Time
 export type TimeOption = {}
 export type TimeSchema = { type: 'string', format: 'time' }
-export const TimeProto: typio<string, Date, TimeSchema, TimeOption> = {
+export const TimeProto: Partial<typio<string, Date, TimeSchema, TimeOption>> = {
     $symbol: 'TypioTime',
     $wrap(raw) { return raw.toISOString().substring(11) },
     $unwrap(raw) { return new Date(raw) },
     $strict() { return { type: 'string', format: 'time' } },
 }
-export type TypioTime = typio<string, Date, TimeSchema, TimeOption> & TimeSchema & TimeOption
+export type TypioTime = typio<string, Date, TimeSchema, TimeOption>
 export const TypioTime = (): TypioTime => {
     return Object.create(TimeProto, { type: { value: 'string' }, format: { value: 'time' } })
 }
@@ -51,13 +51,13 @@ export const TypioTime = (): TypioTime => {
 // Std-Types : Url
 export type UrlOption = {}
 export type UrlSchema = { type: 'string', format: 'url' }
-export const UrlProto: typio<string, URL, UrlSchema, UrlOption> = {
+export const UrlProto: Partial<typio<string, URL, UrlSchema, UrlOption>> = {
     $symbol: 'TypioUrl',
-    $wrap(raw) { return raw.toString()},
+    $wrap(raw) { return raw.toString() },
     $unwrap(raw) { return new URL(raw) },
     $strict() { return { type: 'string', format: 'url' } },
 }
-export type TypioUrl = typio<string, URL, UrlSchema, UrlOption> & UrlSchema & UrlOption
+export type TypioUrl = typio<string, URL, UrlSchema, UrlOption>
 export const TypioUrl = (): TypioUrl => {
     return Object.create(UrlProto, { type: { value: 'string' }, format: { value: 'url' } })
 }

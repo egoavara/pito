@@ -6,6 +6,7 @@ import tap from 'tap'
 const sLitConst = 'literal string'
 const nLitConst = 0xDEADC0DE
 const bLitConst = true
+const patternConst = '^hello.*'
 
 // === === === === === === === === === === === === //
 // typio object
@@ -15,6 +16,8 @@ const bLit = typio.lit(bLitConst)
 const boo = typio.bool()
 const num = typio.num()
 const str = typio.str()
+const int = typio.int()
+const reg = typio.regex(patternConst)
 // === === === === === === === === === === === === //
 // test json schema
 tap.test('strict', async t => {
@@ -45,6 +48,14 @@ tap.test('strict', async t => {
     t.same(
         typio.strict(str),
         { type: 'string' },
+    )
+    t.same(
+        typio.strict(int),
+        { type: 'integer' },
+    )
+    t.same(
+        typio.strict(reg),
+        { type: 'string', pattern: patternConst },
     )
 })
 // === === === === === === === === === === === === //
@@ -104,6 +115,24 @@ tap.test('wrap', async t => {
         typio.wrap(str, 'str'),
         'not str'
     )
+    // 
+    t.same(
+        typio.wrap(int, 1),
+        1,
+    )
+    t.notSame(
+        typio.wrap(int, 1),
+        2,
+    )
+    //
+    t.same(
+        typio.wrap(reg, 'hello, world'),
+        'hello, world',
+    )
+    t.notSame(
+        typio.wrap(reg, 'hello, world'),
+        'hello,',
+    )
     return
 })
 tap.test('unwrap', async t => {
@@ -160,6 +189,24 @@ tap.test('unwrap', async t => {
     t.notSame(
         typio.unwrap(str, 'str'),
         'not str'
+    )
+    // int
+    t.same(
+        typio.unwrap(int, 1),
+        1,
+    )
+    t.notSame(
+        typio.unwrap(int, 1),
+        2,
+    )
+    // regex
+    t.same(
+        typio.unwrap(reg, 'hello, world'),
+        'hello, world',
+    )
+    t.notSame(
+        typio.unwrap(reg, 'hello, world'),
+        'hello, ',
     )
     return
 })

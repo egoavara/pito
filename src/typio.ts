@@ -3,12 +3,13 @@ import { TypioDate, TypioDatetime, TypioUrl } from './std-types.js'
 import { TypioOpt } from './modifier.js'
 import { TypioArr, TypioObj } from './derived.js'
 
-export type typio<Raw = any, Type = any, Schema extends Record<string, any> = any, Option = any> = {
+export type typio<Raw = any, Type = any, Schema extends Record<string, any> = any, Option extends Record<string, any> = any> = {
     $symbol: string,
-    $unwrap(this: typio<Raw, Type, Schema, Option> & Schema & Option, raw: Raw): Type
-    $wrap(this: typio<Raw, Type, Schema, Option> & Schema & Option, raw: Type): Raw
-    $strict(this: typio<Raw, Type, Schema, Option> & Schema & Option): Schema & Option,
-}
+    $unwrap(this: typio<Raw, Type, Schema, Option>, raw: Raw): Type
+    $wrap(this: typio<Raw, Type, Schema, Option>, raw: Type): Raw
+    $strict(this: typio<Raw, Type, Schema, Option>): Schema & Option,
+} & { [_ in keyof Schema]: Schema[_] } & { [_ in keyof Option]: Option[_] }
+
 export type TypioRaw<T> = T extends typio<infer Raw, any, any, any> ? Raw : never
 export type TypioType<T> = T extends typio<any, infer Type, any, any> ? Type : never
 export type TypioSchema<T> = T extends typio<any, any, infer Schema, any> ? Schema : never
@@ -31,11 +32,11 @@ export namespace typio {
     //
     // Primitives
     export const lit = TypioLit
-    export const str = TypioStr
-    export const regex = TypioRegex
-    export const num = TypioNum
-    export const int = TypioInt
     export const bool = TypioBool
+    export const num = TypioNum
+    export const str = TypioStr
+    export const int = TypioInt
+    export const regex = TypioRegex
     // Modifier
     export const opt = TypioOpt
     // Derived
