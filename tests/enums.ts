@@ -31,10 +31,10 @@ tap.test('strict', async t => {
         pito.strict(TEStrOnly),
         {
             anyOf: [
-                { type: 'string', const: EStrOnly.A },
-                { type: 'string', const: EStrOnly.B },
-                { type: 'string', const: EStrOnly.C },
-                { type: 'string', const: EStrOnly.D },
+                { const: EStrOnly.A },
+                { const: EStrOnly.B },
+                { const: EStrOnly.C },
+                { const: EStrOnly.D },
             ]
         }
     )
@@ -42,10 +42,10 @@ tap.test('strict', async t => {
         pito.strict(TENumOnly),
         {
             anyOf: [
-                { type: 'number', const: ENumOnly.A },
-                { type: 'number', const: ENumOnly.B },
-                { type: 'number', const: ENumOnly.C },
-                { type: 'number', const: ENumOnly.D },
+                { const: ENumOnly.A },
+                { const: ENumOnly.B },
+                { const: ENumOnly.C },
+                { const: ENumOnly.D },
             ]
         }
     )
@@ -53,10 +53,10 @@ tap.test('strict', async t => {
         pito.strict(TEBoth),
         {
             anyOf: [
-                { type: 'string', const: EBoth.A },
-                { type: 'number', const: EBoth.B },
-                { type: 'string', const: EBoth.C },
-                { type: 'number', const: EBoth.D },
+                { const: EBoth.A },
+                { const: EBoth.B },
+                { const: EBoth.C },
+                { const: EBoth.D },
             ]
         }
     )
@@ -129,7 +129,7 @@ tap.test('unreachables', async (t) => {
         pito.strict(ea),
         {
             anyOf: [
-                { type: 'number', const: 1 }
+                { const: 1 }
             ]
         }
     )

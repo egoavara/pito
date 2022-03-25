@@ -33,9 +33,9 @@ export const PitoEnums = <Enum extends Record<string, string | number>>(e: Enum,
         .map(([k, v]) => {
             switch (typeof v) {
                 case 'string':
-                    return { type: 'string', const: v }
+                    return { const: v }
                 case 'number':
-                    return { type: 'number', const: v }
+                    return { const: v }
                 default:
                     return undefined
             }

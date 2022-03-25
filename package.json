@@ -1,6 +1,6 @@
 {
   "name": "pito",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "typescript based type define library",
   "main": "./cjs/pito.js",
   "module": "./esm/pito.js",
@@ -11,8 +11,8 @@
     }
   },
   "files": [
-    "./cjs",
-    "./esm"
+    "cjs",
+    "esm"
   ],
   "scripts": {
     "tests:hw": "ts-node \"./tests/example.ts\"",
