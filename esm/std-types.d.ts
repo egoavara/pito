@@ -1,34 +1,26 @@
-import { typio } from "./typio.js";
+import { pito } from "./pito.js";
 export declare type DateOption = {};
 export declare type DateSchema = {
     type: 'string';
     format: 'date';
 };
-export declare const DateProto: Partial<typio<string, Date, DateSchema, DateOption>>;
-export declare type TypioDate = typio<string, Date, DateSchema, DateOption>;
-export declare const TypioDate: () => TypioDate;
+export declare const DateProto: Partial<pito<string, Date, DateSchema, DateOption>>;
+export declare type PitoDate = pito<string, Date, DateSchema, DateOption>;
+export declare const PitoDate: () => PitoDate;
 export declare type DatetimeOption = {};
 export declare type DatetimeSchema = {
     type: 'string';
     format: 'date-time';
 };
-export declare const DatetimeProto: Partial<typio<string, Date, DatetimeSchema, DatetimeOption>>;
-export declare type TypioDatetime = typio<string, Date, DatetimeSchema, DatetimeOption>;
-export declare const TypioDatetime: () => TypioDatetime;
-export declare type TimeOption = {};
-export declare type TimeSchema = {
-    type: 'string';
-    format: 'time';
-};
-export declare const TimeProto: Partial<typio<string, Date, TimeSchema, TimeOption>>;
-export declare type TypioTime = typio<string, Date, TimeSchema, TimeOption>;
-export declare const TypioTime: () => TypioTime;
+export declare const DatetimeProto: Partial<pito<string, Date, DatetimeSchema, DatetimeOption>>;
+export declare type PitoDatetime = pito<string, Date, DatetimeSchema, DatetimeOption>;
+export declare const PitoDatetime: () => PitoDatetime;
 export declare type UrlOption = {};
 export declare type UrlSchema = {
     type: 'string';
     format: 'url';
 };
-export declare const UrlProto: Partial<typio<string, URL, UrlSchema, UrlOption>>;
-export declare type TypioUrl = typio<string, URL, UrlSchema, UrlOption>;
-export declare const TypioUrl: () => TypioUrl;
+export declare const UrlProto: Partial<pito<string, URL, UrlSchema, UrlOption>>;
+export declare type PitoUrl = pito<string, URL, UrlSchema, UrlOption>;
+export declare const PitoUrl: () => PitoUrl;
 //# sourceMappingURL=std-types.d.ts.map

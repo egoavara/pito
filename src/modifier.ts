@@ -1,11 +1,11 @@
-import { typio } from "./typio.js"
+import { pito } from "./pito.js"
 
 
 export type Modifiers =
     & Partial<OptModifier>
 // Modifier : Option
 export type OptModifier = { $optional: true }
-export type TypioOpt<T extends typio> = T & OptModifier
-export const TypioOpt = <T extends typio>(inner: T): TypioOpt<T> => {
+export type PitoOpt<T extends pito> = T & OptModifier
+export const PitoOpt = <T extends pito>(inner: T): PitoOpt<T> => {
     return Object.assign(inner, { $optional: true }) as any
 }

@@ -1,14 +1,12 @@
 export const LitProto = {
-    $symbol: 'TypioLit',
     $wrap(raw) { return raw; },
     $unwrap(raw) { return raw; },
     $strict() { return { const: this.const }; },
 };
-export const TypioLit = (l) => {
-    return Object.create(LitProto, { const: { value: l }, });
+export const PitoLit = (l) => {
+    return Object.create(LitProto, { const: { enumerable: true, value: l }, });
 };
 export const StrProto = {
-    $symbol: 'TypioStr',
     $wrap(raw) { return raw; },
     $unwrap(raw) { return raw; },
     $strict() {
@@ -21,23 +19,39 @@ export const StrProto = {
         if (this.maxLength !== undefined) {
             strict.maxLength = this.maxLength;
         }
-        if (this.pattern !== undefined) {
-            strict.pattern = this.pattern;
-        }
         return strict;
     },
 };
-export const TypioStr = (option) => {
+export const PitoStr = (option) => {
     if (option === undefined) {
         return Object.create(StrProto, { type: { value: 'string' } });
     }
     return Object.assign(Object.create(StrProto, { type: { value: 'string' } }), option);
 };
-export const TypioRegex = (pattern, option) => {
-    return Object.assign(Object.create(StrProto, { type: { value: 'string' } }), option, { pattern: pattern });
+export const RegexProto = {
+    $wrap(raw) { return raw; },
+    $unwrap(raw) { return raw; },
+    $strict() {
+        const strict = {
+            type: 'string',
+            pattern: this.pattern,
+        };
+        if (this.minLength !== undefined) {
+            strict.minLength = this.minLength;
+        }
+        if (this.maxLength !== undefined) {
+            strict.maxLength = this.maxLength;
+        }
+        return strict;
+    },
+};
+export const PitoRegex = (pattern, option) => {
+    return Object.assign(Object.create(RegexProto, {
+        type: { value: 'string' },
+        pattern: { value: pattern },
+    }), option);
 };
 export const NumProto = {
-    $symbol: 'TypioNum',
     $wrap(raw) { return raw; },
     $unwrap(raw) { return raw; },
     $strict() {
@@ -62,14 +76,13 @@ export const NumProto = {
         return strict;
     },
 };
-export const TypioNum = (option) => {
+export const PitoNum = (option) => {
     if (option === undefined) {
         return Object.create(NumProto, { type: { value: 'number' } });
     }
     return Object.assign(Object.create(NumProto, { type: { value: 'number' } }), option);
 };
 export const IntProto = {
-    $symbol: 'TypioInt',
     $wrap(raw) { return raw; },
     $unwrap(raw) { return raw; },
     $strict() {
@@ -94,19 +107,18 @@ export const IntProto = {
         return strict;
     },
 };
-export const TypioInt = (option) => {
+export const PitoInt = (option) => {
     if (option === undefined) {
         return Object.create(IntProto, { type: { value: 'integer' } });
     }
     return Object.assign(Object.create(IntProto, { type: { value: 'integer' } }), option);
 };
 export const BoolProto = {
-    $symbol: 'TypioBool',
     $wrap(raw) { return raw; },
     $unwrap(raw) { return raw; },
     $strict() {
         return { type: 'boolean' };
     },
 };
-export const TypioBool = () => { return Object.create(BoolProto, { type: { value: 'boolean' } }); };
+export const PitoBool = () => { return Object.create(BoolProto, { type: { value: 'boolean' } }); };
 //# sourceMappingURL=primitives.js.map

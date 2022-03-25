@@ -1,18 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TypioBool = exports.BoolProto = exports.TypioInt = exports.IntProto = exports.TypioNum = exports.NumProto = exports.TypioRegex = exports.TypioStr = exports.StrProto = exports.TypioLit = exports.LitProto = void 0;
+exports.PitoBool = exports.BoolProto = exports.PitoInt = exports.IntProto = exports.PitoNum = exports.NumProto = exports.PitoRegex = exports.RegexProto = exports.PitoStr = exports.StrProto = exports.PitoLit = exports.LitProto = void 0;
 exports.LitProto = {
-    $symbol: 'TypioLit',
     $wrap(raw) { return raw; },
     $unwrap(raw) { return raw; },
     $strict() { return { const: this.const }; },
 };
-const TypioLit = (l) => {
-    return Object.create(exports.LitProto, { const: { value: l }, });
+const PitoLit = (l) => {
+    return Object.create(exports.LitProto, { const: { enumerable: true, value: l }, });
 };
-exports.TypioLit = TypioLit;
+exports.PitoLit = PitoLit;
 exports.StrProto = {
-    $symbol: 'TypioStr',
     $wrap(raw) { return raw; },
     $unwrap(raw) { return raw; },
     $strict() {
@@ -25,25 +23,41 @@ exports.StrProto = {
         if (this.maxLength !== undefined) {
             strict.maxLength = this.maxLength;
         }
-        if (this.pattern !== undefined) {
-            strict.pattern = this.pattern;
-        }
         return strict;
     },
 };
-const TypioStr = (option) => {
+const PitoStr = (option) => {
     if (option === undefined) {
         return Object.create(exports.StrProto, { type: { value: 'string' } });
     }
     return Object.assign(Object.create(exports.StrProto, { type: { value: 'string' } }), option);
 };
-exports.TypioStr = TypioStr;
-const TypioRegex = (pattern, option) => {
-    return Object.assign(Object.create(exports.StrProto, { type: { value: 'string' } }), option, { pattern: pattern });
+exports.PitoStr = PitoStr;
+exports.RegexProto = {
+    $wrap(raw) { return raw; },
+    $unwrap(raw) { return raw; },
+    $strict() {
+        const strict = {
+            type: 'string',
+            pattern: this.pattern,
+        };
+        if (this.minLength !== undefined) {
+            strict.minLength = this.minLength;
+        }
+        if (this.maxLength !== undefined) {
+            strict.maxLength = this.maxLength;
+        }
+        return strict;
+    },
 };
-exports.TypioRegex = TypioRegex;
+const PitoRegex = (pattern, option) => {
+    return Object.assign(Object.create(exports.RegexProto, {
+        type: { value: 'string' },
+        pattern: { value: pattern },
+    }), option);
+};
+exports.PitoRegex = PitoRegex;
 exports.NumProto = {
-    $symbol: 'TypioNum',
     $wrap(raw) { return raw; },
     $unwrap(raw) { return raw; },
     $strict() {
@@ -68,15 +82,14 @@ exports.NumProto = {
         return strict;
     },
 };
-const TypioNum = (option) => {
+const PitoNum = (option) => {
     if (option === undefined) {
         return Object.create(exports.NumProto, { type: { value: 'number' } });
     }
     return Object.assign(Object.create(exports.NumProto, { type: { value: 'number' } }), option);
 };
-exports.TypioNum = TypioNum;
+exports.PitoNum = PitoNum;
 exports.IntProto = {
-    $symbol: 'TypioInt',
     $wrap(raw) { return raw; },
     $unwrap(raw) { return raw; },
     $strict() {
@@ -101,21 +114,20 @@ exports.IntProto = {
         return strict;
     },
 };
-const TypioInt = (option) => {
+const PitoInt = (option) => {
     if (option === undefined) {
         return Object.create(exports.IntProto, { type: { value: 'integer' } });
     }
     return Object.assign(Object.create(exports.IntProto, { type: { value: 'integer' } }), option);
 };
-exports.TypioInt = TypioInt;
+exports.PitoInt = PitoInt;
 exports.BoolProto = {
-    $symbol: 'TypioBool',
     $wrap(raw) { return raw; },
     $unwrap(raw) { return raw; },
     $strict() {
         return { type: 'boolean' };
     },
 };
-const TypioBool = () => { return Object.create(exports.BoolProto, { type: { value: 'boolean' } }); };
-exports.TypioBool = TypioBool;
+const PitoBool = () => { return Object.create(exports.BoolProto, { type: { value: 'boolean' } }); };
+exports.PitoBool = PitoBool;
 //# sourceMappingURL=primitives.js.map

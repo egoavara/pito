@@ -1,44 +1,31 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TypioUrl = exports.UrlProto = exports.TypioTime = exports.TimeProto = exports.TypioDatetime = exports.DatetimeProto = exports.TypioDate = exports.DateProto = void 0;
+exports.PitoUrl = exports.UrlProto = exports.PitoDatetime = exports.DatetimeProto = exports.PitoDate = exports.DateProto = void 0;
 exports.DateProto = {
-    $symbol: 'TypioDate',
     $wrap(raw) { return raw.toISOString().substring(0, 10); },
     $unwrap(raw) { return new Date(raw); },
     $strict() { return { type: 'string', format: 'date' }; },
 };
-const TypioDate = () => {
+const PitoDate = () => {
     return Object.create(exports.DateProto, { type: { value: 'string' }, format: { value: 'date' } });
 };
-exports.TypioDate = TypioDate;
+exports.PitoDate = PitoDate;
 exports.DatetimeProto = {
-    $symbol: 'TypioDatetime',
     $wrap(raw) { return raw.toISOString(); },
     $unwrap(raw) { return new Date(raw); },
     $strict() { return { type: 'string', format: 'date-time' }; },
 };
-const TypioDatetime = () => {
+const PitoDatetime = () => {
     return Object.create(exports.DatetimeProto, { type: { value: 'string' }, format: { value: 'date-time' } });
 };
-exports.TypioDatetime = TypioDatetime;
-exports.TimeProto = {
-    $symbol: 'TypioTime',
-    $wrap(raw) { return raw.toISOString().substring(11); },
-    $unwrap(raw) { return new Date(raw); },
-    $strict() { return { type: 'string', format: 'time' }; },
-};
-const TypioTime = () => {
-    return Object.create(exports.TimeProto, { type: { value: 'string' }, format: { value: 'time' } });
-};
-exports.TypioTime = TypioTime;
+exports.PitoDatetime = PitoDatetime;
 exports.UrlProto = {
-    $symbol: 'TypioUrl',
     $wrap(raw) { return raw.toString(); },
     $unwrap(raw) { return new URL(raw); },
     $strict() { return { type: 'string', format: 'url' }; },
 };
-const TypioUrl = () => {
+const PitoUrl = () => {
     return Object.create(exports.UrlProto, { type: { value: 'string' }, format: { value: 'url' } });
 };
-exports.TypioUrl = TypioUrl;
+exports.PitoUrl = PitoUrl;
 //# sourceMappingURL=std-types.js.map

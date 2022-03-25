@@ -1,23 +1,21 @@
-import { typio } from "./typio.js"
+import { pito } from "./pito.js"
 
-// Primitive : Lit
+// Primitive : Literal
 export type LitOption = {}
 export type LitSchema<T extends string | number | boolean> = { const: T }
-export const LitProto: Partial<typio<string | number | boolean, string | number | boolean, LitSchema<string | number | boolean>, LitOption>> = {
-    $symbol: 'TypioLit',
+export const LitProto: Partial<pito<string | number | boolean, string | number | boolean, LitSchema<string | number | boolean>, LitOption>> = {
     $wrap(raw) { return raw },
     $unwrap(raw) { return raw },
     $strict() { return { const: this.const } },
 }
-export type TypioLit<T extends string | number | boolean> = typio<T, T, LitSchema<T>, LitOption>
-export const TypioLit = <T extends string | number | boolean>(l: T): TypioLit<T> => {
-    return Object.create(LitProto, { const: { value: l }, })
+export type PitoLit<T extends string | number | boolean> = pito<T, T, LitSchema<T>, LitOption>
+export const PitoLit = <T extends string | number | boolean>(l: T): PitoLit<T> => {
+    return Object.create(LitProto, { const: { enumerable: true, value: l }, })
 }
-// Primitive : Str
-export type StrOption = { minLength?: number, maxLength?: number, pattern?: string }
+// Primitive : String
+export type StrOption = { minLength?: number, maxLength?: number }
 export type StrSchema = { type: 'string' }
-export const StrProto: Partial<typio<string, string, StrSchema, StrOption>> = {
-    $symbol: 'TypioStr',
+export const StrProto: Partial<pito<string, string, StrSchema, StrOption>> = {
     $wrap(raw) { return raw },
     $unwrap(raw) { return raw },
     $strict() {
@@ -30,36 +28,62 @@ export const StrProto: Partial<typio<string, string, StrSchema, StrOption>> = {
         if (this.maxLength !== undefined) {
             strict.maxLength = this.maxLength
         }
-        if (this.pattern !== undefined) {
-            strict.pattern = this.pattern
-        }
         return strict
     },
 }
-export type TypioStr = typio<string, string, StrSchema, StrOption>
-export const TypioStr = (option?: StrOption): TypioStr => {
+export type PitoStr = pito<string, string, StrSchema, StrOption>
+export const PitoStr = (option?: StrOption): PitoStr => {
     if (option === undefined) {
         return Object.create(StrProto, { type: { value: 'string' } })
     }
     return Object.assign(Object.create(StrProto, { type: { value: 'string' } }), option)
 }
 
-export const TypioRegex = (pattern: string, option?: StrOption): TypioStr => {
-    return Object.assign(Object.create(StrProto, { type: { value: 'string' } }), option, { pattern: pattern })
+// Primitive : Regex String
+export type RegexOption = { minLength?: number, maxLength?: number }
+export type RegexSchema<P extends string> = { type: 'string', pattern: P }
+export const RegexProto: Partial<pito<string, string, RegexSchema<string>, RegexOption>> = {
+    $wrap(raw) { return raw },
+    $unwrap(raw) { return raw },
+    $strict() {
+        const strict: RegexSchema<string> & RegexOption = {
+            type: 'string',
+            pattern: this.pattern,
+        }
+        if (this.minLength !== undefined) {
+            strict.minLength = this.minLength
+        }
+        if (this.maxLength !== undefined) {
+            strict.maxLength = this.maxLength
+        }
+        return strict
+    },
+}
+export type PitoRegex<Pattern extends string = string> = pito<string, string, RegexSchema<Pattern>, RegexOption>
+export const PitoRegex = <Pattern extends string>(pattern: Pattern, option?: StrOption): PitoStr => {
+    return Object.assign(
+        Object.create(
+            RegexProto,
+            {
+                type: { value: 'string' },
+                pattern: { value: pattern },
+            }
+        ),
+        option,
+    )
 }
 
 
-// Primitive : Num
+// Primitive : Number
 export type NumOption = {
     multipleOf?: number,
     minimum?: number,
-    exclusiveMinimum?: number | true,
+    exclusiveMinimum?: number | boolean,
     maximum?: number
-    exclusiveMaximum?: number | true
+    exclusiveMaximum?: number | boolean
 }
 export type NumSchema = { type: 'number' }
-export const NumProto: Partial<typio<number, number, NumSchema, NumOption>> = {
-    $symbol: 'TypioNum',
+export const NumProto: Partial<pito<number, number, NumSchema, NumOption>> = {
     $wrap(raw) { return raw },
     $unwrap(raw) { return raw },
     $strict() {
@@ -84,15 +108,15 @@ export const NumProto: Partial<typio<number, number, NumSchema, NumOption>> = {
         return strict
     },
 }
-export type TypioNum = typio<number, number, NumSchema, NumOption> & NumSchema & NumOption
-export const TypioNum = (option?: NumOption): TypioNum => {
+export type PitoNum = pito<number, number, NumSchema, NumOption> & NumSchema & NumOption
+export const PitoNum = (option?: NumOption): PitoNum => {
     if (option === undefined) {
         return Object.create(NumProto, { type: { value: 'number' } })
     }
     return Object.assign(Object.create(NumProto, { type: { value: 'number' } }), option)
 }
 
-// Primitive : Int
+// Primitive : Integer
 export type IntOption = {
     multipleOf?: number,
     minimum?: number,
@@ -101,8 +125,7 @@ export type IntOption = {
     exclusiveMaximum?: number | true
 }
 export type IntSchema = { type: 'integer' }
-export const IntProto: Partial<typio<number, number, IntSchema, IntOption>> = {
-    $symbol: 'TypioInt',
+export const IntProto: Partial<pito<number, number, IntSchema, IntOption>> = {
     $wrap(raw) { return raw },
     $unwrap(raw) { return raw },
     $strict() {
@@ -127,24 +150,23 @@ export const IntProto: Partial<typio<number, number, IntSchema, IntOption>> = {
         return strict
     },
 }
-export type TypioInt = typio<number, number, IntSchema, IntOption>
-export const TypioInt = (option?: IntOption): TypioInt => {
+export type PitoInt = pito<number, number, IntSchema, IntOption>
+export const PitoInt = (option?: IntOption): PitoInt => {
     if (option === undefined) {
         return Object.create(IntProto, { type: { value: 'integer' } })
     }
     return Object.assign(Object.create(IntProto, { type: { value: 'integer' } }), option)
 }
 
-// Primitive : Bool
+// Primitive : Boolean
 export type BoolOption = {}
 export type BoolSchema = { type: 'boolean' }
-export const BoolProto: Partial<typio<boolean, boolean, BoolSchema, BoolOption>> = {
-    $symbol: 'TypioBool',
+export const BoolProto: Partial<pito<boolean, boolean, BoolSchema, BoolOption>> = {
     $wrap(raw) { return raw },
     $unwrap(raw) { return raw },
     $strict() {
         return { type: 'boolean' }
     },
 }
-export type TypioBool = typio<boolean, boolean, BoolSchema, BoolOption>
-export const TypioBool = (): TypioBool => { return Object.create(BoolProto, { type: { value: 'boolean' } }) }
+export type PitoBool = pito<boolean, boolean, BoolSchema, BoolOption>
+export const PitoBool = (): PitoBool => { return Object.create(BoolProto, { type: { value: 'boolean' } }) }
