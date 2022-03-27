@@ -1,7 +1,11 @@
 {
   "name": "pito",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "typescript based type define library",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iamGreedy/pito.git"
+  },
   "main": "./cjs/pito.js",
   "module": "./esm/pito.js",
   "exports": {
@@ -15,7 +19,6 @@
     "esm"
   ],
   "scripts": {
-    "tests:hw": "ts-node \"./tests/example.ts\"",
     "test": "tap --ts"
   },
   "keywords": [
