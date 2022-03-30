@@ -1,6 +1,6 @@
 import { PitoArr, PitoObj, PitoUnionObj } from './derived.js'
 import { PitoOpt } from './modifier.js'
-import { PitoBool, PitoInt, PitoLit, PitoNum, PitoRegex, PitoStr } from './primitives.js'
+import { PitoBool, PitoInt, PitoLit, PitoNul, PitoNum, PitoRegex, PitoStr } from './primitives.js'
 import { PitoDate, PitoDatetime, PitoUrl } from './std-types.js'
 import { PitoDefineBuilder } from './define.js'
 import { PitoEnums } from './enums.js'
@@ -33,6 +33,8 @@ export namespace pito {
     }
     //
     // Primitives
+    export type nul = PitoNul
+    export const nul = PitoNul
     export type lit<L extends string | number | boolean> = PitoLit<L>
     export const lit = PitoLit
     export type bool = PitoBool

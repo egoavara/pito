@@ -1,5 +1,16 @@
 import { pito } from "./pito.js"
 
+// Primitive : Null
+export type NulOption = {}
+export type NulSchema = { type: 'null' }
+export const NullProto: Partial<pito<null, null, NulSchema, NulOption>> = {
+    $wrap(raw) { return raw },
+    $unwrap(raw) { return raw },
+    $strict() { return { type: 'null' } },
+}
+export type PitoNul = pito<null, null, NulSchema, NulOption>
+export const PitoNul = (): PitoNul => { return Object.create(NullProto, { type: { enumerable: true, value: 'null' } }) }
+
 // Primitive : Literal
 export type LitOption = {}
 export type LitSchema<T extends string | number | boolean> = { const: T }

@@ -10,6 +10,7 @@ const patternConst = '^hello.*'
 
 // === === === === === === === === === === === === //
 // typio object
+const nul = pito.nul()
 const sLit = pito.lit(sLitConst)
 const nLit = pito.lit(nLitConst)
 const bLit = pito.lit(bLitConst)
@@ -21,6 +22,11 @@ const reg = pito.regex(patternConst)
 // === === === === === === === === === === === === //
 // test json schema
 tap.test('strict', async t => {
+    t.same(
+        pito.strict(nul),
+        { type: 'null' },
+    )
+
     t.same(
         pito.strict(sLit),
         { const: sLitConst },
@@ -125,6 +131,11 @@ tap.test('strict with option', async t => {
 // === === === === === === === === === === === === //
 // wrap
 tap.test('wrap', async t => {
+    // null
+    t.same(
+        pito.wrap(nul, null),
+        null,
+    )
     // string literal
     t.same(
         pito.wrap(sLit, sLitConst),
@@ -202,6 +213,11 @@ tap.test('wrap', async t => {
 // === === === === === === === === === === === === //
 // unwrap
 tap.test('unwrap', async t => {
+    // null
+    t.same(
+        pito.unwrap(nul, null),
+        null,
+    )
     // string literal
     t.same(
         pito.unwrap(sLit, sLitConst),
