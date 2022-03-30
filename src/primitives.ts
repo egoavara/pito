@@ -71,16 +71,16 @@ export const RegexProto: Partial<pito<string, string, RegexSchema<string>, Regex
     },
 }
 export type PitoRegex<Pattern extends string = string> = pito<string, string, RegexSchema<Pattern>, RegexOption>
-export const PitoRegex = <Pattern extends string>(pattern: Pattern, option?: StrOption): PitoStr => {
+export const PitoRegex = <Pattern extends string>(pattern: Pattern, option?: RegexOption): PitoRegex => {
     return Object.assign(
         Object.create(
             RegexProto,
             {
-                type: { value: 'string' },
-                pattern: { value: pattern },
+                type: { enumerable: true, value: 'string' },
+                pattern: { enumerable: true, value: pattern },
             }
         ),
-        option,
+        option ?? {},
     )
 }
 
