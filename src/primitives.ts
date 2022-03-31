@@ -71,7 +71,7 @@ export const RegexProto: Partial<pito<string, string, RegexSchema<string>, Regex
     },
 }
 export type PitoRegex<Pattern extends string = string> = pito<string, string, RegexSchema<Pattern>, RegexOption>
-export const PitoRegex = <Pattern extends string>(pattern: Pattern, option?: RegexOption): PitoRegex => {
+export const PitoRegex = <Pattern extends string>(pattern: Pattern, option?: RegexOption): PitoRegex<Pattern> => {
     return Object.assign(
         Object.create(
             RegexProto,
