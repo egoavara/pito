@@ -30,33 +30,33 @@ tap.test('strict', async t => {
     t.same(
         pito.strict(TEStrOnly),
         {
-            anyOf: [
-                { const: EStrOnly.A },
-                { const: EStrOnly.B },
-                { const: EStrOnly.C },
-                { const: EStrOnly.D },
+            enum: [
+                EStrOnly.A,
+                EStrOnly.B,
+                EStrOnly.C,
+                EStrOnly.D,
             ]
         }
     )
     t.same(
         pito.strict(TENumOnly),
         {
-            anyOf: [
-                { const: ENumOnly.A },
-                { const: ENumOnly.B },
-                { const: ENumOnly.C },
-                { const: ENumOnly.D },
+            enum: [
+                ENumOnly.A,
+                ENumOnly.B,
+                ENumOnly.C,
+                ENumOnly.D,
             ]
         }
     )
     t.same(
         pito.strict(TEBoth),
         {
-            anyOf: [
-                { const: EBoth.A },
-                { const: EBoth.B },
-                { const: EBoth.C },
-                { const: EBoth.D },
+            enum: [
+                EBoth.A,
+                EBoth.B,
+                EBoth.C,
+                EBoth.D,
             ]
         }
     )
@@ -128,9 +128,7 @@ tap.test('unreachables', async (t) => {
     t.same(
         pito.strict(ea),
         {
-            anyOf: [
-                { const: 1 }
-            ]
+            enum: [1]
         }
     )
 })

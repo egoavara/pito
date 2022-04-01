@@ -17,7 +17,7 @@ const krw = pito
         wrap(tp: Currency): string {
             return tp.format(this.$option)
         }
-    })({symbol : '₩'})
+    })({ symbol: '₩' })
 // 
 // === === === === === === === === === === === === //
 const Vec2 = pito.obj({
@@ -139,10 +139,10 @@ tap.same(
                                                 type: 'object',
                                                 properties: {
                                                     code: {
-                                                        anyOf: [
-                                                            { const: 0 },
-                                                            { const: 1 },
-                                                            { const: 2 },
+                                                        enum: [
+                                                            0,
+                                                            1,
+                                                            2,
                                                         ]
                                                     },
                                                     quantity: { type: 'integer' },
