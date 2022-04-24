@@ -120,15 +120,12 @@ tap.test('unwrap', async t => {
 // === === === === === === === === === === === === //
 // unreachable
 tap.test('unreachables', async (t) => {
-    const a = {
-        'A': 1,
-        'B': true,
-    }
-    const ea = pito.enums(a as any)
-    t.same(
-        pito.strict(ea),
-        {
-            enum: [1]
+    t.throws(()=>{
+
+        const a = {
+            'A': 1,
+            'B': true,
         }
-    )
+        const ea = pito.enums(a as any)
+    })
 })

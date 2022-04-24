@@ -7,5 +7,8 @@ export type Modifiers =
 export type OptModifier = { $optional: true }
 export type PitoOpt<T extends pito> = T & OptModifier
 export const PitoOpt = <T extends pito>(inner: T): PitoOpt<T> => {
-    return Object.assign(inner, { $optional: true }) as any
+    return {
+        $optional: true,
+        ...inner,
+    }
 }
