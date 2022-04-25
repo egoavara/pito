@@ -17,15 +17,6 @@ export type EnumsOption = {}
 export type EnumsSchema<Enums extends Record<string, string | number>> = {
     enum: (ParseEnums<Enums>)[]
 }
-export const EnumProto: Partial<pito<string | number, string | number, EnumsSchema<Record<string, string | number>>, EnumsOption>> = {
-    $wrap(raw) { return raw },
-    $unwrap(raw) { return raw },
-    $strict() {
-        return {
-            enum: this.enum,
-        }
-    },
-}
 export type PitoEnums<Enums extends Record<string, string | number>> = pito<string | number, ParseValues<Enums>, EnumsSchema<Enums>, EnumsOption>
 export const PitoEnums = <Enum extends Record<string, string | number>>(e: Enum, option?: EnumsOption): PitoEnums<Enum> => {
     const enums = Object.entries(e)
@@ -37,9 +28,19 @@ export const PitoEnums = <Enum extends Record<string, string | number>>(e: Enum,
                 case 'number':
                     return v
                 default:
-                    return undefined
+                    throw new Error(`enum has { ${k} : ${v} }, not supported value type`)
             }
         })
         .filter(v => v !== undefined)
-    return Object.assign(Object.create(EnumProto), { enum: enums }, option ?? {})
+    return {
+        enum: enums as any,
+        $wrap(raw) { return raw },
+        $unwrap(raw) { return raw as ParseValues<Enum> },
+        $strict() {
+            return {
+                enum: this.enum,
+            }
+        },
+        ...(option ?? {})
+    }
 }

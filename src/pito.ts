@@ -1,9 +1,15 @@
+export * from "./impl/index.js"
+export * from './derived.js'
+export * from './modifier.js'
+export * from './primitives.js'
+export * from './std-types.js'
+
+import { PitoDefineBuilder } from './define.js'
 import { PitoArr, PitoObj, PitoUnionObj } from './derived.js'
+import { PitoEnums } from './enums.js'
 import { PitoOpt } from './modifier.js'
 import { PitoBool, PitoInt, PitoLit, PitoNul, PitoNum, PitoRegex, PitoStr } from './primitives.js'
-import { PitoDate, PitoDatetime, PitoUrl } from './std-types.js'
-import { PitoDefineBuilder } from './define.js'
-import { PitoEnums } from './enums.js'
+import { PitoDate, PitoDatetime, PitoDuration, PitoTime, PitoUrl } from './std-types.js'
 
 export type pito<Raw = any, Type = any, Schema extends Record<string, any> = any, Option extends Record<string, any> = any, Extras extends Record<string, any> = {}> = {
     $unwrap(this: pito<Raw, Type, Schema, Option, Extras>, raw: Raw): Type
@@ -65,17 +71,15 @@ export namespace pito {
     export const date = PitoDate
     export type datetime = PitoDatetime
     export const datetime = PitoDatetime
-    // TODO : export const time = TypioTime
+    export type duration = PitoDuration
+    export const duration = PitoDuration
+    export type time = PitoTime
+    export const time = PitoTime
     export type url = PitoUrl
     export const url = PitoUrl
     // custom type
-    export function def<DefRaw extends pito>(schema: DefRaw): PitoDefineBuilder<pito.Type<DefRaw>, pito.Strict<DefRaw>> {
-        return PitoDefineBuilder(schema)
-    }
+    export const define = PitoDefineBuilder.create
 }
 
-export * from './primitives.js'
-export * from './derived.js'
-export * from './modifier.js'
-export * from './std-types.js'
+
 

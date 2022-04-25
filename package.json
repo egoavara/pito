@@ -27,7 +27,11 @@
     "esm/package.json"
   ],
   "scripts": {
-    "test": "tap --ts"
+    "test": "tap --ts",
+    "build": "npm i & npm run build:cjs & npm run build:esm",
+    "build:cjs": "rimraf ./cjs/**/*.{js,js.map,d.ts,d.ts.map,tsbuildinfo} && tsc -p ./cjs/tsconfig.json",
+    "build:esm": "rimraf ./esm/**/*.{js,js.map,d.ts,d.ts.map,tsbuildinfo} && tsc -p ./esm/tsconfig.json",
+    "prepack": "npm run build && npm run test"
   },
   "keywords": [
     "typescript",
