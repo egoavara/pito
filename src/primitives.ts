@@ -1,9 +1,9 @@
 import { pito } from "./pito.js"
 
-// Primitive : Null
+// Primitive : Any
 export type AnyOption = {}
 export type AnySchema = { }
-export type PitoAny = pito<null, null, AnySchema, AnyOption>
+export type PitoAny = pito<any, any, AnySchema, AnyOption>
 export const PitoAny = (): PitoAny => {
     return {
         $wrap(raw) { return raw },
