@@ -1,11 +1,21 @@
 import { pito } from "./pito.js"
 
 // Primitive : Null
+export type AnyOption = {}
+export type AnySchema = { }
+export type PitoAny = pito<null, null, AnySchema, AnyOption>
+export const PitoAny = (): PitoAny => {
+    return {
+        $wrap(raw) { return raw },
+        $unwrap(raw) { return raw },
+        $strict() { return {} },
+    }
+}
+// Primitive : Null
 export type NulOption = {}
 export type NulSchema = { type: 'null' }
 export type PitoNul = pito<null, null, NulSchema, NulOption>
 export const PitoNul = (): PitoNul => {
-    // return Object.create(NullProto, { type: { enumerable: true, value: 'null' } })
     return {
         type: 'null',
         $wrap(raw) { return raw },

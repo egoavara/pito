@@ -75,11 +75,11 @@ export const PitoArr = <Items extends pito>(items: Items, option?: ArrOption): P
 
 
 // Derived : Union
-type ParsePitoUnionObj<Key extends string, Items extends Record<string, pito.obj<Record<string, pito>>>> = {
-    [ItemKey in keyof Items]: Items[ItemKey] extends pito.obj<infer A>
+type ParsePitoUnionObj<Key extends string, Items extends Record<string, pito.Obj<Record<string, pito>>>> = {
+    [ItemKey in keyof Items]: Items[ItemKey] extends pito.Obj<infer A>
     ? (
         ItemKey extends string
-        ? pito.obj<A & Record<Key, pito.lit<ItemKey>>>
+        ? pito.Obj<A & Record<Key, pito.Lit<ItemKey>>>
         : never
     )
     : never

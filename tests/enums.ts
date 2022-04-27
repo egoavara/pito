@@ -20,9 +20,9 @@ enum EBoth {
     D = 3,
 }
 
-const TEStrOnly = pito.enums(EStrOnly)
-const TENumOnly = pito.enums(ENumOnly)
-const TEBoth = pito.enums(EBoth)
+const TEStrOnly = pito.Enums(EStrOnly)
+const TENumOnly = pito.Enums(ENumOnly)
+const TEBoth = pito.Enums(EBoth)
 
 // === === === === === === === === === === === === //
 // typio strict
@@ -126,6 +126,6 @@ tap.test('unreachables', async (t) => {
             'A': 1,
             'B': true,
         }
-        const ea = pito.enums(a as any)
+        const ea = pito.Enums(a as any)
     })
 })

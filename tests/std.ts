@@ -10,11 +10,11 @@ const _datetime_Date = new Date(_datetime_Const)
 const _url_Const = "https://hello.world/foo?bar=1"
 const _url_URL = new URL(_url_Const)
 // === === === === === === === === === === === === //
-const date = pito.date()
-const duration = pito.duration()
-const time = pito.time()
-const datetime = pito.datetime()
-const url = pito.url()
+const date = pito.Date()
+const duration = pito.Duration()
+const time = pito.Time()
+const datetime = pito.Datetime()
+const url = pito.Url()
 // 
 // === === === === === === === === === === === === //
 // test json schema

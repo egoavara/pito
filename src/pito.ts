@@ -8,7 +8,7 @@ import { PitoDefineBuilder } from './define.js'
 import { PitoArr, PitoObj, PitoUnionObj } from './derived.js'
 import { PitoEnums } from './enums.js'
 import { PitoOpt } from './modifier.js'
-import { PitoBool, PitoInt, PitoLit, PitoNul, PitoNum, PitoRegex, PitoStr } from './primitives.js'
+import { PitoAny, PitoBool, PitoInt, PitoLit, PitoNul, PitoNum, PitoRegex, PitoStr } from './primitives.js'
 import { PitoDate, PitoDatetime, PitoDuration, PitoTime, PitoUrl } from './std-types.js'
 
 export type pito<Raw = any, Type = any, Schema extends Record<string, any> = any, Option extends Record<string, any> = any, Extras extends Record<string, any> = {}> = {
@@ -39,44 +39,46 @@ export namespace pito {
     }
     //
     // Primitives
-    export type nul = PitoNul
-    export const nul = PitoNul
-    export type lit<L extends string | number | boolean> = PitoLit<L>
-    export const lit = PitoLit
-    export type bool = PitoBool
-    export const bool = PitoBool
-    export type num = PitoNum
-    export const num = PitoNum
-    export type str = PitoStr
-    export const str = PitoStr
-    export type int = PitoInt
-    export const int = PitoInt
-    export type regex<Pattern extends string = string> = PitoRegex<Pattern>
-    export const regex = PitoRegex
+    export type Any = PitoAny
+    export const Any = PitoAny
+    export type Nul = PitoNul
+    export const Nul = PitoNul
+    export type Lit<L extends string | number | boolean> = PitoLit<L>
+    export const Lit = PitoLit
+    export type Bool = PitoBool
+    export const Bool = PitoBool
+    export type Num = PitoNum
+    export const Num = PitoNum
+    export type Str = PitoStr
+    export const Str = PitoStr
+    export type Int = PitoInt
+    export const Int = PitoInt
+    export type Regex<Pattern extends string = string> = PitoRegex<Pattern>
+    export const Regex = PitoRegex
     // Modifier
-    export type opt<T extends pito> = PitoOpt<T>
-    export const opt = PitoOpt
+    export type Opt<T extends pito> = PitoOpt<T>
+    export const Opt = PitoOpt
     // Enum
-    export type enums<E extends Record<string, string | number>> = PitoEnums<E>
-    export const enums = PitoEnums
+    export type Enums<E extends Record<string, string | number>> = PitoEnums<E>
+    export const Enums = PitoEnums
     // Derived
-    export type uobj<Key extends string, Items extends Record<string, PitoObj<Record<string, pito>>>> = PitoUnionObj<Key, Items>
-    export const uobj = PitoUnionObj
-    export type obj<Properties extends Record<string, pito>> = PitoObj<Properties>
-    export const obj = PitoObj
-    export type arr<Items extends pito> = PitoArr<Items>
-    export const arr = PitoArr
+    export type Uobj<Key extends string, Items extends Record<string, PitoObj<Record<string, pito>>>> = PitoUnionObj<Key, Items>
+    export const Uobj = PitoUnionObj
+    export type Obj<Properties extends Record<string, pito>> = PitoObj<Properties>
+    export const Obj = PitoObj
+    export type Arr<Items extends pito> = PitoArr<Items>
+    export const Arr = PitoArr
     // Std-Types
-    export type date = PitoDate
-    export const date = PitoDate
-    export type datetime = PitoDatetime
-    export const datetime = PitoDatetime
-    export type duration = PitoDuration
-    export const duration = PitoDuration
-    export type time = PitoTime
-    export const time = PitoTime
-    export type url = PitoUrl
-    export const url = PitoUrl
+    export type Date = PitoDate
+    export const Date = PitoDate
+    export type Datetime = PitoDatetime
+    export const Datetime = PitoDatetime
+    export type Duration = PitoDuration
+    export const Duration = PitoDuration
+    export type Time = PitoTime
+    export const Time = PitoTime
+    export type Url = PitoUrl
+    export const Url = PitoUrl
     // custom type
     export const define = PitoDefineBuilder.create
 }

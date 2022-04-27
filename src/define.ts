@@ -39,33 +39,31 @@ import { pito } from "./pito.js"
 //     }
 // }
 
-export class PitoDefineBuilder<Raw = any, Type = any, Schema extends Record<string, any> = any, Option extends Record<string, any> = any, Extras extends Record<string, any> = {}>{
+export class PitoDefineBuilder<Schema extends Record<string, any> = any, UserOption extends Record<string, any> = {}, SchemaOption extends Record<string, any> = {}, Extras extends Record<string, any> = {}>{
     schema: Schema
-    wrapper: (raw: Type) => Raw
-    unwrapper: (data: Raw) => Type
-    private constructor(schema: Schema, wrapper: (raw: Type) => Raw, unwrapper: (data: Raw) => Type,) {
+    optionHandler: (option?: UserOption) => { option: SchemaOption, extra: Extras, }
+    private constructor(schema: Schema, optionHandler: (option?: UserOption) => { option: SchemaOption, extra: Extras, }) {
         this.schema = schema
-        this.wrapper = wrapper
-        this.unwrapper = unwrapper
+        this.optionHandler = optionHandler
     }
 
-    static create<Raw, Type, Schema extends Record<string, any>>(
+    static create<Schema extends Record<string, any>, UserOption extends Record<string, any>, SchemaOption extends Record<string, any>, Extras extends Record<string, any> = {}>(
         schema: Schema,
-        wrapper: (data: Type) => Raw,
-        unwrapper: (raw: Raw) => Type,
-    ): PitoDefineBuilder<Raw, Type, Schema, {}, {}> {
-        return new PitoDefineBuilder(schema, wrapper, unwrapper)
+        fn: (data?: UserOption) => { option: SchemaOption, extra: Extras, },
+    ): PitoDefineBuilder<Schema, UserOption, SchemaOption, Extras> {
+        return new PitoDefineBuilder(schema, fn)
     }
-    withOption<Option extends Record<string, any>>(): PitoDefineBuilder<Raw, Type, Schema, Option, Extras>;
-    withOption<PitoOption extends pito.obj<Record<string, pito>>>(option: PitoOption): PitoDefineBuilder<Raw, Type, Schema, pito.Type<PitoOption>, Extras>
-    withOption(option?: any): any { return this }
-    build(): (option?: Option) => pito<Raw, Type, Schema, Option, Extras> {
-        const { wrapper, unwrapper, schema } = this
-        // @ts-expect-error
-        return (option) => {
+    build<Raw, Type>(
+        wrapper: (this: pito<unknown, unknown, Schema, SchemaOption, Extras>, data: Type) => Raw,
+        unwrapper: (this: pito<unknown, unknown, Schema, SchemaOption, Extras>, raw: Raw) => Type,
+    ): (option?: UserOption) => pito<Raw, Type, Schema, SchemaOption, Extras> {
+        const { schema, optionHandler } = this
+        return (UserOption) => {
+            const { extra, option } = optionHandler(UserOption)
             return {
                 ...schema,
                 ...option,
+                ...extra,
                 $wrap: wrapper,
                 $unwrap: unwrapper,
                 $strict() {

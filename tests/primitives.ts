@@ -10,15 +10,15 @@ const patternConst = '^hello.*'
 
 // === === === === === === === === === === === === //
 // typio object
-const nul = pito.nul()
-const sLit = pito.lit(sLitConst)
-const nLit = pito.lit(nLitConst)
-const bLit = pito.lit(bLitConst)
-const boo = pito.bool()
-const num = pito.num()
-const str = pito.str()
-const int = pito.int()
-const reg = pito.regex(patternConst)
+const nul = pito.Nul()
+const sLit = pito.Lit(sLitConst)
+const nLit = pito.Lit(nLitConst)
+const bLit = pito.Lit(bLitConst)
+const boo = pito.Bool()
+const num = pito.Num()
+const str = pito.Str()
+const int = pito.Int()
+const reg = pito.Regex(patternConst)
 // === === === === === === === === === === === === //
 // test json schema
 tap.test('strict', async t => {
@@ -69,62 +69,62 @@ tap.test('strict', async t => {
 tap.test('strict with option', async t => {
     // string option
     t.same(
-        pito.strict(pito.str({ minLength: 1 })),
+        pito.strict(pito.Str({ minLength: 1 })),
         { type: 'string', minLength: 1 }
     )
     t.same(
-        pito.strict(pito.str({ maxLength: 2 })),
+        pito.strict(pito.Str({ maxLength: 2 })),
         { type: 'string', maxLength: 2 }
     )
     // regex option
     t.same(
-        pito.strict(pito.regex(patternConst, { minLength: 1 })),
+        pito.strict(pito.Regex(patternConst, { minLength: 1 })),
         { type: 'string', pattern: patternConst, minLength: 1 }
     )
     t.same(
-        pito.strict(pito.regex(patternConst, { maxLength: 2 })),
+        pito.strict(pito.Regex(patternConst, { maxLength: 2 })),
         { type: 'string', pattern: patternConst, maxLength: 2 }
     )
     // number option
     t.same(
-        pito.strict(pito.num({ multipleOf: 1 })),
+        pito.strict(pito.Num({ multipleOf: 1 })),
         { type: 'number', multipleOf: 1 }
     )
     t.same(
-        pito.strict(pito.num({ minimum: 2 })),
+        pito.strict(pito.Num({ minimum: 2 })),
         { type: 'number', minimum: 2 }
     )
     t.same(
-        pito.strict(pito.num({ exclusiveMinimum: 3 })),
+        pito.strict(pito.Num({ exclusiveMinimum: 3 })),
         { type: 'number', exclusiveMinimum: 3 }
     )
     t.same(
-        pito.strict(pito.num({ maximum: 4 })),
+        pito.strict(pito.Num({ maximum: 4 })),
         { type: 'number', maximum: 4 }
     )
     t.same(
-        pito.strict(pito.num({ exclusiveMaximum: 5 })),
+        pito.strict(pito.Num({ exclusiveMaximum: 5 })),
         { type: 'number', exclusiveMaximum: 5 }
     )
     // int option
     t.same(
-        pito.strict(pito.int({ multipleOf: 1 })),
+        pito.strict(pito.Int({ multipleOf: 1 })),
         { type: 'integer', multipleOf: 1 }
     )
     t.same(
-        pito.strict(pito.int({ minimum: 2 })),
+        pito.strict(pito.Int({ minimum: 2 })),
         { type: 'integer', minimum: 2 }
     )
     t.same(
-        pito.strict(pito.int({ exclusiveMinimum: 3 })),
+        pito.strict(pito.Int({ exclusiveMinimum: 3 })),
         { type: 'integer', exclusiveMinimum: 3 }
     )
     t.same(
-        pito.strict(pito.int({ maximum: 4 })),
+        pito.strict(pito.Int({ maximum: 4 })),
         { type: 'integer', maximum: 4 }
     )
     t.same(
-        pito.strict(pito.int({ exclusiveMaximum: 5 })),
+        pito.strict(pito.Int({ exclusiveMaximum: 5 })),
         { type: 'integer', exclusiveMaximum: 5 }
     )
 })

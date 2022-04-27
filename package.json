@@ -1,6 +1,6 @@
 {
   "name": "pito",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "typescript based type define library",
   "repository": {
     "type": "git",
@@ -31,7 +31,7 @@
     "build": "npm i & npm run build:cjs & npm run build:esm",
     "build:cjs": "rimraf ./cjs/**/*.{js,js.map,d.ts,d.ts.map,tsbuildinfo} && tsc -p ./cjs/tsconfig.json",
     "build:esm": "rimraf ./esm/**/*.{js,js.map,d.ts,d.ts.map,tsbuildinfo} && tsc -p ./esm/tsconfig.json",
-    "prepack": "npm run build && npm run test"
+    "prepack": "npm run build"
   },
   "keywords": [
     "typescript",

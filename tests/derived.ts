@@ -2,22 +2,22 @@ import { pito } from '../cjs/pito.js'
 import tap from 'tap'
 
 // === === === === === === === === === === === === //
-const numArr = pito.arr(pito.num())
-const dateArr = pito.arr(pito.date())
-const anyObj = pito.obj({
-    a: pito.bool(),
-    b: pito.date(),
+const numArr = pito.Arr(pito.Num())
+const dateArr = pito.Arr(pito.Date())
+const anyObj = pito.Obj({
+    a: pito.Bool(),
+    b: pito.Date(),
     c: numArr,
-    d: pito.opt(pito.date()),
+    d: pito.Opt(pito.Date()),
 })
-const uObj = pito.uobj(
+const uObj = pito.Uobj(
     'type',
     {
-        foo: pito.obj({
-            a: pito.num()
+        foo: pito.Obj({
+            a: pito.Num()
         }),
-        bar: pito.obj({
-            b: pito.date()
+        bar: pito.Obj({
+            b: pito.Date()
         }),
     })
 
