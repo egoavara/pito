@@ -9,7 +9,7 @@ import { PitoArr, PitoObj, PitoUnionObj } from './derived.js'
 import { PitoEnums } from './enums.js'
 import { PitoOpt } from './modifier.js'
 import { PitoAny, PitoBool, PitoInt, PitoLit, PitoNul, PitoNum, PitoRegex, PitoStr } from './primitives.js'
-import { PitoDate, PitoDatetime, PitoDuration, PitoTime, PitoUrl } from './std-types.js'
+import { PitoDate, PitoDatetime, PitoDuration, PitoTime, PitoUrl, PitoUUID } from './std-types.js'
 
 export type pito<Raw = any, Type = any, Schema extends Record<string, any> = any, Option extends Record<string, any> = any, Extras extends Record<string, any> = {}> = {
     $unwrap(this: pito<Raw, Type, Schema, Option, Extras>, raw: Raw): Type
@@ -79,6 +79,8 @@ export namespace pito {
     export const Time = PitoTime
     export type Url = PitoUrl
     export const Url = PitoUrl
+    export type UUID = PitoUUID
+    export const UUID = PitoUUID
     // custom type
     export const define = PitoDefineBuilder.create
 }

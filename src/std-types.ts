@@ -92,3 +92,22 @@ export const PitoUrl = PitoDefineBuilder
         (raw: string) => { return new URL(raw) },
     )
 export type PitoUrl = ReturnType<typeof PitoUrl>
+
+
+
+
+// Std-Types : UUID
+export type UUIDOption = {}
+export const PitoUUID = PitoDefineBuilder
+    .create(
+        { type: 'string', format: 'uuid' } as const,
+        (opt?: UUIDOption) => ({
+            option: {},
+            extra: {}
+        }),
+    )
+    .build(
+        (data: string) => data,
+        (raw: string) => raw,
+    )
+export type PitoUUID = ReturnType<typeof PitoUUID>
