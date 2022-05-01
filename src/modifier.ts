@@ -1,8 +1,6 @@
 import { pito } from "./pito.js"
 
 
-export type Modifiers =
-    & Partial<OptModifier>
 // Modifier : Option
 export type OptModifier = { $optional: true }
 export type PitoOpt<T extends pito> = T & OptModifier

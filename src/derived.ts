@@ -105,7 +105,7 @@ export const PitoUnionObj =
             return [k, copyed]
         }))
         return {
-            anyOf : Object.values(modItems),
+            anyOf: Object.values(modItems),
             // @ts-expect-error
             $wrap(raw) {
                 // @ts-expect-error
@@ -123,3 +123,31 @@ export const PitoUnionObj =
             },
         }
     }
+
+
+// Derived : Tuple
+export type TupleOption = {}
+export type TupleSchema<Items extends [...pito[]]> = { type: 'array', prefixItems: Items }
+export type PitoTuple<Items extends [...pito[]]> =
+    pito<pito.MapRaw<Items>, pito.MapType<Items>, TupleSchema<Items>, TupleOption>
+export const PitoTuple =
+    <Items extends [...pito[]]>
+        (items: Items, option?: TupleOption)
+        : PitoTuple<Items> => {
+        return {
+            type: 'array',
+            prefixItems: items,
+            $wrap(raw) {
+                return raw.map((v, i) => this.prefixItems[i].$wrap(v)) as any
+            },
+            $unwrap(raw) {
+                return raw.map((v, i) => this.prefixItems[i].$unwrap(v)) as any
+            },
+            $strict() {
+                return { type: 'array', prefixItems: items, ...(option ?? {}) }
+            },
+        }
+    }
+
+
+

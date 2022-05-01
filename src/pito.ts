@@ -5,11 +5,11 @@ export * from './primitives.js'
 export * from './std-types.js'
 
 import { PitoDefineBuilder } from './define.js'
-import { PitoArr, PitoObj, PitoUnionObj } from './derived.js'
+import { PitoArr, PitoObj, PitoTuple, PitoUnionObj } from './derived.js'
 import { PitoEnums } from './enums.js'
 import { PitoOpt } from './modifier.js'
 import { PitoAny, PitoBool, PitoInt, PitoLit, PitoNul, PitoNum, PitoRegex, PitoStr } from './primitives.js'
-import { PitoDate, PitoDatetime, PitoDuration, PitoTime, PitoUrl } from './std-types.js'
+import { PitoDate, PitoDatetime, PitoDuration, PitoEmail, PitoHostname, PitoTime, PitoUrl, PitoUUID } from './std-types.js'
 
 export type pito<Raw = any, Type = any, Schema extends Record<string, any> = any, Option extends Record<string, any> = any, Extras extends Record<string, any> = {}> = {
     $unwrap(this: pito<Raw, Type, Schema, Option, Extras>, raw: Raw): Type
@@ -26,6 +26,12 @@ export namespace pito {
     // 
     export type Raw<T extends pito> = PitoRaw<T>
     export type Type<T extends pito> = PitoType<T>
+    export type MapRaw<T extends [...pito[]]> = {
+        [_ in keyof T]: T[_] extends pito ? pito.Raw<T[_]> : never
+    }
+    export type MapType<T extends [...pito[]]> = {
+        [_ in keyof T]: T[_] extends pito ? pito.Type<T[_]> : never
+    }
     export type Strict<T extends pito> = ReturnType<T['$strict']>
     // utils
     export function wrap<T extends pito>(t: T, data: Type<T>): Raw<T> {
@@ -68,6 +74,8 @@ export namespace pito {
     export const Obj = PitoObj
     export type Arr<Items extends pito> = PitoArr<Items>
     export const Arr = PitoArr
+    export type Tuple<Items extends [...pito[]]> = PitoTuple<Items>
+    export const Tuple = PitoTuple
     // Std-Types
     export type Date = PitoDate
     export const Date = PitoDate
@@ -79,6 +87,12 @@ export namespace pito {
     export const Time = PitoTime
     export type Url = PitoUrl
     export const Url = PitoUrl
+    export type UUID = PitoUUID
+    export const UUID = PitoUUID
+    export type Email = PitoEmail
+    export const Email = PitoEmail
+    export type Hostname = PitoHostname
+    export const Hostname = PitoHostname
     // custom type
     export const define = PitoDefineBuilder.create
 }

@@ -2,7 +2,7 @@ import { pito } from "./pito.js"
 
 // Primitive : Any
 export type AnyOption = {}
-export type AnySchema = { }
+export type AnySchema = {}
 export type PitoAny = pito<any, any, AnySchema, AnyOption>
 export const PitoAny = (): PitoAny => {
     return {
@@ -169,7 +169,7 @@ export type BoolSchema = { type: 'boolean' }
 export type PitoBool = pito<boolean, boolean, BoolSchema, BoolOption>
 export const PitoBool = (): PitoBool => {
     return {
-        type : "boolean",
+        type: "boolean",
         $wrap(raw) { return raw },
         $unwrap(raw) { return raw },
         $strict() {
