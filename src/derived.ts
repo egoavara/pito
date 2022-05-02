@@ -3,12 +3,12 @@ import { pito } from "./pito.js"
 import { PitoLit } from "./primitives.js"
 
 // Utils
-type Required<Properties extends Record<string, pito>> = { [k in keyof Properties]: Properties[k] extends OptModifier ? never : k }[keyof Properties]
-type Optionals<Properties extends Record<string, pito>> = { [k in keyof Properties]: Properties[k] extends OptModifier ? k : never }[keyof Properties]
-type TypeFromProperties<Properties extends Record<string, pito>> =
+export type Required<Properties extends Record<string, pito>> = { [k in keyof Properties]: Properties[k] extends OptModifier ? never : k }[keyof Properties]
+export type Optionals<Properties extends Record<string, pito>> = { [k in keyof Properties]: Properties[k] extends OptModifier ? k : never }[keyof Properties]
+export type TypeFromProperties<Properties extends Record<string, pito>> =
     & { [K in Required<Properties>]: pito.Type<Properties[K]> }
     & { [K in Optionals<Properties>]?: pito.Type<Properties[K]> }
-type RawFromProperties<Properties extends Record<string, pito>> =
+export type RawFromProperties<Properties extends Record<string, pito>> =
     & { [K in Required<Properties>]: pito.Raw<Properties[K]> }
     & { [K in Optionals<Properties>]?: pito.Raw<Properties[K]> }
 
@@ -75,10 +75,10 @@ export const PitoArr = <Items extends pito>(items: Items, option?: ArrOption): P
 
 
 // Derived : Union
-type ParsePitoUnionObj<Key extends string, Items extends Record<string, pito.Obj<Record<string, pito>>>> = {
+export type ParsePitoUnionObj<Key extends string, Items extends Record<string | number, pito.Obj<Record<string, pito>>>> = {
     [ItemKey in keyof Items]: Items[ItemKey] extends pito.Obj<infer A>
     ? (
-        ItemKey extends string
+        ItemKey extends string | number
         ? pito.Obj<A & Record<Key, pito.Lit<ItemKey>>>
         : never
     )
@@ -86,12 +86,21 @@ type ParsePitoUnionObj<Key extends string, Items extends Record<string, pito.Obj
 }[keyof Items]
 
 export type UnionObjOption = {}
-export type UnionObjSchema<Key extends string, Items extends Record<string, PitoObj<Record<string, pito>>>> = { anyOf: any[], }
-export type PitoUnionObj<Key extends string, Items extends Record<string, PitoObj<Record<string, pito>>>> = pito<pito.Raw<ParsePitoUnionObj<Key, Items>>, pito.Type<ParsePitoUnionObj<Key, Items>>, UnionObjSchema<Key, Items>, UnionObjOption>
+export type UnionObjSchema<Key extends string, Items extends Record<string | number, PitoObj<Record<string, pito>>>> = { anyOf: any[], }
+export type PitoUnionObj<Key extends string, Items extends Record<string | number, PitoObj<Record<string, pito>>>> =
+    pito<
+        pito.Raw<ParsePitoUnionObj<Key, Items>>, 
+        pito.Type<ParsePitoUnionObj<Key, Items>>, 
+        UnionObjSchema<Key, Items>, 
+        UnionObjOption
+    >
+    // UnionObjSchema<Key, Items>
+    // UnionObjOption
+    
 export const PitoUnionObj =
     <
         Key extends string,
-        Items extends Record<string, PitoObj<Record<string, pito>>>
+        Items extends Record<string | number, PitoObj<Record<string, pito>>>
     >
         (key: Key, items: Items): PitoUnionObj<Key, Items> => {
         const modItems = Object.fromEntries(Object.entries(items).map(([k, v]) => {
@@ -105,7 +114,7 @@ export const PitoUnionObj =
             return [k, copyed]
         }))
         return {
-            anyOf : Object.values(modItems),
+            anyOf: Object.values(modItems),
             // @ts-expect-error
             $wrap(raw) {
                 // @ts-expect-error
@@ -113,7 +122,7 @@ export const PitoUnionObj =
             },
             // @ts-expect-error
             $unwrap(raw) {
-                // @ts-expect-error
+            // @ts-expect-error
                 return modItems[raw[key]].$unwrap(raw)
             },
             $strict() {

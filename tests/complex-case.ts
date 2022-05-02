@@ -1,7 +1,8 @@
-// import { pito } from '../cjs/pito.js'
+import { pito } from '../cjs/pito.js'
 // import Currency, { Options } from 'currency.js'
 // import tap from 'tap'
 // import currency from 'currency.js'
+//관리비 타입(체크박스 = 01:협의가능, 02:관리비없음)
 
 // const krw = pito
 //     .define(
@@ -10,7 +11,7 @@
 //         (raw: string) => currency(raw),
 //     )
 //     .build()
-// // 
+// //
 // // === === === === === === === === === === === === //
 // const Vec2 = pito.obj({
 //     x: pito.num(),

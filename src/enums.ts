@@ -1,6 +1,6 @@
 import { pito } from "./pito.js"
 
-type ParseEnums<Enums extends Record<string, string | number>> = {
+export type ParseEnums<Enums extends Record<string, string | number>> = {
     [K in keyof Enums]:
     Enums[K] extends string
     ? Enums[K]
@@ -9,7 +9,7 @@ type ParseEnums<Enums extends Record<string, string | number>> = {
     : never
 }[keyof Enums]
 
-type ParseValues<Enums extends Record<string, string | number>> = Enums[keyof Enums]
+export type ParseValues<Enums extends Record<string, string | number>> = Enums[keyof Enums]
 
 // Enums
 

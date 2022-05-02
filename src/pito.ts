@@ -62,7 +62,7 @@ export namespace pito {
     export type Enums<E extends Record<string, string | number>> = PitoEnums<E>
     export const Enums = PitoEnums
     // Derived
-    export type Uobj<Key extends string, Items extends Record<string, PitoObj<Record<string, pito>>>> = PitoUnionObj<Key, Items>
+    export type Uobj<Key extends string, Items extends Record<string | number, PitoObj<Record<string, pito>>>> = PitoUnionObj<Key, Items>
     export const Uobj = PitoUnionObj
     export type Obj<Properties extends Record<string, pito>> = PitoObj<Properties>
     export const Obj = PitoObj
