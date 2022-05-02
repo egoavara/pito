@@ -2,11 +2,11 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "tsc-watch",
+            "label": "watch",
             "dependsOrder": "parallel",
             "dependsOn": [
-                "tsc-watch:cjs",
-                "tsc-watch:esm",
+                "watch:cjs",
+                "watch:esm",
             ],
             "group": {
                 "kind": "build",
@@ -14,7 +14,7 @@
             }
         },
         {
-            "label": "tsc-watch:cjs",
+            "label": "watch:cjs",
             "type": "typescript",
             "tsconfig": "./cjs/tsconfig.json",
             "option": "watch",
@@ -24,7 +24,7 @@
             "group": "build"
         },
         {
-            "label": "tsc-watch:esm",
+            "label": "watch:esm",
             "type": "typescript",
             "tsconfig": "esm/tsconfig.json",
             "option": "watch",

@@ -94,8 +94,6 @@ export const PitoUrl = PitoDefineBuilder
 export type PitoUrl = ReturnType<typeof PitoUrl>
 
 
-
-
 // Std-Types : UUID
 export type UUIDOption = {}
 export const PitoUUID = PitoDefineBuilder
@@ -107,7 +105,40 @@ export const PitoUUID = PitoDefineBuilder
         }),
     )
     .build(
-        (data: string) => data,
-        (raw: string) => raw,
+        (raw: string) => { return raw },
+        (raw: string) => { return raw },
     )
 export type PitoUUID = ReturnType<typeof PitoUUID>
+
+// Std-Types : Email
+export type EmailOption = {}
+export const PitoEmail = PitoDefineBuilder
+    .create(
+        { type: 'string', format: 'email' } as const,
+        (opt?: EmailOption) => ({
+            option: {},
+            extra: {}
+        }),
+    )
+    .build(
+        (raw: string) => { return raw },
+        (raw: string) => { return raw },
+    )
+export type PitoEmail = ReturnType<typeof PitoEmail>
+
+
+// Std-Types : hostname
+export type HostnameOption = {}
+export const PitoHostname = PitoDefineBuilder
+    .create(
+        { type: 'string', format: 'hostname' } as const,
+        (opt?: EmailOption) => ({
+            option: {},
+            extra: {}
+        }),
+    )
+    .build(
+        (raw: string) => { return raw },
+        (raw: string) => { return raw },
+    )
+export type PitoHostname = ReturnType<typeof PitoHostname>
