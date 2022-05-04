@@ -5,7 +5,7 @@ export * from './primitives.js'
 export * from './std-types.js'
 
 import { PitoDefineBuilder } from './define.js'
-import { PitoArr, PitoObj, PitoTuple, PitoUnionObj } from './derived.js'
+import { PitoArr, PitoObj, PitoRecord, PitoTuple, PitoUnionObj } from './derived.js'
 import { PitoEnums } from './enums.js'
 import { PitoOpt } from './modifier.js'
 import { PitoAny, PitoBool, PitoInt, PitoLit, PitoNul, PitoNum, PitoRegex, PitoStr } from './primitives.js'
@@ -21,7 +21,7 @@ export type PitoRaw<T> = T extends pito<infer Raw, any, any, any> ? Raw : never
 export type PitoType<T> = T extends pito<any, infer Type, any, any> ? Type : never
 export type PitoSchema<T> = T extends pito<any, any, infer Schema, any> ? Schema : never
 export type PitoOption<T> = T extends pito<any, any, any, infer Option> ? Option : never
-
+export type TSRecord<K extends keyof any, V> = Record<K, V>
 export namespace pito {
     // 
     export type Raw<T extends pito> = PitoRaw<T>
@@ -65,17 +65,19 @@ export namespace pito {
     export type Opt<T extends pito> = PitoOpt<T>
     export const Opt = PitoOpt
     // Enum
-    export type Enums<E extends Record<string, string | number>> = PitoEnums<E>
+    export type Enums<E extends TSRecord<string, string | number>> = PitoEnums<E>
     export const Enums = PitoEnums
     // Derived
-    export type Uobj<Key extends string, Items extends Record<string | number, PitoObj<Record<string, pito>>>> = PitoUnionObj<Key, Items>
+    export type Uobj<Key extends string, Items extends TSRecord<string | number, PitoObj<TSRecord<string, pito>>>> = PitoUnionObj<Key, Items>
     export const Uobj = PitoUnionObj
-    export type Obj<Properties extends Record<string, pito>> = PitoObj<Properties>
+    export type Obj<Properties extends TSRecord<string, pito>> = PitoObj<Properties>
     export const Obj = PitoObj
     export type Arr<Items extends pito> = PitoArr<Items>
     export const Arr = PitoArr
     export type Tuple<Items extends [...pito[]]> = PitoTuple<Items>
     export const Tuple = PitoTuple
+    export type Record<Value extends pito> = PitoRecord<Value>
+    export const Record = PitoRecord
     // Std-Types
     export type Date = PitoDate
     export const Date = PitoDate

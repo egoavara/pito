@@ -89,14 +89,14 @@ export type UnionObjOption = {}
 export type UnionObjSchema<Key extends string, Items extends Record<string | number, PitoObj<Record<string, pito>>>> = { anyOf: any[], }
 export type PitoUnionObj<Key extends string, Items extends Record<string | number, PitoObj<Record<string, pito>>>> =
     pito<
-        pito.Raw<ParsePitoUnionObj<Key, Items>>, 
-        pito.Type<ParsePitoUnionObj<Key, Items>>, 
-        UnionObjSchema<Key, Items>, 
+        pito.Raw<ParsePitoUnionObj<Key, Items>>,
+        pito.Type<ParsePitoUnionObj<Key, Items>>,
+        UnionObjSchema<Key, Items>,
         UnionObjOption
     >
-    // UnionObjSchema<Key, Items>
-    // UnionObjOption
-    
+// UnionObjSchema<Key, Items>
+// UnionObjOption
+
 export const PitoUnionObj =
     <
         Key extends string,
@@ -122,7 +122,7 @@ export const PitoUnionObj =
             },
             // @ts-expect-error
             $unwrap(raw) {
-            // @ts-expect-error
+                // @ts-expect-error
                 return modItems[raw[key]].$unwrap(raw)
             },
             $strict() {
@@ -157,6 +157,40 @@ export const PitoTuple =
             },
         }
     }
+
+
+
+
+// Derived : Record
+export type RecordOption = {}
+export type RecordSchema<Value extends pito> = { type: 'object', additionalProperties: pito.Strict<Value> }
+export type PitoRecord<Value extends pito> = pito<Record<string, pito.Raw<Value>>, Record<string, pito.Type<Value>>, RecordSchema<Value>, RecordOption>
+
+export const PitoRecord = <Items extends pito>
+    (items: Items, option?: RecordOption)
+    : PitoRecord<Items> => {
+    return {
+        type: 'object',
+        additionalProperties: pito.strict(items) as any,
+        $wrap(raw) {
+            return Object.fromEntries(
+                Object
+                    .entries(raw)
+                    .map(([k, v]) => [k, pito.wrap(items, v)])
+            )
+        },
+        $unwrap(raw) {
+            return Object.fromEntries(
+                Object
+                    .entries(raw)
+                    .map(([k, v]) => [k, pito.unwrap(items, v)])
+            )
+        },
+        $strict() {
+            return { type: 'object', additionalProperties: pito.strict(items) as any, ...(option ?? {}) }
+        },
+    }
+}
 
 
 
