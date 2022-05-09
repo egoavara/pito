@@ -1,6 +1,6 @@
 {
   "name": "pito",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "typescript based type define library",
   "repository": {
     "type": "git",

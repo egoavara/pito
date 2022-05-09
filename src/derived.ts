@@ -29,7 +29,16 @@ export const PitoObj = <Properties extends Record<string, pito>>(properties: Pro
         $wrap(raw) {
             for (const k in raw) {
                 // @ts-expect-error
-                raw[k] = this.properties[k].$wrap(raw[k])
+                if (this.required.indexOf(k) !== -1) {
+                    // @ts-expect-error
+                    raw[k] = this.properties[k].$wrap(raw[k])
+                } else {
+                    // @ts-expect-error
+                    if (raw[k] !== undefined) {
+                        // @ts-expect-error
+                        raw[k] = this.properties[k].$wrap(raw[k])
+                    }
+                }
             }
             return raw
         },
