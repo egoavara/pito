@@ -5,11 +5,12 @@ export * from './primitives.js'
 export * from './std-types.js'
 
 import { PitoDefineBuilder } from './define.js'
-import { PitoArr, PitoObj, PitoRecord, PitoTuple, PitoUnionObj } from './derived.js'
+import { PitoArr, PitoObj, PitoRecord, PitoTuple } from './derived.js'
 import { PitoEnums } from './enums.js'
 import { PitoOpt } from './modifier.js'
 import { PitoAny, PitoBool, PitoInt, PitoLit, PitoNul, PitoNum, PitoRegex, PitoStr } from './primitives.js'
 import { PitoDate, PitoDatetime, PitoDuration, PitoEmail, PitoHostname, PitoTime, PitoUrl, PitoUUID } from './std-types.js'
+import { PitoUnionObj } from "./union.js"
 
 export type pito<Raw = any, Type = any, Schema extends Record<string, any> = any, Option extends Record<string, any> = any, Extras extends Record<string, any> = {}> = {
     $unwrap(this: pito<Raw, Type, Schema, Option, Extras>, raw: Raw): Type
@@ -67,9 +68,9 @@ export namespace pito {
     // Enum
     export type Enums<E extends TSRecord<string, string | number>> = PitoEnums<E>
     export const Enums = PitoEnums
-    // Derived
-    export type Uobj<Key extends string, Items extends TSRecord<string | number, PitoObj<TSRecord<string, pito>>>> = PitoUnionObj<Key, Items>
+    // Union
     export const Uobj = PitoUnionObj
+    // Derived
     export type Obj<Properties extends TSRecord<string, pito>> = PitoObj<Properties>
     export const Obj = PitoObj
     export type Arr<Items extends pito> = PitoArr<Items>

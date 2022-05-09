@@ -74,66 +74,6 @@ export const PitoArr = <Items extends pito>(items: Items, option?: ArrOption): P
 }
 
 
-// Derived : Union
-export type ParsePitoUnionObj<Key extends string, Items extends Record<string | number, pito.Obj<Record<string, pito>>>> = {
-    [ItemKey in keyof Items]: Items[ItemKey] extends pito.Obj<infer A>
-    ? (
-        ItemKey extends string | number
-        ? pito.Obj<A & Record<Key, pito.Lit<ItemKey>>>
-        : never
-    )
-    : never
-}[keyof Items]
-
-export type UnionObjOption = {}
-export type UnionObjSchema<Key extends string, Items extends Record<string | number, PitoObj<Record<string, pito>>>> = { anyOf: any[], }
-export type PitoUnionObj<Key extends string, Items extends Record<string | number, PitoObj<Record<string, pito>>>> =
-    pito<
-        pito.Raw<ParsePitoUnionObj<Key, Items>>,
-        pito.Type<ParsePitoUnionObj<Key, Items>>,
-        UnionObjSchema<Key, Items>,
-        UnionObjOption
-    >
-// UnionObjSchema<Key, Items>
-// UnionObjOption
-
-export const PitoUnionObj =
-    <
-        Key extends string,
-        Items extends Record<string | number, PitoObj<Record<string, pito>>>
-    >
-        (key: Key, items: Items): PitoUnionObj<Key, Items> => {
-        const modItems = Object.fromEntries(Object.entries(items).map(([k, v]) => {
-            const strict = v as PitoObj<Record<string, pito>>
-            const props: Record<string, pito> = {}
-            for (const k in strict.properties) {
-                props[k] = strict.properties[k]
-            }
-            props[key] = PitoLit(k)
-            const copyed = PitoObj(props)
-            return [k, copyed]
-        }))
-        return {
-            anyOf: Object.values(modItems),
-            // @ts-expect-error
-            $wrap(raw) {
-                // @ts-expect-error
-                return modItems[raw[key]].$wrap(raw)
-            },
-            // @ts-expect-error
-            $unwrap(raw) {
-                // @ts-expect-error
-                return modItems[raw[key]].$unwrap(raw)
-            },
-            $strict() {
-                return {
-                    anyOf: this.anyOf.map(v => v.$strict())
-                }
-            },
-        }
-    }
-
-
 // Derived : Tuple
 export type TupleOption = {}
 export type TupleSchema<Items extends [...pito[]]> = { type: 'array', prefixItems: Items }
