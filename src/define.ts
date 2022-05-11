@@ -2,18 +2,29 @@ import { pito } from "./pito.js"
 
 
 export class PitoDefineBuilder<Schema extends Record<string, any>, OptionHandler extends (data: any) => { option: any, extra: any }>{
+    name : string
     schema: Schema
     optionHandler: OptionHandler
-    private constructor(schema: Schema, optionHandler: OptionHandler) {
+    assignableHandler: (data: any) => boolean
+    constructor(name : string, schema: Schema, optionHandler: OptionHandler) {
+        this.name = name
         this.schema = schema
         this.optionHandler = optionHandler
+        this.assignableHandler = () => {
+            throw new Error(`not allow union define ${this.name}`)
+        }
     }
 
     static create<Schema extends Record<string, any>, OptionHandler extends (data: any) => { option: any, extra: any }>(
+        name : string,
         schema: Schema,
         fn: OptionHandler,
     ): PitoDefineBuilder<Schema, OptionHandler> {
-        return new PitoDefineBuilder(schema, fn)
+        return new PitoDefineBuilder(name, schema, fn)
+    }
+    assignable(assignableHandler: (data: any) => boolean): PitoDefineBuilder<Schema, OptionHandler> {
+        this.assignableHandler = assignableHandler
+        return this
     }
     build<Raw, Type>(
         wrapper: (this: pito<unknown, unknown, Schema, ReturnType<OptionHandler>['option'], ReturnType<OptionHandler>['extra']>, data: Type) => Raw,
@@ -34,6 +45,10 @@ export class PitoDefineBuilder<Schema extends Record<string, any>, OptionHandler
                         ...option,
                     }
                 },
+                $bypass() {
+                    return false
+                },
+                $isAssignableRaw : this.assignableHandler
             }
         }
     }

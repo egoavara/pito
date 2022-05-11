@@ -8,6 +8,7 @@ export type MediaTypeOption = {
 }
 export const PitoMediaType = PitoDefineBuilder
     .create(
+        'media-type',
         { type: 'string' } as const,
         (opt: MediaTypeOption) => {
             if (opt === undefined) {

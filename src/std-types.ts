@@ -5,6 +5,7 @@ import { Duration, Time } from "./pito.js"
 export type DateOption = {}
 export const PitoDate = PitoDefineBuilder
     .create(
+        'date',
         { type: 'string', format: 'date' },
         (opt?: DateOption) => ({
             option: {},
@@ -21,6 +22,7 @@ export type PitoDate = ReturnType<typeof PitoDate>
 export type DatetimeOption = {}
 export const PitoDatetime = PitoDefineBuilder
     .create(
+        'date-time',
         { type: 'string', format: 'date-time' } as const,
         (opt?: DatetimeOption) => ({
             option: {},
@@ -38,6 +40,7 @@ export type DurationOption = {}
 
 export const PitoDuration = PitoDefineBuilder
     .create(
+        'duration',
         { type: 'string', format: 'duration' } as const,
         (opt?: DurationOption) => ({
             option: {},
@@ -59,6 +62,7 @@ export type TimeOption = {}
 
 export const PitoTime = PitoDefineBuilder
     .create(
+        'time',
         { type: 'string', format: 'time' } as const,
         (opt?: TimeOption) => ({
             option: {},
@@ -81,6 +85,7 @@ export type PitoTime = ReturnType<typeof PitoTime>
 export type UrlOption = {}
 export const PitoUrl = PitoDefineBuilder
     .create(
+        'url',
         { type: 'string', format: 'url' } as const,
         (opt?: UrlOption) => ({
             option: {},
@@ -98,6 +103,7 @@ export type PitoUrl = ReturnType<typeof PitoUrl>
 export type UUIDOption = {}
 export const PitoUUID = PitoDefineBuilder
     .create(
+        'uuid',
         { type: 'string', format: 'uuid' } as const,
         (opt?: UUIDOption) => ({
             option: {},
@@ -114,6 +120,7 @@ export type PitoUUID = ReturnType<typeof PitoUUID>
 export type EmailOption = {}
 export const PitoEmail = PitoDefineBuilder
     .create(
+        'email',
         { type: 'string', format: 'email' } as const,
         (opt?: EmailOption) => ({
             option: {},
@@ -131,6 +138,7 @@ export type PitoEmail = ReturnType<typeof PitoEmail>
 export type HostnameOption = {}
 export const PitoHostname = PitoDefineBuilder
     .create(
+        'hostname',
         { type: 'string', format: 'hostname' } as const,
         (opt?: EmailOption) => ({
             option: {},

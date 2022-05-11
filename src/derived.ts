@@ -1,72 +1,4 @@
-import { OptModifier } from "./modifier.js"
 import { pito } from "./pito.js"
-import { PitoLit } from "./primitives.js"
-
-// Utils
-export type Required<Properties extends Record<string, pito>> = { [k in keyof Properties]: Properties[k] extends OptModifier ? never : k }[keyof Properties]
-export type Optionals<Properties extends Record<string, pito>> = { [k in keyof Properties]: Properties[k] extends OptModifier ? k : never }[keyof Properties]
-export type TypeFromProperties<Properties extends Record<string, pito>> =
-    & { [K in Required<Properties>]: pito.Type<Properties[K]> }
-    & { [K in Optionals<Properties>]?: pito.Type<Properties[K]> }
-export type RawFromProperties<Properties extends Record<string, pito>> =
-    & { [K in Required<Properties>]: pito.Raw<Properties[K]> }
-    & { [K in Optionals<Properties>]?: pito.Raw<Properties[K]> }
-
-// Derived : Obj
-export type ObjOption = {
-
-}
-export type ObjSchema<Properties extends Record<string, pito>> = { type: 'object', properties: Properties, required: (Required<Properties>)[], additionalProperties: false }
-
-export type PitoObj<Properties extends Record<string, pito>> = pito<RawFromProperties<Properties>, TypeFromProperties<Properties>, ObjSchema<Properties>, ObjOption>
-export const PitoObj = <Properties extends Record<string, pito>>(properties: Properties): PitoObj<Properties> => {
-    return {
-        type: 'object',
-        properties,
-        additionalProperties: false,
-        required: Object.keys(properties).filter(v => (properties[v] as any)['$optional'] !== true) as any,
-        // @ts-expect-error
-        $wrap(raw) {
-            for (const k in raw) {
-                // @ts-expect-error
-                if (this.required.indexOf(k) !== -1) {
-                    // @ts-expect-error
-                    raw[k] = this.properties[k].$wrap(raw[k])
-                } else {
-                    // @ts-expect-error
-                    if (raw[k] !== undefined) {
-                        // @ts-expect-error
-                        raw[k] = this.properties[k].$wrap(raw[k])
-                    }
-                }
-            }
-            return raw
-        },
-        // @ts-expect-error
-        $unwrap(raw) {
-            for (const k in raw) {
-                // @ts-expect-error
-                raw[k] = this.properties[k].$unwrap(raw[k])
-            }
-            return raw
-        },
-        // @ts-expect-error
-        $strict() {
-            return {
-                type: 'object',
-                properties: Object.fromEntries(
-                    Object.entries(this.properties).map(([k, v]) => {
-                        return [
-                            k, v.$strict()
-                        ]
-                    })
-                ),
-                required: new Array(...this.required),
-                additionalProperties: false,
-            }
-        },
-    }
-}
 
 // Derived : Arr
 export type ArrOption = {}
@@ -79,6 +11,10 @@ export const PitoArr = <Items extends pito>(items: Items, option?: ArrOption): P
         $wrap(raw) { return raw.map(v => this.items.$wrap(v)) },
         $unwrap(raw) { return raw.map(v => this.items.$unwrap(v)) },
         $strict() { return { type: 'array', items: this.items.$strict() } },
+        $bypass() { return true },
+        $isAssignableRaw(data) {
+            return Array.isArray(data)
+        },
     }
 }
 
@@ -104,6 +40,12 @@ export const PitoTuple =
             $strict() {
                 return { type: 'array', prefixItems: items, ...(option ?? {}) }
             },
+            $bypass() {
+                return this.prefixItems.findIndex(v => !v.$bypass()) === -1
+            },
+            $isAssignableRaw(data) {
+                return Array.isArray(data) && data.length === items.length
+            },
         }
     }
 
@@ -112,7 +54,7 @@ export const PitoTuple =
 
 // Derived : Record
 export type RecordOption = {}
-export type RecordSchema<Value extends pito> = { type: 'object', additionalProperties: pito.Strict<Value> }
+export type RecordSchema<Value extends pito> = { type: 'object', additionalProperties: Value }
 export type PitoRecord<Value extends pito> = pito<Record<string, pito.Raw<Value>>, Record<string, pito.Type<Value>>, RecordSchema<Value>, RecordOption>
 
 export const PitoRecord = <Items extends pito>
@@ -120,7 +62,7 @@ export const PitoRecord = <Items extends pito>
     : PitoRecord<Items> => {
     return {
         type: 'object',
-        additionalProperties: pito.strict(items) as any,
+        additionalProperties: items,
         $wrap(raw) {
             return Object.fromEntries(
                 Object
@@ -137,6 +79,12 @@ export const PitoRecord = <Items extends pito>
         },
         $strict() {
             return { type: 'object', additionalProperties: pito.strict(items) as any, ...(option ?? {}) }
+        },
+        $bypass() {
+            return this.additionalProperties.$bypass()
+        },
+        $isAssignableRaw(data) {
+            return typeof data === 'object'
         },
     }
 }

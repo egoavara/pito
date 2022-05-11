@@ -71,8 +71,90 @@ export const PitoUnionObj = <Key extends string>(key: Key): PitoUnionObjBuilder<
                         anyOf: this.anyOf.map(v => v.$strict())
                     }
                 },
+                $bypass() {
+                    return this.anyOf.findIndex(v => !v.$bypass()) === -1
+                },
+                $isAssignableRaw(data) {
+                    if (typeof data === 'object' && key in data) {
+                        return modItemsMap.get(data[key])?.$isAssignableRaw(data)
+                    }
+                    return false
+                }
             }
         },
 
+    }
+}
+
+
+
+
+export type UnionLitSchema = { enums: (string | number)[] }
+
+export type PitoUnionLit<Lits extends string | number> =
+    pito<
+        Lits,
+        Lits,
+        UnionLitSchema,
+        {}
+    >
+export const PitoUnionLit = <Lits extends [...(string | number)[]]>(...lits: Lits): PitoUnionLit<Lits[number]> => {
+    return {
+        enums: lits,
+        $strict() {
+            return { enums: lits }
+        },
+        $wrap(data) {
+            return data
+        },
+        $unwrap(raw) {
+            return raw
+        },
+        $bypass() {
+            return true
+        },
+        $isAssignableRaw(data) {
+            return lits.indexOf(data) !== -1
+        }
+    }
+}
+
+
+export type UnionSchema = { anyOf: any[], }
+export type PitoUnion<Elems extends [...pito[]]> =
+    pito<
+        pito.Raw<Elems[number]>,
+        pito.Type<Elems[number]>,
+        UnionSchema,
+        {}
+    >
+export const PitoUnion = <Elems extends [pito, ...pito[]]>(elems: Elems): PitoUnion<Elems> => {
+    return {
+        anyOf: elems,
+        $wrap(data) {
+            const result = elems.find(v => v.$isAssignableRaw(data))?.$wrap(data)
+            if (result === undefined) {
+                throw new Error(`union wrap unassignable`)
+            }
+            return result
+        },
+        $unwrap(raw) {
+            const result = elems.find(v => v.$isAssignableRaw(raw))?.$unwrap(raw)
+            if (result === undefined) {
+                throw new Error(`union unwrap unassignable`)
+            }
+            return result
+        },
+        $bypass() {
+            return elems.findIndex(v => !v.$bypass()) !== -1
+        },
+        $strict() {
+            return {
+                anyOf: elems.map(v => pito.strict(v))
+            }
+        },
+        $isAssignableRaw(data) {
+            return elems.findIndex(v => v.$isAssignableRaw(data)) !== -1
+        }
     }
 }

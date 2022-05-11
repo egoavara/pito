@@ -9,6 +9,8 @@ export const PitoAny = (): PitoAny => {
         $wrap(raw) { return raw },
         $unwrap(raw) { return raw },
         $strict() { return {} },
+        $bypass() { return true },
+        $isAssignableRaw(data) { return true }
     }
 }
 // Primitive : Null
@@ -21,19 +23,23 @@ export const PitoNul = (): PitoNul => {
         $wrap(raw) { return raw },
         $unwrap(raw) { return raw },
         $strict() { return { type: 'null' } },
+        $bypass() { return true },
+        $isAssignableRaw(data) { return data === null }
     }
 }
 
 // Primitive : Literal
 export type LitOption = {}
-export type LitSchema<T extends string | number | boolean> = { const: T }
-export type PitoLit<T extends string | number | boolean> = pito<T, T, LitSchema<T>, LitOption>
-export const PitoLit = <T extends string | number | boolean>(l: T): PitoLit<T> => {
+export type LitSchema<T extends string | number> = { const: T }
+export type PitoLit<T extends string | number> = pito<T, T, LitSchema<T>, LitOption>
+export const PitoLit = <T extends string | number>(l: T): PitoLit<T> => {
     return {
         const: l,
         $wrap(raw) { return raw },
         $unwrap(raw) { return raw },
         $strict() { return { const: this.const } },
+        $bypass() { return true },
+        $isAssignableRaw(data) { return data === l }
     }
 }
 // Primitive : String
@@ -57,6 +63,8 @@ export const PitoStr = (option?: StrOption): PitoStr => {
             }
             return strict
         },
+        $bypass() { return true },
+        $isAssignableRaw(data) { return typeof data === 'string' },
         ...(option ?? {})
     }
 }
@@ -78,6 +86,8 @@ export const PitoRegex = <Pattern extends string>(pattern: Pattern, option?: Reg
                 ...option
             }
         },
+        $bypass() { return true },
+        $isAssignableRaw(data) { return typeof data === 'string' },
         ...(option ?? {})
     }
 }
@@ -119,6 +129,8 @@ export const PitoNum = (option?: NumOption): PitoNum => {
             }
             return strict
         },
+        $bypass() { return true },
+        $isAssignableRaw(data) { return typeof data === 'number' },
         ...(option ?? {})
     }
 }
@@ -159,6 +171,8 @@ export const PitoInt = (option?: IntOption): PitoInt => {
             }
             return strict
         },
+        $bypass() { return true },
+        $isAssignableRaw(data) { return typeof data === 'number' },
         ...(option ?? {})
     }
 }
@@ -175,5 +189,7 @@ export const PitoBool = (): PitoBool => {
         $strict() {
             return { type: 'boolean' }
         },
+        $bypass() { return true },
+        $isAssignableRaw(data) { return typeof data === 'boolean' },
     }
 }

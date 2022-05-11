@@ -5,17 +5,21 @@ export * from './primitives.js'
 export * from './std-types.js'
 
 import { PitoDefineBuilder } from './define.js'
-import { PitoArr, PitoObj, PitoRecord, PitoTuple } from './derived.js'
+import { PitoObj } from "./derived-obj.js"
+import { PitoArr, PitoRecord, PitoTuple } from './derived.js'
 import { PitoEnums } from './enums.js'
 import { PitoOpt } from './modifier.js'
 import { PitoAny, PitoBool, PitoInt, PitoLit, PitoNul, PitoNum, PitoRegex, PitoStr } from './primitives.js'
 import { PitoDate, PitoDatetime, PitoDuration, PitoEmail, PitoHostname, PitoTime, PitoUrl, PitoUUID } from './std-types.js'
 import { PitoUnionObj } from "./union.js"
 
+
 export type pito<Raw = any, Type = any, Schema extends Record<string, any> = any, Option extends Record<string, any> = any, Extras extends Record<string, any> = {}> = {
     $unwrap(this: pito<Raw, Type, Schema, Option, Extras>, raw: Raw): Type
-    $wrap(this: pito<Raw, Type, Schema, Option, Extras>, raw: Type): Raw
+    $wrap(this: pito<Raw, Type, Schema, Option, Extras>, data: Type): Raw
     $strict(this: pito<Raw, Type, Schema, Option, Extras>): Schema & Partial<Option>,
+    $bypass(this: pito<Raw, Type, Schema, Option, Extras>): boolean
+    $isAssignableRaw(this: pito<Raw, Type, Schema, Option, Extras>, data: any) : boolean
 } & { [_ in keyof Schema]: Schema[_] } & { [_ in keyof Option]?: Option[_] } & { [_ in keyof Extras]: Extras[_] }
 
 export type PitoRaw<T> = T extends pito<infer Raw, any, any, any> ? Raw : never
@@ -24,7 +28,9 @@ export type PitoSchema<T> = T extends pito<any, any, infer Schema, any> ? Schema
 export type PitoOption<T> = T extends pito<any, any, any, infer Option> ? Option : never
 export type TSRecord<K extends keyof any, V> = Record<K, V>
 export namespace pito {
-    // 
+    export function isPito(data : any):data is pito{
+        return typeof data === 'object' && '$unwrap' in data && '$wrap' in data && '$strict' in data && '$bypass' in data && '$isAssignableRaw' in data
+    }
     export type Raw<T extends pito> = PitoRaw<T>
     export type Type<T extends pito> = PitoType<T>
     export type MapRaw<T extends [...pito[]]> = {
@@ -50,7 +56,7 @@ export namespace pito {
     export const Any = PitoAny
     export type Nul = PitoNul
     export const Nul = PitoNul
-    export type Lit<L extends string | number | boolean> = PitoLit<L>
+    export type Lit<L extends string | number> = PitoLit<L>
     export const Lit = PitoLit
     export type Bool = PitoBool
     export const Bool = PitoBool
@@ -71,7 +77,7 @@ export namespace pito {
     // Union
     export const Uobj = PitoUnionObj
     // Derived
-    export type Obj<Properties extends TSRecord<string, pito>> = PitoObj<Properties>
+    export type Obj<Properties extends TSRecord<string, pito>, AdditionalProperties extends boolean = false> = PitoObj<Properties, AdditionalProperties>
     export const Obj = PitoObj
     export type Arr<Items extends pito> = PitoArr<Items>
     export const Arr = PitoArr
