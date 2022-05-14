@@ -43,9 +43,6 @@ export const PitoEnums = <Enum extends Record<string, string | number>>(e: Enum,
             }
         },
         $bypass(this) { return true },
-        $isAssignableRaw(data) {
-            return enums.indexOf(data) !== -1
-        },
         ...(option ?? {})
     }
 }

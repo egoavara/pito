@@ -4,6 +4,7 @@ import { pito } from '../cjs/pito.js'
 // not std types, currency type
 const usd = pito
     .define(
+        "usd",
         { type: 'string' },
         (option?: Options) => ({
             option: {},

@@ -22,10 +22,6 @@ export class PitoDefineBuilder<Schema extends Record<string, any>, OptionHandler
     ): PitoDefineBuilder<Schema, OptionHandler> {
         return new PitoDefineBuilder(name, schema, fn)
     }
-    assignable(assignableHandler: (data: any) => boolean): PitoDefineBuilder<Schema, OptionHandler> {
-        this.assignableHandler = assignableHandler
-        return this
-    }
     build<Raw, Type>(
         wrapper: (this: pito<unknown, unknown, Schema, ReturnType<OptionHandler>['option'], ReturnType<OptionHandler>['extra']>, data: Type) => Raw,
         unwrapper: (this: pito<unknown, unknown, Schema, ReturnType<OptionHandler>['option'], ReturnType<OptionHandler>['extra']>, raw: Raw) => Type,
@@ -48,7 +44,6 @@ export class PitoDefineBuilder<Schema extends Record<string, any>, OptionHandler
                 $bypass() {
                     return false
                 },
-                $isAssignableRaw : this.assignableHandler
             }
         }
     }

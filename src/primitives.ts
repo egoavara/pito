@@ -10,7 +10,6 @@ export const PitoAny = (): PitoAny => {
         $unwrap(raw) { return raw },
         $strict() { return {} },
         $bypass() { return true },
-        $isAssignableRaw(data) { return true }
     }
 }
 // Primitive : Null
@@ -24,7 +23,6 @@ export const PitoNul = (): PitoNul => {
         $unwrap(raw) { return raw },
         $strict() { return { type: 'null' } },
         $bypass() { return true },
-        $isAssignableRaw(data) { return data === null }
     }
 }
 
@@ -39,7 +37,6 @@ export const PitoLit = <T extends string | number>(l: T): PitoLit<T> => {
         $unwrap(raw) { return raw },
         $strict() { return { const: this.const } },
         $bypass() { return true },
-        $isAssignableRaw(data) { return data === l }
     }
 }
 // Primitive : String
@@ -64,7 +61,6 @@ export const PitoStr = (option?: StrOption): PitoStr => {
             return strict
         },
         $bypass() { return true },
-        $isAssignableRaw(data) { return typeof data === 'string' },
         ...(option ?? {})
     }
 }
@@ -87,7 +83,6 @@ export const PitoRegex = <Pattern extends string>(pattern: Pattern, option?: Reg
             }
         },
         $bypass() { return true },
-        $isAssignableRaw(data) { return typeof data === 'string' },
         ...(option ?? {})
     }
 }
@@ -130,7 +125,6 @@ export const PitoNum = (option?: NumOption): PitoNum => {
             return strict
         },
         $bypass() { return true },
-        $isAssignableRaw(data) { return typeof data === 'number' },
         ...(option ?? {})
     }
 }
@@ -172,7 +166,6 @@ export const PitoInt = (option?: IntOption): PitoInt => {
             return strict
         },
         $bypass() { return true },
-        $isAssignableRaw(data) { return typeof data === 'number' },
         ...(option ?? {})
     }
 }
@@ -190,6 +183,5 @@ export const PitoBool = (): PitoBool => {
             return { type: 'boolean' }
         },
         $bypass() { return true },
-        $isAssignableRaw(data) { return typeof data === 'boolean' },
     }
 }

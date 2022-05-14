@@ -1,6 +1,6 @@
 {
   "name": "pito",
-  "version": "0.0.19",
+  "version": "0.1.0",
   "description": "typescript based type define library",
   "repository": {
     "type": "git",
@@ -16,22 +16,18 @@
   },
   "files": [
     "cjs/**/*.d.ts",
-    "cjs/**/*.d.ts.map",
     "cjs/**/*.js",
-    "cjs/**/*.js.map",
     "cjs/package.json",
     "esm/**/*.d.ts",
-    "esm/**/*.d.ts.map",
     "esm/**/*.js",
-    "esm/**/*.js.map",
     "esm/package.json"
   ],
   "scripts": {
     "test": "tap --ts",
-    "build": "npm i & npm run build:cjs & npm run build:esm",
+    "build": "pnpm build:cjs & pnpm build:esm",
     "build:cjs": "rimraf ./cjs/**/*.{js,js.map,d.ts,d.ts.map,tsbuildinfo} && tsc -p ./cjs/tsconfig.json",
     "build:esm": "rimraf ./esm/**/*.{js,js.map,d.ts,d.ts.map,tsbuildinfo} && tsc -p ./esm/tsconfig.json",
-    "prepack": "npm run build"
+    "prepack": "pnpm build"
   },
   "keywords": [
     "typescript",
@@ -40,8 +36,9 @@
   "author": "egoavara",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^17.0.33",
     "@types/tap": "^15.0.6",
-    "ajv": "^8.10.0",
+    "ajv": "^8.11.0",
     "currency.js": "^2.0.4",
     "rimraf": "^3.0.2",
     "tap": "^16.0.0",

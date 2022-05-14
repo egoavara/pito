@@ -3,9 +3,9 @@ import tap from 'tap'
 
 
 tap.test('strict', async t => {
-    t.same(pito.strict(pito.Regex('regex')), { type: 'string', format : 'regex'})
-    t.same(pito.strict(pito.Regex('regex', { minLength: 1 })), { type: 'string', format : 'regex', minLength: 1 })
-    t.same(pito.strict(pito.Regex('regex', { maxLength: 2 })), { type: 'string', format : 'regex', maxLength: 2 })
+    t.same(pito.strict(pito.Regex('regex')), { type: 'string', pattern : 'regex'})
+    t.same(pito.strict(pito.Regex('regex', { minLength: 1 })), { type: 'string', pattern : 'regex', minLength: 1 })
+    t.same(pito.strict(pito.Regex('regex', { maxLength: 2 })), { type: 'string', pattern : 'regex', maxLength: 2 })
 })
 
 tap.test('wrap', async t => {

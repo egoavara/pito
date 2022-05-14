@@ -12,26 +12,24 @@ export type RawFromProperties<Properties extends Record<string, pito>> =
     & { [K in Optionals<Properties>]?: pito.Raw<Properties[K]> }
 
 // Derived : Obj
-export type ObjOption = {
-    additionalProperties?: false,
-}
-export type ObjSchema<Properties extends Record<string, pito>> = { type: 'object', properties: Properties, required: (Required<Properties>)[] }
+export type ObjOption = {}
+export type ObjSchema<Properties extends Record<string, pito>> = { type: 'object', properties: Properties, required: (Required<Properties>)[], additionalProperties : false }
 
-export type PitoObj<Properties extends Record<string, pito>, AdditionalProperties extends boolean> =
+export type PitoObj<Properties extends Record<string, pito>> =
     pito<
-        RawFromProperties<Properties> & (AdditionalProperties extends true ? Record<string, any> : {}),
-        TypeFromProperties<Properties> & (AdditionalProperties extends true ? Record<string, any> : {}),
+        RawFromProperties<Properties>,
+        TypeFromProperties<Properties>,
         ObjSchema<Properties>,
         ObjOption
     >
 
 
-export function PitoObj<Properties extends Record<string, pito>, AdditionalProperties extends boolean = false>(properties: Properties, option?: { additionalProperties?: AdditionalProperties }): PitoObj<Properties, AdditionalProperties> {
+export function PitoObj<Properties extends Record<string, pito>>(properties: Properties): PitoObj<Properties> {
     return {
         type: 'object',
         properties,
         required: Object.keys(properties).filter(v => (properties[v] as any)['$optional'] !== true) as any,
-        ...(option?.additionalProperties === true ? {} : { additionalProperties: false }),
+        additionalProperties: false,
         $wrap(data) {
             for (const k in data) {
                 // @ts-ignore
@@ -73,9 +71,6 @@ export function PitoObj<Properties extends Record<string, pito>, AdditionalPrope
         },
         $bypass() {
             return Object.values(properties).findIndex((v) => { !(v as any).$bypass() }) !== - 1
-        },
-        $isAssignableRaw(data) {
-            return typeof data === 'object'
         },
     }
 }
