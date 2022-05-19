@@ -31,31 +31,39 @@ export function PitoObj<Properties extends Record<string, pito>>(properties: Pro
         required: Object.keys(properties).filter(v => (properties[v] as any)['$optional'] !== true) as any,
         additionalProperties: false,
         $wrap(data) {
-            for (const k in data) {
-                // @ts-ignore
-                if (this.required.indexOf(k) !== -1) {
-                    // @ts-ignore
-                    data[k] = this.properties[k].$wrap(data[k])
+            const result:any = {}
+            for (const k in this.properties) {
+                // @ts-expect-error
+                const isRequired = this.required.includes(k)
+                // @ts-expect-error
+                if (k in data && data[k] != null) {
+                    // @ts-expect-error
+                    result[k] = this.properties[k].$wrap(data[k])
                 } else {
-                    // @ts-ignore
-                    if (this.properties[k] !== undefined) {
-                        // @ts-ignore
-                        data[k] = this.properties[k].$wrap(data[k])
+                    if (isRequired) {
+                        throw new Error(`not exist required property ${k}`)
                     }
-
                 }
             }
-            return data as any
+            return result
         },
         $unwrap(raw) {
-            for (const k in raw) {
-                // @ts-ignore
-                raw[k] = this.properties[k].$unwrap(raw[k])
+            const result:any = {}
+            for (const k in this.properties) {
+                // @ts-expect-error
+                const isRequired = this.required.includes(k)
+                if (k in raw) {
+                    // @ts-expect-error
+                    result[k] = this.properties[k].$wrap(raw[k])
+                } else {
+                    if (isRequired) {
+                        throw new Error(`not exist required property ${k}`)
+                    }
+                }
             }
-            return raw as any
+            return result
         },
         $strict() {
-
             return {
                 type: 'object',
                 properties: Object.fromEntries(
