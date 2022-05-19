@@ -37,7 +37,8 @@ export function PitoObj<Properties extends Record<string, pito>, AdditionalPrope
             for (const k in this.properties) {
                 // @ts-expect-error
                 const isRequired = this.required.includes(k)
-                if (k in data) {
+                // @ts-expect-error
+                if (k in data && data[k] != null) {
                     // @ts-expect-error
                     result[k] = this.properties[k].$wrap(data[k])
                 } else {
