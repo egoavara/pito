@@ -13,7 +13,7 @@ export type RawFromProperties<Properties extends Record<string, pito>> =
 
 // Derived : Obj
 export type ObjOption = {}
-export type ObjSchema<Properties extends Record<string, pito>> = { type: 'object', properties: Properties, required: (Required<Properties>)[], additionalProperties : false }
+export type ObjSchema<Properties extends Record<string, pito>> = { type: 'object', properties: Properties, required: (Required<Properties>)[], additionalProperties: false }
 
 export type PitoObj<Properties extends Record<string, pito>> =
     pito<
@@ -31,33 +31,42 @@ export function PitoObj<Properties extends Record<string, pito>>(properties: Pro
         required: Object.keys(properties).filter(v => (properties[v] as any)['$optional'] !== true) as any,
         additionalProperties: false,
         $wrap(data) {
-            const result:any = {}
+            const result: any = {}
             for (const k in this.properties) {
                 // @ts-expect-error
                 const isRequired = this.required.includes(k)
-                // @ts-expect-error
-                if (k in data && data[k] != null) {
+                if (isRequired) {
+                    if (!(k in data)) {
+                        throw new Error(`pito.Obj required [${k}] not exist on ${data}`)
+                    }
                     // @ts-expect-error
                     result[k] = this.properties[k].$wrap(data[k])
                 } else {
-                    if (isRequired) {
-                        throw new Error(`not exist required property ${k}`)
+                    // @ts-expect-error
+                    if (k in data && data[k] != null) {
+                        // @ts-expect-error
+                        result[k] = this.properties[k].$wrap(data[k])
                     }
                 }
             }
             return result
         },
         $unwrap(raw) {
-            const result:any = {}
+            const result: any = {}
             for (const k in this.properties) {
                 // @ts-expect-error
                 const isRequired = this.required.includes(k)
-                if (k in raw) {
+                if (isRequired) {
+                    if(!(k in raw)){
+                        throw new Error(`pito.Obj required [${k}] not exist on ${raw}`)
+                    }
                     // @ts-expect-error
-                    result[k] = this.properties[k].$wrap(raw[k])
+                    result[k] = this.properties[k].$unwrap(raw[k])
                 } else {
-                    if (isRequired) {
-                        throw new Error(`not exist required property ${k}`)
+                    // @ts-expect-error
+                    if (k in raw && raw[k] != null) {
+                        // @ts-expect-error
+                        result[k] = this.properties[k].$unwrap(raw[k])
                     }
                 }
             }

@@ -43,6 +43,9 @@ tap.test('wrap', async t => {
         a: 1,
         b: 'b',
     }
-    t.same(pito.wrap(obj, temp1), temp1)
+    t.same(pito.wrap(obj, temp1), {
+        ...temp1,
+        c : temp1.c.toISOString().substring(0, 10)
+    })
     t.same(pito.wrap(obj, temp2), temp2)
 })
