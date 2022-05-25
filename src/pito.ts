@@ -1,23 +1,25 @@
-export * from "./impl/index.js"
 export * from './arr.js'
+export * from "./impl/index.js"
 export * from './modifier.js'
 export * from './primitives.js'
 export * from './std-types.js'
 
-import { PitoDefineBuilder } from './define.js'
-import { PitoObj } from "./obj.js"
 import { PitoArr } from './arr.js'
+import { PitoDefineBuilder } from './define.js'
 import { PitoEnums } from './enums.js'
-import { PitoOpt } from './modifier.js'
-import { PitoAny, PitoBool, PitoInt, PitoLit, PitoNul, PitoNum, PitoRegex, PitoStr } from './primitives.js'
-import { PitoDate, PitoDatetime, PitoDuration, PitoEmail, PitoHostname, PitoTime, PitoUrl, PitoUUID } from './std-types.js'
-import { PitoUnion, PitoUnionLit, PitoUnionObj } from "./union.js"
-import { PitoTuple } from "./tuple.js"
-import { PitoRecord } from "./record.js"
 import { PitoMediaType } from "./media-type.js"
+import { PitoOpt } from './modifier.js'
+import { PitoObj } from "./obj.js"
+import { PitoOmit } from "./omit.js"
+import { PitoPick } from './pick.js'
+import { PitoAny, PitoBool, PitoInt, PitoLit, PitoNul, PitoNum, PitoRegex, PitoStr } from './primitives.js'
+import { PitoRecord } from "./record.js"
+import { PitoDate, PitoDatetime, PitoDuration, PitoEmail, PitoHostname, PitoTime, PitoUrl, PitoUUID } from './std-types.js'
+import { PitoTuple } from "./tuple.js"
+import { PitoUnion, PitoUnionLit, PitoUnionObj } from "./union.js"
 
 
-export type pito<Raw = any, Type = any, Schema extends Record<string, any> = any, Option extends Record<string, any> = any, Extras extends Record<string, any> = {}> = {
+export type pito<Raw = any, Type = any, Schema extends Record<string, any> = any, Option extends Record<string, any> = any, Extras extends Record<string, any> = any> = {
     $unwrap(this: pito<Raw, Type, Schema, Option, Extras>, raw: Raw): Type
     $wrap(this: pito<Raw, Type, Schema, Option, Extras>, data: Type): Raw
     $strict(this: pito<Raw, Type, Schema, Option, Extras>): Schema & Partial<Option>,
@@ -70,6 +72,12 @@ export namespace pito {
     export const Int = PitoInt
     export type Regex<Pattern extends string = string> = PitoRegex<Pattern>
     export const Regex = PitoRegex
+    // Omit
+    export type Omit<O, Keys extends string> = PitoOmit<O, Keys>
+    export const Omit = PitoOmit
+    // Pick
+    export type Pick<O, Keys extends string> = PitoPick<O, Keys>
+    export const Pick = PitoPick
     // Modifier
     export type Opt<T extends pito> = PitoOpt<T>
     export const Opt = PitoOpt
@@ -78,6 +86,7 @@ export namespace pito {
     export const Enums = PitoEnums
     // Union
     export const ULit = PitoUnionLit
+    export type Uobj<Key extends string, Union extends pito> = PitoUnionObj<Key, Union>
     export const Uobj = PitoUnionObj
     export const Union = PitoUnion
     // Media

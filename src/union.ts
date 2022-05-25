@@ -15,7 +15,7 @@ export type ParsePitoUnionObj<Key extends string, Items> =
     : never
 
 export type UnionObjOption = {}
-export type UnionObjSchema = { anyOf: any[], }
+export type UnionObjSchema<Key extends string> = { anyOf: any[], $unionKey: Key, $unionMap: Map<number | string, pito.Obj<Record<string, pito>>> }
 export type PitoUnionObjBuilder<Key extends string, Cases extends [...[string | number, pito.Obj<Record<string, pito>>][]]> = {
     rawKey: Key
     rawCases: Cases
@@ -27,7 +27,7 @@ export type PitoUnionObj<Key extends string, Unions extends pito> =
     pito<
         pito.Raw<Unions>,
         pito.Type<Unions>,
-        UnionObjSchema,
+        UnionObjSchema<Key>,
         UnionObjOption
     >
 
@@ -57,6 +57,8 @@ export const PitoUnionObj = <Key extends string>(key: Key): PitoUnionObjBuilder<
 
             return {
                 anyOf: Array.from(modItemsMap.values()),
+                $unionKey: key,
+                $unionMap: modItemsMap,
                 $wrap(raw) {
                     // @ts-expect-error
                     return modItemsMap.get(raw[key]).$wrap(raw)
@@ -119,23 +121,23 @@ export type PitoUnion<Elems extends pito> =
         {}
     >
 export type Elem = {
-    define : pito
-    checkWrap(data:any):boolean
-    checkUnwrap(raw:any):boolean
+    define: pito
+    checkWrap(data: any): boolean
+    checkUnwrap(raw: any): boolean
 }
 export const PitoUnion = <Elems extends [Elem] | [...Elem[]]>(...elems: Elems): PitoUnion<Elems[number]['define']> => {
     return {
-        anyOf: elems.map(v=>v.define),
+        anyOf: elems.map(v => v.define),
         $wrap(data) {
-            
-            const result = elems.find(v=>v.checkWrap(data))?.define.$wrap(data)
+
+            const result = elems.find(v => v.checkWrap(data))?.define.$wrap(data)
             if (result === undefined) {
                 throw new Error(`union wrap unassignable`)
             }
             return result
         },
         $unwrap(raw) {
-            const result = elems.find(v=>v.checkUnwrap(raw))?.define.$unwrap(raw)
+            const result = elems.find(v => v.checkUnwrap(raw))?.define.$unwrap(raw)
             if (result === undefined) {
                 throw new Error(`union unwrap unassignable`)
             }
