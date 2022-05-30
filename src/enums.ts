@@ -33,12 +33,18 @@ export const PitoEnums = <Enum extends Record<string, string | number>>(e: Enum,
         })
         .filter(v => v !== undefined)
 
+    const eachTypeof = Array.from(new Set(enums.map(v => typeof v)))
+    if (eachTypeof.length !== 1) {
+        throw new Error(`pito.Enums, only allow single typeof enum :${eachTypeof}`)
+    }
     return {
+        type: eachTypeof[0],
         enum: enums as any,
         $wrap(raw) { return raw },
         $unwrap(raw) { return raw as ParseValues<Enum> },
         $strict() {
             return {
+                type: eachTypeof[0],
                 enum: this.enum,
             }
         },
