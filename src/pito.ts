@@ -7,6 +7,7 @@ export * from './std-types.js'
 import { PitoArr } from './arr.js'
 import { PitoDefineBuilder } from './define.js'
 import { PitoEnums } from './enums.js'
+import { PitoExtends } from './extends.js'
 import { PitoMediaType } from "./media-type.js"
 import { PitoOpt } from './modifier.js'
 import { PitoObj } from "./obj.js"
@@ -101,6 +102,8 @@ export namespace pito {
     export const Tuple = PitoTuple
     export type Record<Value extends pito> = PitoRecord<Value>
     export const Record = PitoRecord
+    export type Extends<PitoOrigin, Extends extends TSRecord<string, pito>> = PitoExtends<PitoOrigin, Extends>
+    export const Extends = PitoExtends
     // Std-Types
     export type Date = PitoDate
     export const Date = PitoDate
