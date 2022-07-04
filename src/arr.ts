@@ -1,4 +1,4 @@
-import { pito } from "./pito.js"
+import { extendPlugin, pito } from "./pito.js"
 
 // Derived : Arr
 export type ArrOption = {}
@@ -12,7 +12,17 @@ export const PitoArr = <Items extends pito>(items: Items, option?: ArrOption): P
         $unwrap(raw) { return raw.map(v => this.items.$unwrap(v)) },
         $strict() { return { type: 'array', items: this.items.$strict() } },
         $bypass() { return true },
-    
+
     }
 }
 
+extendPlugin('Arr', PitoArr)
+// 
+declare module './pito' {
+    interface PitoPlugin {
+        Arr: typeof PitoArr
+    }
+    namespace pito {
+        type Arr<Items extends pito> = PitoArr<Items>
+    }
+}

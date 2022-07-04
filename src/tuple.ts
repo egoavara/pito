@@ -1,4 +1,4 @@
-import { pito } from "./pito.js"
+import { extendPlugin, pito } from "./pito.js"
 
 
 // Derived : Tuple
@@ -27,3 +27,13 @@ export const PitoTuple =
             },
         }
     }
+// 
+extendPlugin('Tuple', PitoTuple)
+declare module './pito' {
+    interface PitoPlugin {
+        Tuple: typeof PitoTuple
+    }
+    namespace pito {
+        type Tuple<Items extends [...pito[]]> = PitoTuple<Items>
+    }
+}

@@ -1,4 +1,4 @@
-import { pito } from "./pito.js"
+import { extendPlugin, pito } from "./pito.js"
 
 // Primitive : Any
 export type AnyOption = {}
@@ -183,5 +183,38 @@ export const PitoBool = (): PitoBool => {
             return { type: 'boolean' }
         },
         $bypass() { return true },
+    }
+}
+
+// 
+extendPlugin('Any', PitoAny)
+extendPlugin('Nul', PitoNul)
+extendPlugin('Lit', PitoLit)
+extendPlugin('Bool', PitoBool)
+extendPlugin('Num', PitoNum)
+extendPlugin('Str', PitoStr)
+extendPlugin('Int', PitoInt)
+extendPlugin('Regex', PitoRegex)
+// 
+declare module './pito' {
+    interface PitoPlugin {
+        Any: typeof PitoAny
+        Nul: typeof PitoNul
+        Lit: typeof PitoLit
+        Bool: typeof PitoBool
+        Num: typeof PitoNum
+        Str: typeof PitoStr
+        Int: typeof PitoInt
+        Regex: typeof PitoRegex
+    }
+    namespace pito {
+        type Any = PitoAny
+        type Nul = PitoNul
+        type Lit<L extends string | number> = PitoLit<L>
+        type Bool = PitoBool
+        type Num = PitoNum
+        type Str = PitoStr
+        type Int = PitoInt
+        type Regex<Pattern extends string = string> = PitoRegex<Pattern>
     }
 }

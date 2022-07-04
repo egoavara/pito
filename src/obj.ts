@@ -1,5 +1,5 @@
-import { OptModifier } from "./modifier.js"
-import { pito } from "./pito.js"
+import { OptModifier } from "./modifier-opt.js"
+import { extendPlugin, pito } from "./pito.js"
 
 // Utils
 export type Required<Properties extends Record<string, pito>> = { [k in keyof Properties]: Properties[k] extends OptModifier ? never : k }[keyof Properties]
@@ -57,7 +57,7 @@ export function PitoObj<Properties extends Record<string, pito>>(properties: Pro
                 // @ts-expect-error
                 const isRequired = this.required.includes(k)
                 if (isRequired) {
-                    if(!(k in raw)){
+                    if (!(k in raw)) {
                         throw new Error(`pito.Obj required [${k}] not exist on ${raw}`)
                     }
                     // @ts-expect-error
@@ -89,5 +89,16 @@ export function PitoObj<Properties extends Record<string, pito>>(properties: Pro
         $bypass() {
             return Object.values(properties).findIndex((v) => { !(v as any).$bypass() }) !== - 1
         },
+    }
+}
+
+//
+extendPlugin('Obj', PitoObj)
+declare module './pito' {
+    interface PitoPlugin {
+        Obj: typeof PitoObj
+    }
+    namespace pito {
+        type Obj<Properties extends TSRecord<string, pito>> = PitoObj<Properties>
     }
 }

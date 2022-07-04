@@ -1,13 +1,11 @@
-import { pito } from "./pito.js"
+import { extendPlugin, pito } from "./pito.js"
 
 // Derived : Record
 export type RecordOption = {}
 export type RecordSchema<Value extends pito> = { type: 'object', additionalProperties: Value }
 export type PitoRecord<Value extends pito> = pito<Record<string, pito.Raw<Value>>, Record<string, pito.Type<Value>>, RecordSchema<Value>, RecordOption>
 
-export const PitoRecord = <Items extends pito>
-    (items: Items, option?: RecordOption)
-    : PitoRecord<Items> => {
+export const PitoRecord = <Items extends pito>(items: Items, option?: RecordOption): PitoRecord<Items> => {
     return {
         type: 'object',
         additionalProperties: items,
@@ -33,6 +31,13 @@ export const PitoRecord = <Items extends pito>
         },
     }
 }
-
-
-
+//
+extendPlugin('Record', PitoRecord);
+declare module './pito' {
+    interface PitoPlugin {
+        Record: typeof PitoRecord
+    }
+    namespace pito {
+        type Record<Value extends pito> = PitoRecord<Value>
+    }
+}

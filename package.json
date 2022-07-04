@@ -24,10 +24,13 @@
   ],
   "scripts": {
     "test": "tap --ts",
-    "build": "pnpm build:cjs & pnpm build:esm",
-    "build:cjs": "rimraf ./cjs/**/*.{js,js.map,d.ts,d.ts.map,tsbuildinfo} && tsc -p ./cjs/tsconfig.json",
-    "build:esm": "rimraf ./esm/**/*.{js,js.map,d.ts,d.ts.map,tsbuildinfo} && tsc -p ./esm/tsconfig.json",
-    "prepack": "pnpm build"
+    "build": "npm run build:cjs & npm run build:esm",
+    "build:cjs": "npm run clear:cjs && tsc -p ./cjs/tsconfig.json",
+    "build:esm": "npm run clear:esm && tsc -p ./esm/tsconfig.json",
+    "clear": "npm run clear:cjs & npm run clear:esm",
+    "clear:cjs": "rimraf ./cjs/**/*.{js,js.map,d.ts,d.ts.map,tsbuildinfo}",
+    "clear:esm": "rimraf ./esm/**/*.{js,js.map,d.ts,d.ts.map,tsbuildinfo}",
+    "prepack": "npm run build"
   },
   "keywords": [
     "typescript",
