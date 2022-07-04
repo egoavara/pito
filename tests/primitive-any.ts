@@ -3,7 +3,7 @@ import { pito } from '../cjs/pito.js'
 
 
 tap.test('strict', async t => {
-    t.same(pito.strict(pito.Any()), { type: 'null' })
+    t.same(pito.strict(pito.Any()), {})
 })
 
 tap.test('wrap', async t => {

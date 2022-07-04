@@ -13,16 +13,9 @@ enum ENumOnly {
     C = 2,
     D = 3,
 }
-enum EBoth {
-    A = 'A',
-    B = 1,
-    C = 'C',
-    D = 3,
-}
 
 const TEStrOnly = pito.Enums(EStrOnly)
 const TENumOnly = pito.Enums(ENumOnly)
-const TEBoth = pito.Enums(EBoth)
 
 // === === === === === === === === === === === === //
 // typio strict
@@ -30,6 +23,7 @@ tap.test('strict', async t => {
     t.same(
         pito.strict(TEStrOnly),
         {
+            type: 'string',
             enum: [
                 EStrOnly.A,
                 EStrOnly.B,
@@ -41,22 +35,12 @@ tap.test('strict', async t => {
     t.same(
         pito.strict(TENumOnly),
         {
+            type: 'number',
             enum: [
                 ENumOnly.A,
                 ENumOnly.B,
                 ENumOnly.C,
                 ENumOnly.D,
-            ]
-        }
-    )
-    t.same(
-        pito.strict(TEBoth),
-        {
-            enum: [
-                EBoth.A,
-                EBoth.B,
-                EBoth.C,
-                EBoth.D,
             ]
         }
     )
@@ -80,14 +64,6 @@ tap.test('wrap', async t => {
         pito.wrap(TENumOnly, ENumOnly.A),
         ENumOnly.B
     )
-    t.same(
-        pito.wrap(TEBoth, EBoth.A),
-        EBoth.A
-    )
-    t.notSame(
-        pito.wrap(TEBoth, EBoth.A),
-        EBoth.B
-    )
 })
 // === === === === === === === === === === === === //
 // typio unwrap
@@ -107,14 +83,6 @@ tap.test('unwrap', async t => {
     t.notSame(
         pito.unwrap(TENumOnly, ENumOnly.A),
         ENumOnly.B
-    )
-    t.same(
-        pito.unwrap(TEBoth, EBoth.A),
-        EBoth.A
-    )
-    t.notSame(
-        pito.unwrap(TEBoth, EBoth.A),
-        EBoth.B
     )
 })
 // === === === === === === === === === === === === //

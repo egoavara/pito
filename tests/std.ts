@@ -1,4 +1,4 @@
-import { pito, Time } from '../cjs/pito.js'
+import { pito } from '../cjs/pito.js'
 import tap from 'tap'
 
 // === === === === === === === === === === === === //
@@ -11,8 +11,6 @@ const _url_Const = "https://hello.world/foo?bar=1"
 const _url_URL = new URL(_url_Const)
 // === === === === === === === === === === === === //
 const date = pito.Date()
-const duration = pito.Duration()
-const time = pito.Time()
 const datetime = pito.Datetime()
 const url = pito.Url()
 // 
@@ -26,14 +24,6 @@ tap.test('strict', async t => {
     t.same(
         pito.strict(datetime),
         { type: 'string', format: 'date-time' },
-    )
-    t.same(
-        pito.strict(time),
-        { type: 'string', format: 'time' },
-    )
-    t.same(
-        pito.strict(duration),
-        { type: 'string', format: 'duration' },
     )
     t.same(
         pito.strict(url),
@@ -61,24 +51,6 @@ tap.test('wrap', async t => {
         pito.wrap(datetime, _datetime_Date),
         _datetime_Const + "1"
     )
-    // time
-    t.same(
-        pito.wrap(time, Time('12:34:56Z')),
-        '12:34:56Z'
-    )
-    t.notSame(
-        pito.wrap(time, Time('12:34:56Z')),
-        '12:34:56+09:00'
-    )
-    // duration
-    t.same(
-        pito.wrap(duration, pito.unwrap(duration, "P1Y2M3W4DT5H6M7.8S")),
-        "P1Y2M3W4DT5H6M7.8S"
-    )
-    t.notSame(
-        pito.wrap(url, _url_URL),
-        "P1Y2M3W4DT5H6M7.89S"
-    )
     // url
     t.same(
         pito.wrap(url, _url_URL),
@@ -102,16 +74,6 @@ tap.test('unwrap', async t => {
     t.same(
         pito.unwrap(datetime, _datetime_Const),
         _datetime_Date
-    )
-    // time
-    t.same(
-        pito.unwrap(time, "12:34:56Z").toString(),
-        "12:34:56Z"
-    )
-    // duration
-    t.same(
-        pito.unwrap(duration, "P1Y2M3W4DT5H6M7.8S").toString(),
-        "P1Y2M3W4DT5H6M7.8S"
     )
     // url
     t.same(
