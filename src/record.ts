@@ -4,7 +4,6 @@ import { extendPlugin, pito } from "./pito.js"
 export type RecordOption = {}
 export type RecordSchema<Value extends pito> = { type: 'object', additionalProperties: Value }
 export type PitoRecord<Value extends pito> = pito<Record<string, pito.Raw<Value>>, Record<string, pito.Type<Value>>, RecordSchema<Value>, RecordOption>
-
 export const PitoRecord = <Items extends pito>(items: Items, option?: RecordOption): PitoRecord<Items> => {
     return {
         type: 'object',
