@@ -9,7 +9,7 @@ export const PitoDatetime = (): PitoDatetime => {
         type: 'string',
         format: 'date-time',
         $wrap(data) {
-            return data.toISOString()
+            return new Date(data.getTime()).toISOString()
         },
         $unwrap(raw) {
             return new Date(raw)
