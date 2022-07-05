@@ -10,73 +10,6 @@ export type PitoType<T> = T extends pito<any, infer Type, any, any> ? Type : nev
 export type PitoSchema<T> = T extends pito<any, any, infer Schema, any> ? Schema : never
 export type PitoOption<T> = T extends pito<any, any, any, infer Option> ? Option : never
 export type TSRecord<K extends keyof any, V> = Record<K, V>
-// export namespace pito {
-//     // Primitives
-//     // export type Any = PitoAny
-//     // export const Any = PitoAny
-//     // export type Nul = PitoNul
-//     // export const Nul = PitoNul
-//     // export type Lit<L extends string | number> = PitoLit<L>
-//     // export const Lit = PitoLit
-//     // export type Bool = PitoBool
-//     // export const Bool = PitoBool
-//     // export type Num = PitoNum
-//     // export const Num = PitoNum
-//     // export type Str = PitoStr
-//     // export const Str = PitoStr
-//     // export type Int = PitoInt
-//     // export const Int = PitoInt
-//     // export type Regex<Pattern extends string = string> = PitoRegex<Pattern>
-//     // export const Regex = PitoRegex
-//     // // Omit
-//     // export type Omit<O, Keys extends string> = PitoOmit<O, Keys>
-//     // export const Omit = PitoOmit
-//     // // Pick
-//     // export type Pick<O, Keys extends string> = PitoPick<O, Keys>
-//     // export const Pick = PitoPick
-//     // // Modifier
-//     // export type Opt<T extends pito> = PitoOpt<T>
-//     // export const Opt = PitoOpt
-//     // // Enum
-//     // export type Enums<E extends TSRecord<string, string | number>> = PitoEnums<E>
-//     // export const Enums = PitoEnums
-//     // // Union
-//     // export const ULit = PitoUnionLit
-//     // export type Uobj<Key extends string, Union extends pito> = PitoUnionObj<Key, Union>
-//     // export const Uobj = PitoUnionObj
-//     // export const Union = PitoUnion
-//     // // Media
-//     // export type MediaType = PitoMediaType
-//     // export const MediaType = PitoMediaType
-//     // // Derived
-//     // export type Obj<Properties extends TSRecord<string, pito>> = PitoObj<Properties>
-//     // export const Obj = PitoObj
-//     // export type Arr<Items extends pito> = PitoArr<Items>
-//     // export const Arr = PitoArr
-//     // export type Tuple<Items extends [...pito[]]> = PitoTuple<Items>
-//     // export const Tuple = PitoTuple
-//     // export type Record<Value extends pito> = PitoRecord<Value>
-//     // export const Record = PitoRecord
-//     // // Std-Types
-//     // export type Date = PitoDate
-//     // export const Date = PitoDate
-//     // export type Datetime = PitoDatetime
-//     // export const Datetime = PitoDatetime
-//     // export type Duration = PitoDuration
-//     // export const Duration = PitoDuration
-//     // export type Time = PitoTime
-//     // export const Time = PitoTime
-//     // export type Url = PitoUrl
-//     // export const Url = PitoUrl
-//     // export type UUID = PitoUUID
-//     // export const UUID = PitoUUID
-//     // export type Email = PitoEmail
-//     // export const Email = PitoEmail
-//     // export type Hostname = PitoHostname
-//     // export const Hostname = PitoHostname
-//     // // custom type
-//     // export const define = PitoDefineBuilder.create
-// }
 
 const plugin: Record<string, any> = {
     wrap<T extends pito>(t: T, data: PitoType<T>): PitoRaw<T> {
@@ -129,3 +62,4 @@ export * from './std-email.js'
 export * from './std-hostname.js'
 export * from './std-url.js'
 export * from './std-uuid.js'
+export * from './media.js'
