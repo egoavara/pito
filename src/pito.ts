@@ -44,7 +44,6 @@ export const plugin: Record<string, any> = {
         return t.$strict()
     },
 }
-console.log(plugin)
 export interface PitoPlugin {
     wrap<T extends pito>(t: T, data: PitoType<T>): PitoRaw<T>;
     unwrap<T extends pito>(t: T, data: PitoRaw<T>): PitoType<T>;
