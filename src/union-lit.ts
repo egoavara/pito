@@ -1,4 +1,4 @@
-import { extendPlugin, pito } from "./pito.js";
+import { pito, plugin } from "./pito.js";
 
 
 export type UnionLitSchema = { enums: (string | number)[] }
@@ -23,7 +23,7 @@ export const PitoUnionLit = <Lits extends [...(string | number)[]]>(...lits: Lit
 }
 
 //
-extendPlugin('Ulit', PitoUnionLit);
+Object.defineProperty(plugin, 'Ulit', { value: PitoUnionLit, configurable : false, writable : false })
 declare module './pito' {
     interface PitoPlugin {
         Ulit: typeof PitoUnionLit

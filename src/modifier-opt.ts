@@ -1,4 +1,4 @@
-import { extendPlugin, pito } from "./pito.js"
+import { pito, plugin } from "./pito.js"
 
 
 // Modifier : Option
@@ -12,7 +12,8 @@ export const PitoOpt = <T extends pito>(inner: T): PitoOpt<T> => {
 }
 
 //
-extendPlugin('Opt', PitoOpt)
+Object.defineProperty(plugin, 'Opt', { value: PitoOpt, configurable: false, writable: false })
+
 declare module './pito' {
     interface PitoPlugin {
         Opt: typeof PitoOpt

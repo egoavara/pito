@@ -1,4 +1,4 @@
-import { extendPlugin, pito } from "./pito.js"
+import { pito, plugin } from "./pito.js"
 
 export type UnionSchema = { anyOf: any[], }
 export type PitoUnion<Elems extends pito> =
@@ -42,7 +42,7 @@ export const PitoUnion = <Elems extends [Elem] | [...Elem[]]>(...elems: Elems): 
     }
 }
 //
-extendPlugin('Union', PitoUnion);
+Object.defineProperty(plugin, 'Union', { value: PitoUnion, configurable: false, writable: false })
 declare module './pito' {
     interface PitoPlugin {
         Union: typeof PitoUnion

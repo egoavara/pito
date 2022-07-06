@@ -1,4 +1,4 @@
-import { extendPlugin, pito } from "./pito.js"
+import { pito, plugin } from "./pito.js"
 
 // Std-Types : Date
 export type UUIDOption = {}
@@ -27,7 +27,7 @@ export const PitoUUID = (): PitoUUID => {
 }
 
 //
-extendPlugin('UUID', PitoUUID)
+Object.defineProperty(plugin, 'UUID', { value: PitoUUID, configurable: false, writable: false })
 declare module './pito' {
     interface PitoPlugin {
         UUID: typeof PitoUUID

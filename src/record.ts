@@ -1,4 +1,4 @@
-import { extendPlugin, pito } from "./pito.js"
+import { pito, plugin } from "./pito.js"
 
 // Derived : Record
 export type RecordOption = {}
@@ -31,7 +31,8 @@ export const PitoRecord = <Items extends pito>(items: Items, option?: RecordOpti
     }
 }
 //
-extendPlugin('Record', PitoRecord);
+Object.defineProperty(plugin, 'Record', { value: PitoRecord, configurable: false, writable: false })
+
 declare module './pito' {
     interface PitoPlugin {
         Record: typeof PitoRecord

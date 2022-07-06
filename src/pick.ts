@@ -1,4 +1,4 @@
-import { extendPlugin, pito } from "./pito.js"
+import { pito, plugin } from "./pito.js"
 import { PitoUnionObjBuilder } from "./union-obj.js"
 export type PickObj<O, Keys extends string> = O extends pito.Obj<infer Def> ? pito.Obj<Pick<Def, Keys>> : never
 
@@ -40,7 +40,7 @@ export function PitoPick(def: pito.Obj<Record<string, pito>> | pito.Uobj<string,
     throw new Error(`unreachable type`)
 }
 //
-extendPlugin('Pick', PitoPick);
+Object.defineProperty(plugin, 'Pick', { value: PitoPick, configurable: false, writable: false })
 declare module './pito' {
     interface PitoPlugin {
         Pick: typeof PitoPick

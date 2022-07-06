@@ -1,4 +1,4 @@
-import { extendPlugin, pito } from "./pito.js"
+import { pito, plugin } from "./pito.js"
 
 // Std-Types : Date
 export type DatetimeOption = {}
@@ -26,7 +26,7 @@ export const PitoDatetime = (): PitoDatetime => {
     }
 }
 //
-extendPlugin('Datetime', PitoDatetime)
+Object.defineProperty(plugin, 'Datetime', { value: PitoDatetime, configurable: false, writable: false })
 declare module './pito' {
     interface PitoPlugin {
         Datetime: typeof PitoDatetime

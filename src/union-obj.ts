@@ -1,5 +1,5 @@
 // Derived : Union
-import { extendPlugin, pito } from "./pito.js"
+import { pito, plugin } from "./pito.js"
 
 export type ParsePitoUnionObj<Key extends string, Items> =
     Items extends [[infer K, infer V], ...infer Left]
@@ -70,7 +70,7 @@ export const PitoUnionObj = <Key extends string>(key: Key): PitoUnionObjBuilder<
     }
 }
 //
-extendPlugin('Uobj', PitoUnionObj);
+Object.defineProperty(plugin, 'Uobj', { value: PitoUnionObj, configurable : false, writable : false })
 declare module './pito' {
     interface PitoPlugin {
         Uobj: typeof PitoUnionObj

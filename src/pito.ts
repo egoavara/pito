@@ -11,7 +11,7 @@ export type PitoSchema<T> = T extends pito<any, any, infer Schema, any> ? Schema
 export type PitoOption<T> = T extends pito<any, any, any, infer Option> ? Option : never
 export type TSRecord<K extends keyof any, V> = Record<K, V>
 
-const plugin: Record<string, any> = {
+export const plugin: Record<string, any> = {
     wrap<T extends pito>(t: T, data: PitoType<T>): PitoRaw<T> {
         return t.$wrap(data)
     },
@@ -21,9 +21,6 @@ const plugin: Record<string, any> = {
     strict<T extends pito>(t: T,): PitoSchema<T> & PitoOption<T> {
         return t.$strict()
     },
-}
-export function extendPlugin(name: string, value: any) {
-    plugin[name] = value
 }
 export interface PitoPlugin {
     wrap<T extends pito>(t: T, data: PitoType<T>): PitoRaw<T>;

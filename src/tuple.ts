@@ -1,4 +1,4 @@
-import { extendPlugin, pito } from "./pito.js"
+import { pito, plugin } from "./pito.js"
 
 
 // Derived : Tuple
@@ -28,7 +28,7 @@ export const PitoTuple =
         }
     }
 // 
-extendPlugin('Tuple', PitoTuple)
+Object.defineProperty(plugin, 'Tuple', { value: PitoTuple, configurable : false, writable : false })
 declare module './pito' {
     interface PitoPlugin {
         Tuple: typeof PitoTuple

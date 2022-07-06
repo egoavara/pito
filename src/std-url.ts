@@ -1,4 +1,4 @@
-import { extendPlugin, pito } from "./pito.js"
+import { pito, plugin } from "./pito.js"
 
 // Std-Types : Url
 export type UrlOption = {}
@@ -28,7 +28,7 @@ export const PitoUrl = (): PitoUrl => {
 }
 
 //
-extendPlugin('Url', PitoUrl)
+Object.defineProperty(plugin, 'Url', { value: PitoUrl, configurable: false, writable: false })
 declare module './pito' {
     interface PitoPlugin {
         Url: typeof PitoUrl

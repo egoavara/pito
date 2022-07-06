@@ -1,5 +1,5 @@
 import { PitoObj } from "./obj.js"
-import { extendPlugin, pito } from "./pito.js"
+import { pito, plugin } from "./pito.js"
 // import { pito } from "./pito.js"
 import { PitoUnionObj, PitoUnionObjBuilder } from "./union-obj.js"
 export type OmitObj<O, Keys extends string> = O extends PitoObj<infer Def> ? PitoObj<Omit<Def, Keys>> : never
@@ -40,7 +40,7 @@ export function PitoOmit(def: PitoObj<Record<string, pito>> | PitoUnionObj<strin
     throw new Error(`unreachable type`)
 }
 //
-extendPlugin('Omit', PitoOmit);
+Object.defineProperty(plugin, 'Omit', { value: PitoOmit, configurable: false, writable: false })
 declare module './pito' {
     interface PitoPlugin {
         Omit: typeof PitoOmit

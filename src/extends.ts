@@ -1,5 +1,5 @@
 import { PitoObj } from "./obj.js"
-import { extendPlugin, pito } from "./pito.js"
+import { pito, plugin } from "./pito.js"
 
 
 export type PitoExtends<PitoOrigin, Extends extends Record<string, pito>> = PitoOrigin extends PitoObj<infer Origin> ? PitoObj<Omit<Origin, keyof Extends & string> & Extends> : never
@@ -8,7 +8,7 @@ export function PitoExtends<Origin extends PitoObj<any>, Extends extends Record<
 }
 
 //
-extendPlugin('Extends', PitoExtends)
+Object.defineProperty(plugin, 'Extends', { value: PitoExtends, configurable: false, writable: false })
 declare module './pito' {
     interface PitoPlugin {
         Extends: typeof PitoExtends

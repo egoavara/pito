@@ -1,4 +1,4 @@
-import { extendPlugin, pito } from "./pito.js"
+import { pito, plugin } from "./pito.js"
 
 // Primitive : Any
 export type AnyOption = {}
@@ -187,14 +187,14 @@ export const PitoBool = (): PitoBool => {
 }
 
 // 
-extendPlugin('Any', PitoAny)
-extendPlugin('Nul', PitoNul)
-extendPlugin('Lit', PitoLit)
-extendPlugin('Bool', PitoBool)
-extendPlugin('Num', PitoNum)
-extendPlugin('Str', PitoStr)
-extendPlugin('Int', PitoInt)
-extendPlugin('Regex', PitoRegex)
+Object.defineProperty(plugin, 'Any', { value: PitoAny, configurable: false, writable: false })
+Object.defineProperty(plugin, 'Nul', { value: PitoNul, configurable: false, writable: false })
+Object.defineProperty(plugin, 'Lit', { value: PitoLit, configurable: false, writable: false })
+Object.defineProperty(plugin, 'Bool', { value: PitoBool, configurable: false, writable: false })
+Object.defineProperty(plugin, 'Num', { value: PitoNum, configurable: false, writable: false })
+Object.defineProperty(plugin, 'Str', { value: PitoStr, configurable: false, writable: false })
+Object.defineProperty(plugin, 'Int', { value: PitoInt, configurable: false, writable: false })
+Object.defineProperty(plugin, 'Regex', { value: PitoRegex, configurable: false, writable: false })
 // 
 declare module './pito' {
     interface PitoPlugin {

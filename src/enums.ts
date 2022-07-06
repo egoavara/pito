@@ -1,4 +1,4 @@
-import { extendPlugin, pito } from "./pito.js"
+import { pito, plugin } from "./pito.js"
 
 export type ParseEnums<Enums extends Record<string, string | number>> = {
     [K in keyof Enums]:
@@ -54,7 +54,7 @@ export const PitoEnums = <Enum extends Record<string, string | number>>(e: Enum,
 }
 
 //
-extendPlugin('Enums', PitoEnums)
+Object.defineProperty(plugin, 'Enums', { value: PitoEnums, configurable: false, writable: false })
 declare module './pito' {
     interface PitoPlugin {
         Enums: typeof PitoEnums

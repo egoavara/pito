@@ -1,4 +1,4 @@
-import { extendPlugin, pito } from "./pito.js"
+import { pito, plugin } from "./pito.js"
 
 // Derived : Arr
 export type ArrOption = {}
@@ -16,7 +16,8 @@ export const PitoArr = <Items extends pito>(items: Items, option?: ArrOption): P
     }
 }
 
-extendPlugin('Arr', PitoArr)
+// 
+Object.defineProperty(plugin, 'Arr', { value: PitoArr, configurable: false, writable: false })
 // 
 declare module './pito' {
     interface PitoPlugin {

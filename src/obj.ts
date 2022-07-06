@@ -1,5 +1,5 @@
 import { OptModifier } from "./modifier-opt.js"
-import { extendPlugin, pito } from "./pito.js"
+import { pito, plugin } from "./pito.js"
 
 // Utils
 export type Required<Properties extends Record<string, pito>> = { [k in keyof Properties]: Properties[k] extends OptModifier ? never : k }[keyof Properties]
@@ -93,7 +93,7 @@ export function PitoObj<Properties extends Record<string, pito>>(properties: Pro
 }
 
 //
-extendPlugin('Obj', PitoObj)
+Object.defineProperty(plugin, 'Obj', { value: PitoObj, configurable: false, writable: false })
 declare module './pito' {
     interface PitoPlugin {
         Obj: typeof PitoObj
