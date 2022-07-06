@@ -25,14 +25,3 @@ export const PitoEmail = (): PitoEmail => {
         },
     }
 }
-
-//
-Object.defineProperty(plugin, 'Email', { value: PitoEmail, configurable: false, writable: false })
-declare module './pito' {
-    interface PitoPlugin {
-        Email: typeof PitoEmail
-    }
-    namespace pito {
-        type Email = PitoEmail
-    }
-}

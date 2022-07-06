@@ -62,13 +62,3 @@ export const PitoMediaType = <ContentMediaType extends MediaType = MediaType, Co
         },
     }
 }
-//
-Object.defineProperty(plugin, 'Media', { value: PitoMediaType, configurable : false, writable : false })
-declare module './pito' {
-    interface PitoPlugin {
-        Media: typeof PitoMediaType
-    }
-    namespace pito {
-        type Media<ContentMediaType extends MediaType = MediaType> = pito<string, MediaImpl, MediaTypeScheme<ContentMediaType>, MediaTypeOption>
-    }
-}

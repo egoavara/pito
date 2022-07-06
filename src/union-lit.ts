@@ -21,14 +21,3 @@ export const PitoUnionLit = <Lits extends [...(string | number)[]]>(...lits: Lit
         },
     }
 }
-
-//
-Object.defineProperty(plugin, 'Ulit', { value: PitoUnionLit, configurable : false, writable : false })
-declare module './pito' {
-    interface PitoPlugin {
-        Ulit: typeof PitoUnionLit
-    }
-    namespace pito {
-        type Ulit<Lits extends string | number> = PitoUnionLit<Lits>
-    }
-}

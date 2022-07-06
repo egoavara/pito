@@ -27,13 +27,3 @@ export const PitoTuple =
             },
         }
     }
-// 
-Object.defineProperty(plugin, 'Tuple', { value: PitoTuple, configurable : false, writable : false })
-declare module './pito' {
-    interface PitoPlugin {
-        Tuple: typeof PitoTuple
-    }
-    namespace pito {
-        type Tuple<Items extends [...pito[]]> = PitoTuple<Items>
-    }
-}

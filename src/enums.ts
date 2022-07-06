@@ -52,14 +52,3 @@ export const PitoEnums = <Enum extends Record<string, string | number>>(e: Enum,
         ...(option ?? {})
     }
 }
-
-//
-Object.defineProperty(plugin, 'Enums', { value: PitoEnums, configurable: false, writable: false })
-declare module './pito' {
-    interface PitoPlugin {
-        Enums: typeof PitoEnums
-    }
-    namespace pito {
-        type Enums<E extends TSRecord<string, string | number>> = PitoEnums<E>
-    }
-}

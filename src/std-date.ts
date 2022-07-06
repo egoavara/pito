@@ -30,15 +30,3 @@ export const PitoDate = (options?: DateOption): PitoDate => {
         },
     }
 }
-
-//
-Object.defineProperty(plugin, 'Date', { value: PitoDate, configurable: false, writable: false })
-
-declare module './pito' {
-    interface PitoPlugin {
-        Date: typeof PitoDate
-    }
-    namespace pito {
-        type Date = PitoDate
-    }
-}

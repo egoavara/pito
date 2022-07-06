@@ -41,13 +41,3 @@ export const PitoUnion = <Elems extends [Elem] | [...Elem[]]>(...elems: Elems): 
         },
     }
 }
-//
-Object.defineProperty(plugin, 'Union', { value: PitoUnion, configurable: false, writable: false })
-declare module './pito' {
-    interface PitoPlugin {
-        Union: typeof PitoUnion
-    }
-    namespace pito {
-        type Union<Elems extends pito> = PitoUnion<Elems>
-    }
-}

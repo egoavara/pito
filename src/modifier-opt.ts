@@ -10,15 +10,3 @@ export const PitoOpt = <T extends pito>(inner: T): PitoOpt<T> => {
         ...inner,
     }
 }
-
-//
-Object.defineProperty(plugin, 'Opt', { value: PitoOpt, configurable: false, writable: false })
-
-declare module './pito' {
-    interface PitoPlugin {
-        Opt: typeof PitoOpt
-    }
-    namespace pito {
-        type Opt<T extends pito> = PitoOpt<T>
-    }
-}

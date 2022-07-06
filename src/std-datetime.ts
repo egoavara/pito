@@ -25,13 +25,3 @@ export const PitoDatetime = (): PitoDatetime => {
         },
     }
 }
-//
-Object.defineProperty(plugin, 'Datetime', { value: PitoDatetime, configurable: false, writable: false })
-declare module './pito' {
-    interface PitoPlugin {
-        Datetime: typeof PitoDatetime
-    }
-    namespace pito {
-        type Datetime = PitoDatetime
-    }
-}

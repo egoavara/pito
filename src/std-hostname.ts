@@ -25,14 +25,3 @@ export const PitoHostname = (): PitoHostname => {
         },
     }
 }
-
-//
-Object.defineProperty(plugin, 'Hostname', { value: PitoHostname, configurable: false, writable: false })
-declare module './pito' {
-    interface PitoPlugin {
-        Hostname: typeof PitoHostname
-    }
-    namespace pito {
-        type Hostname = PitoHostname
-    }
-}

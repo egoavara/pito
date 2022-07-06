@@ -16,14 +16,3 @@ export const PitoArr = <Items extends pito>(items: Items, option?: ArrOption): P
     }
 }
 
-// 
-Object.defineProperty(plugin, 'Arr', { value: PitoArr, configurable: false, writable: false })
-// 
-declare module './pito' {
-    interface PitoPlugin {
-        Arr: typeof PitoArr
-    }
-    namespace pito {
-        type Arr<Items extends pito> = PitoArr<Items>
-    }
-}

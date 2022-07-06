@@ -91,14 +91,3 @@ export function PitoObj<Properties extends Record<string, pito>>(properties: Pro
         },
     }
 }
-
-//
-Object.defineProperty(plugin, 'Obj', { value: PitoObj, configurable: false, writable: false })
-declare module './pito' {
-    interface PitoPlugin {
-        Obj: typeof PitoObj
-    }
-    namespace pito {
-        type Obj<Properties extends TSRecord<string, pito>> = PitoObj<Properties>
-    }
-}

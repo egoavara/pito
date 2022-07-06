@@ -39,13 +39,3 @@ export function PitoOmit(def: PitoObj<Record<string, pito>> | PitoUnionObj<strin
     }
     throw new Error(`unreachable type`)
 }
-//
-Object.defineProperty(plugin, 'Omit', { value: PitoOmit, configurable: false, writable: false })
-declare module './pito' {
-    interface PitoPlugin {
-        Omit: typeof PitoOmit
-    }
-    namespace pito {
-        type Omit<O, Keys extends string> = PitoOmit<O, Keys>
-    }
-}

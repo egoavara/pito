@@ -26,14 +26,3 @@ export const PitoUrl = (): PitoUrl => {
         },
     }
 }
-
-//
-Object.defineProperty(plugin, 'Url', { value: PitoUrl, configurable: false, writable: false })
-declare module './pito' {
-    interface PitoPlugin {
-        Url: typeof PitoUrl
-    }
-    namespace pito {
-        type Url = PitoUrl
-    }
-}

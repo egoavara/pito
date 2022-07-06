@@ -69,13 +69,3 @@ export const PitoUnionObj = <Key extends string>(key: Key): PitoUnionObjBuilder<
         },
     }
 }
-//
-Object.defineProperty(plugin, 'Uobj', { value: PitoUnionObj, configurable : false, writable : false })
-declare module './pito' {
-    interface PitoPlugin {
-        Uobj: typeof PitoUnionObj
-    }
-    namespace pito {
-        type Uobj<Key extends string, Union extends pito> = PitoUnionObj<Key, Union>
-    }
-}

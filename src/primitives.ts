@@ -187,34 +187,3 @@ export const PitoBool = (): PitoBool => {
 }
 
 // 
-Object.defineProperty(plugin, 'Any', { value: PitoAny, configurable: false, writable: false })
-Object.defineProperty(plugin, 'Nul', { value: PitoNul, configurable: false, writable: false })
-Object.defineProperty(plugin, 'Lit', { value: PitoLit, configurable: false, writable: false })
-Object.defineProperty(plugin, 'Bool', { value: PitoBool, configurable: false, writable: false })
-Object.defineProperty(plugin, 'Num', { value: PitoNum, configurable: false, writable: false })
-Object.defineProperty(plugin, 'Str', { value: PitoStr, configurable: false, writable: false })
-Object.defineProperty(plugin, 'Int', { value: PitoInt, configurable: false, writable: false })
-Object.defineProperty(plugin, 'Regex', { value: PitoRegex, configurable: false, writable: false })
-// 
-declare module './pito' {
-    interface PitoPlugin {
-        Any: typeof PitoAny
-        Nul: typeof PitoNul
-        Lit: typeof PitoLit
-        Bool: typeof PitoBool
-        Num: typeof PitoNum
-        Str: typeof PitoStr
-        Int: typeof PitoInt
-        Regex: typeof PitoRegex
-    }
-    namespace pito {
-        type Any = PitoAny
-        type Nul = PitoNul
-        type Lit<L extends string | number> = PitoLit<L>
-        type Bool = PitoBool
-        type Num = PitoNum
-        type Str = PitoStr
-        type Int = PitoInt
-        type Regex<Pattern extends string = string> = PitoRegex<Pattern>
-    }
-}

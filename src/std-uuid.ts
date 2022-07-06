@@ -25,14 +25,3 @@ export const PitoUUID = (): PitoUUID => {
         },
     }
 }
-
-//
-Object.defineProperty(plugin, 'UUID', { value: PitoUUID, configurable: false, writable: false })
-declare module './pito' {
-    interface PitoPlugin {
-        UUID: typeof PitoUUID
-    }
-    namespace pito {
-        type UUID = PitoUUID
-    }
-}

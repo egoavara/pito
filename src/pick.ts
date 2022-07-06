@@ -39,13 +39,3 @@ export function PitoPick(def: pito.Obj<Record<string, pito>> | pito.Uobj<string,
     }
     throw new Error(`unreachable type`)
 }
-//
-Object.defineProperty(plugin, 'Pick', { value: PitoPick, configurable: false, writable: false })
-declare module './pito' {
-    interface PitoPlugin {
-        Pick: typeof PitoPick
-    }
-    namespace pito {
-        type Pick<O, Keys extends string> = PitoPick<O, Keys>
-    }
-}

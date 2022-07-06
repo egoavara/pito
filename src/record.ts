@@ -30,14 +30,3 @@ export const PitoRecord = <Items extends pito>(items: Items, option?: RecordOpti
         },
     }
 }
-//
-Object.defineProperty(plugin, 'Record', { value: PitoRecord, configurable: false, writable: false })
-
-declare module './pito' {
-    interface PitoPlugin {
-        Record: typeof PitoRecord
-    }
-    namespace pito {
-        type Record<Value extends pito> = PitoRecord<Value>
-    }
-}
