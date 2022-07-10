@@ -8,6 +8,7 @@ export const PitoHostname = (): PitoHostname => {
     return {
         type: 'string',
         format: 'hostname',
+        $typeof : 'string',
         $wrap(data) {
             return data
         },

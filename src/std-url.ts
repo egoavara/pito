@@ -8,7 +8,8 @@ export const PitoUrl = (): PitoUrl => {
     return {
         type: 'string',
         format: 'url',
-
+        $typeof : 'class',
+        $constructor : URL,
         $wrap(data) {
             return data.toString()
         },

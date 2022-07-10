@@ -16,8 +16,9 @@ export type Elem = {
 export const PitoUnion = <Elems extends [Elem] | [...Elem[]]>(...elems: Elems): PitoUnion<Elems[number]['define']> => {
     return {
         anyOf: elems.map(v => v.define),
+        $typeof: 'union',
+        $args: elems.map(v => { return v.define }),
         $wrap(data) {
-
             const result = elems.find(v => v.checkWrap(data))?.define.$wrap(data)
             if (result === undefined) {
                 throw new Error(`union wrap unassignable`)

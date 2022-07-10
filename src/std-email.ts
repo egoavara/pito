@@ -8,6 +8,7 @@ export const PitoEmail = (): PitoEmail => {
     return {
         type: 'string',
         format: 'email',
+        $typeof : 'string',
         $wrap(data) {
             return data
         },

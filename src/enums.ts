@@ -40,6 +40,8 @@ export const PitoEnums = <Enum extends Record<string, string | number>>(e: Enum,
     return {
         type: eachTypeof[0],
         enum: enums as any,
+        $typeof : 'union',
+        $args : enums.map(v=>pito.Lit(v)),
         $wrap(raw) { return raw },
         $unwrap(raw) { return raw as ParseValues<Enum> },
         $strict() {

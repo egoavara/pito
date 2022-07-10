@@ -8,6 +8,8 @@ export const PitoDatetime = (): PitoDatetime => {
     return {
         type: 'string',
         format: 'date-time',
+        $typeof : 'class',
+        $constructor : Date,
         $wrap(data) {
             return new Date(data.getTime()).toISOString()
         },
