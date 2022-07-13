@@ -8,6 +8,8 @@ export const PitoDate = (options?: DateOption): PitoDate => {
     return {
         type: 'string',
         format: 'date',
+        $typeof : 'class',
+        $constructor : Date,
         ...(options !== undefined ? options : {}),
         $wrap(data) {
             if (this.$ignoreTimezone === true) {

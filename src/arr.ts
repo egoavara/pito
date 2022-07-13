@@ -8,6 +8,8 @@ export const PitoArr = <Items extends pito>(items: Items, option?: ArrOption): P
     return {
         type: 'array',
         items: items,
+        $typeof: 'array',
+        $elem: items,
         $wrap(raw) { return raw.map(v => this.items.$wrap(v)) },
         $unwrap(raw) { return raw.map(v => this.items.$unwrap(v)) },
         $strict() { return { type: 'array', items: this.items.$strict() } },

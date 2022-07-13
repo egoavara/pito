@@ -34,6 +34,7 @@ export const PitoUnionObj = <Key extends string>(key: Key): PitoUnionObjBuilder<
         // @ts-expect-error
         end() {
             const modItemsMap = new Map<number | string, pito.Obj<Record<string, pito>>>()
+            const args: pito[] = []
             // @ts-expect-error
             for (const [k, v] of this.rawCases) {
                 const props: Record<string, pito> = {}
@@ -43,10 +44,15 @@ export const PitoUnionObj = <Key extends string>(key: Key): PitoUnionObjBuilder<
                     props[k] = v.properties[k]
                 }
                 props[key] = pito.Lit(k)
-                modItemsMap.set(k, pito.Obj(props))
+                // 
+                const temp = pito.Obj(props)
+                modItemsMap.set(k, temp)
             }
+
             return {
                 anyOf: Array.from(modItemsMap.values()),
+                $typeof: 'union',
+                $args: Array.from(modItemsMap.values()),
                 $unionKey: key,
                 $unionMap: modItemsMap,
                 $wrap(raw) {

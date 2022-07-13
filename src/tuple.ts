@@ -13,6 +13,8 @@ export const PitoTuple =
         return {
             type: 'array',
             prefixItems: items,
+            $typeof : 'tuple',
+            $elem : items,
             $wrap(raw) {
                 return raw.map((v, i) => this.prefixItems[i].$wrap(v)) as any
             },

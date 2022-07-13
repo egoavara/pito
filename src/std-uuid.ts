@@ -8,6 +8,7 @@ export const PitoUUID = (): PitoUUID => {
     return {
         type: 'string',
         format: 'uuid',
+        $typeof : 'string',
         $wrap(data) {
             return data
         },

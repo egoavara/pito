@@ -1,8 +1,6 @@
 import { PitoArr } from './arr.js'
 import { PitoEnums } from './enums.js'
 import { PitoExtends } from './extends.js'
-import { MediaType } from './media-utils.js'
-import { PitoMediaType } from './media.js'
 import { PitoOpt } from './modifier-opt.js'
 import { PitoObj } from './obj.js'
 import { PitoOmit } from './omit.js'
@@ -21,11 +19,28 @@ import { PitoUnionObj } from './union-obj.js'
 import { PitoUnion } from './union.js'
 
 export type pito<Raw = any, Type = any, Schema extends Record<string, any> = any, Option extends Record<string, any> = any, Extras extends Record<string, any> = any> = {
-    $unwrap(this: pito<Raw, Type, Schema, Option, Extras>, raw: Raw): Type
     $wrap(this: pito<Raw, Type, Schema, Option, Extras>, data: Type): Raw
-    $strict(this: pito<Raw, Type, Schema, Option, Extras>): Schema & Partial<Option>,
+    $unwrap(this: pito<Raw, Type, Schema, Option, Extras>, raw: Raw): Type
+    $strict(this: pito<Raw, Type, Schema, Option, Extras>): Schema & Partial<Option>
     $bypass(this: pito<Raw, Type, Schema, Option, Extras>): boolean
-} & { [_ in keyof Schema]: Schema[_] } & { [_ in keyof Option]?: Option[_] } & { [_ in keyof Extras]: Extras[_] }
+} & ReflectType & { [_ in keyof Schema]: Schema[_] } & { [_ in keyof Option]?: Option[_] } & { [_ in keyof Extras]: Extras[_] }
+
+export type ReflectType =
+    | { $typeof: 'any' }
+    | { $typeof: 'literal', $const: any }
+    | { $typeof: 'undefined' }
+    | { $typeof: 'null' }
+    | { $typeof: 'boolean' }
+    | { $typeof: 'number' }
+    | { $typeof: 'string' }
+    | { $typeof: 'bigint' }
+    | { $typeof: 'array', $elem: pito }
+    | { $typeof: 'tuple', $elem: pito[] }
+    | { $typeof: 'object', $elem: Record<string, pito> }
+    | { $typeof: 'record', $elem: pito }
+    | { $typeof: 'class', $constructor: { new(...args: any[]): any } }
+    | { $typeof: 'union', $args: pito[] }
+    | { $typeof: 'intersect', $args: pito[] }
 
 export type PitoRaw<T> = T extends pito<infer Raw, any, any, any> ? Raw : never
 export type PitoType<T> = T extends pito<any, infer Type, any, any> ? Type : never
@@ -45,9 +60,9 @@ export const plugin: Record<string, any> = {
     },
 }
 export interface PitoPlugin {
-    wrap<T extends pito>(t: T, data: PitoType<T>): PitoRaw<T>;
-    unwrap<T extends pito>(t: T, data: PitoRaw<T>): PitoType<T>;
-    strict<T extends pito>(t: T,): PitoSchema<T> & PitoOption<T>;
+    wrap<T extends pito>(t: T, data: PitoType<T>): PitoRaw<T>
+    unwrap<T extends pito>(t: T, data: PitoRaw<T>): PitoType<T>
+    strict<T extends pito>(t: T,): PitoSchema<T> & PitoOption<T>
 }
 export namespace pito {
     export type Raw<T extends pito> = PitoRaw<T>
@@ -291,16 +306,5 @@ declare module './pito' {
     }
     namespace pito {
         type UUID = PitoUUID
-    }
-}
-// ============================================================================================================================================
-export * from './media.js'
-Object.defineProperty(plugin, 'Media', { value: PitoMediaType, configurable: false, writable: false })
-declare module './pito' {
-    interface PitoPlugin {
-        Media: typeof PitoMediaType
-    }
-    namespace pito {
-        type Media<ContentMediaType extends MediaType = MediaType> = PitoMediaType<ContentMediaType>
     }
 }

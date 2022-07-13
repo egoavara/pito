@@ -6,6 +6,7 @@ export type AnySchema = {}
 export type PitoAny = pito<any, any, AnySchema, AnyOption>
 export const PitoAny = (): PitoAny => {
     return {
+        $typeof: 'any',
         $wrap(raw) { return raw },
         $unwrap(raw) { return raw },
         $strict() { return {} },
@@ -19,6 +20,7 @@ export type PitoNul = pito<null, null, NulSchema, NulOption>
 export const PitoNul = (): PitoNul => {
     return {
         type: 'null',
+        $typeof: 'null',
         $wrap(raw) { return raw },
         $unwrap(raw) { return raw },
         $strict() { return { type: 'null' } },
@@ -33,6 +35,8 @@ export type PitoLit<T extends string | number> = pito<T, T, LitSchema<T>, LitOpt
 export const PitoLit = <T extends string | number>(l: T): PitoLit<T> => {
     return {
         const: l,
+        $typeof: 'literal',
+        $const: l,
         $wrap(raw) { return raw },
         $unwrap(raw) { return raw },
         $strict() { return { const: this.const } },
@@ -46,6 +50,7 @@ export type PitoStr = pito<string, string, StrSchema, StrOption>
 export const PitoStr = (option?: StrOption): PitoStr => {
     return {
         type: "string",
+        $typeof: 'string',
         $wrap(raw) { return raw },
         $unwrap(raw) { return raw },
         $strict() {
@@ -73,6 +78,7 @@ export const PitoRegex = <Pattern extends string>(pattern: Pattern, option?: Reg
     return {
         type: 'string',
         pattern: pattern,
+        $typeof: 'string',
         $wrap(raw) { return raw },
         $unwrap(raw) { return raw },
         $strict() {
@@ -101,6 +107,7 @@ export type PitoNum = pito<number, number, NumSchema, NumOption> & NumSchema & N
 export const PitoNum = (option?: NumOption): PitoNum => {
     return {
         type: 'number',
+        $typeof: 'number',
         $wrap(raw) { return raw },
         $unwrap(raw) { return raw },
         $strict() {
@@ -142,6 +149,7 @@ export type PitoInt = pito<number, number, IntSchema, IntOption>
 export const PitoInt = (option?: IntOption): PitoInt => {
     return {
         type: 'integer',
+        $typeof: 'number',
         $wrap(raw) { return raw },
         $unwrap(raw) { return raw },
         $strict() {
@@ -177,6 +185,7 @@ export type PitoBool = pito<boolean, boolean, BoolSchema, BoolOption>
 export const PitoBool = (): PitoBool => {
     return {
         type: "boolean",
+        $typeof: 'boolean',
         $wrap(raw) { return raw },
         $unwrap(raw) { return raw },
         $strict() {

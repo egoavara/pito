@@ -8,6 +8,8 @@ export const PitoRecord = <Items extends pito>(items: Items, option?: RecordOpti
     return {
         type: 'object',
         additionalProperties: items,
+        $typeof: 'record',
+        $elem: items,
         $wrap(raw) {
             return Object.fromEntries(
                 Object
