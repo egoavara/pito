@@ -28,8 +28,8 @@ export function PitoObj<Properties extends Record<string, pito>>(properties: Pro
     return {
         type: 'object',
         properties,
-        $typeof : 'object',
-        $elem : properties,
+        $typeof: 'object',
+        $elem: properties,
         required: Object.keys(properties).filter(v => (properties[v] as any)['$optional'] !== true) as any,
         additionalProperties: false,
         $wrap(data) {
