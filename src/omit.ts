@@ -19,7 +19,7 @@ export function PitoOmit<
 export function PitoOmit<T extends Record<string, pito>, Keys extends [string, ...string[]]>(def: pito.Obj<T>, ...keys: Keys)
     : PitoObj<Omit<T, Keys[number]>>
 export function PitoOmit(def: PitoObj<Record<string, pito>> | PitoUnionObj<string, pito>, ...keys: string[]): pito {
-    if ('anyOf' in def) {
+    if ('discriminator' in def) {
         if (keys.includes(def.$unionKey)) {
             throw new Error(`pito.Uobj omit required field ${def.$unionKey}`)
         }
@@ -30,7 +30,6 @@ export function PitoOmit(def: PitoObj<Record<string, pito>> | PitoUnionObj<strin
         }
         return temp.end()
     } else {
-
         return pito.Obj(
             Object.fromEntries(
                 Object.entries(def.properties).filter(([k, v]) => !keys.includes(k))
