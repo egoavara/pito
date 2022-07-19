@@ -28,16 +28,17 @@ export const PitoNul = (): PitoNul => {
 
 // Primitive : Literal
 export type LitOption = {}
-export type LitSchema<T extends string | number> = { const: T }
+export type LitSchema<T extends string | number> = T extends string ? { type: 'string', const: T } : { type: 'number', const: T }
 export type PitoLit<T extends string | number> = pito<T, T, LitSchema<T>, LitOption>
 export const PitoLit = <T extends string | number>(l: T): PitoLit<T> => {
     return {
+        type: typeof l === 'string' ? 'string' : 'number',
         const: l,
-        $wrap(raw) { return raw },
-        $unwrap(raw) { return raw },
+        $wrap(raw: any) { return raw },
+        $unwrap(raw: any) { return raw },
         $strict() { return { const: this.const } },
         $bypass() { return true },
-    }
+    } as any
 }
 // Primitive : String
 export type StrOption = { minLength?: number, maxLength?: number }
