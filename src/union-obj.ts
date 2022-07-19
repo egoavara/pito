@@ -13,7 +13,7 @@ export type ParsePitoUnionObj<Key extends string, Items> =
     : never
 
 export type UnionObjOption = {}
-export type UnionObjSchema<Key extends string> = { anyOf: any[], $unionKey: Key, $unionMap: Map<number | string, pito.Obj<Record<string, pito>>> }
+export type UnionObjSchema<Key extends string> = { discriminator: { propertyName: Key }, oneOf: pito[], $unionKey: Key, $unionMap: Map<number | string, pito.Obj<Record<string, pito>>> }
 export type PitoUnionObjBuilder<Key extends string, Cases extends [...[string | number, pito.Obj<Record<string, pito>>][]]> = {
     rawKey: Key
     rawCases: Cases
@@ -34,7 +34,6 @@ export const PitoUnionObj = <Key extends string>(key: Key): PitoUnionObjBuilder<
         // @ts-expect-error
         end() {
             const modItemsMap = new Map<number | string, pito.Obj<Record<string, pito>>>()
-            const args: pito[] = []
             // @ts-expect-error
             for (const [k, v] of this.rawCases) {
                 const props: Record<string, pito> = {}
@@ -44,15 +43,11 @@ export const PitoUnionObj = <Key extends string>(key: Key): PitoUnionObjBuilder<
                     props[k] = v.properties[k]
                 }
                 props[key] = pito.Lit(k)
-                // 
-                const temp = pito.Obj(props)
-                modItemsMap.set(k, temp)
+                modItemsMap.set(k, pito.Obj(props))
             }
-
             return {
-                anyOf: Array.from(modItemsMap.values()),
-                $typeof: 'union',
-                $args: Array.from(modItemsMap.values()),
+                discriminator: { propertyName: key },
+                oneOf: Array.from(modItemsMap.values()),
                 $unionKey: key,
                 $unionMap: modItemsMap,
                 $wrap(raw) {
@@ -65,11 +60,12 @@ export const PitoUnionObj = <Key extends string>(key: Key): PitoUnionObjBuilder<
                 },
                 $strict() {
                     return {
-                        anyOf: this.anyOf.map(v => v.$strict())
+                        discriminator: { propertyName: key },
+                        oneOf: this.oneOf.map((v) => v.$strict())
                     }
                 },
                 $bypass() {
-                    return this.anyOf.findIndex(v => !v.$bypass()) === -1
+                    return this.oneOf.findIndex((v) => !v.$bypass()) === -1
                 },
             }
         },
