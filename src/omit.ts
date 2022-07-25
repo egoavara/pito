@@ -20,13 +20,25 @@ export function PitoOmit<T extends Record<string, pito>, Keys extends [string, .
     : PitoObj<Omit<T, Keys[number]>>
 export function PitoOmit(def: PitoObj<Record<string, pito>> | PitoUnionObj<string, pito>, ...keys: string[]): pito {
     if ('discriminator' in def) {
-        if (keys.includes(def.$unionKey)) {
-            throw new Error(`pito.Uobj omit required field ${def.$unionKey}`)
+        const key = def.discriminator.propertyName
+        if (keys.includes(key)) {
+            throw new Error(`pito.Uobj omit required field ${key}`)
         }
-        let temp: PitoUnionObjBuilder<string, [string | number, PitoObj<Record<string, pito>>][]> = PitoUnionObj(def.$unionKey)
-        for (const [k, v] of def.$unionMap.entries()) {
-            // @ts-expect-error
-            temp = temp.case(k, PitoOmit(v, ...keys))
+        const keysIncludeKey = keys
+        let temp = pito.Uobj(key)
+        for (const v of def.oneOf) {
+            temp = temp.case(
+                v.properties[key].const,
+                // @ts-expect-error
+                Object.fromEntries(Object.entries(v.properties)
+                    .filter(([k, v]) => {
+                        return !keysIncludeKey.includes(k)
+                    })
+                    .map(([k, v]) => {
+                        return [k, v]
+                    })
+                )
+            )
         }
         return temp.end()
     } else {

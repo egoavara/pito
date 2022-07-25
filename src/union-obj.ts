@@ -1,55 +1,40 @@
 // Derived : Union
-import { pito, plugin } from "./pito.js"
+import { pito } from "./pito.js"
 
-export type ParsePitoUnionObj<Key extends string, Items> =
-    Items extends [[infer K, infer V], ...infer Left]
-    ? (
-        K extends string | number
-        ? V extends pito.Obj<infer InnerV>
-        ? pito.Obj<InnerV & { [_ in Key]: pito.Lit<K> }>
-        : never
-        : never
-    ) | ParsePitoUnionObj<Key, Left>
-    : never
-
+export type UnionObjExtra = {}
 export type UnionObjOption = {}
-export type UnionObjSchema<Key extends string> = { discriminator: { propertyName: Key }, oneOf: pito[], $unionKey: Key, $unionMap: Map<number | string, pito.Obj<Record<string, pito>>> }
-export type PitoUnionObjBuilder<Key extends string, Cases extends [...[string | number, pito.Obj<Record<string, pito>>][]]> = {
+export type UnionObjSchema<Key extends string> = {
+    discriminator: { propertyName: Key },
+    oneOf: pito.Obj<Record<string, pito>>[]
+}
+export type PitoUnionObjBuilder<Key extends string, Cases extends Record<string, pito.Obj<Record<string, pito>>>> = {
     rawKey: Key
     rawCases: Cases
-    case<NewCase extends string | number, NewObj extends pito.Obj<Record<string, pito>>>(ncase: NewCase, obj: NewObj)
-        : PitoUnionObjBuilder<Key, [...Cases, [NewCase, NewObj]]>
-    end(): PitoUnionObj<Key, ParsePitoUnionObj<Key, Cases>>
+    case<NewCase extends string, NewObj extends Record<string, pito>>(ncase: NewCase, obj: NewObj)
+        : PitoUnionObjBuilder<Key, Cases & Record<NewCase, pito.Obj<NewObj & Record<Key, NewCase>>>>
+    end(): PitoUnionObj<Key, Cases[keyof Cases]>
 }
-export type PitoUnionObj<Key extends string, Unions extends pito> = pito<pito.Raw<Unions>, pito.Type<Unions>, UnionObjSchema<Key>, UnionObjOption>
-export const PitoUnionObj = <Key extends string>(key: Key): PitoUnionObjBuilder<Key, []> => {
+export type PitoUnionObj<Key extends string, Unions extends pito> = pito<pito.Raw<Unions>, pito.Type<Unions>, UnionObjSchema<Key>, UnionObjOption, UnionObjExtra>
+export const PitoUnionObj = <Key extends string>(key: Key): PitoUnionObjBuilder<Key, {}> => {
     return {
         rawKey: key,
-        rawCases: [],
+        rawCases: {},
         case(ncase, obj) {
+            if(Object.hasOwn(this.rawCases, ncase)){
+                throw new Error(`already has key ${ncase}`)
+            }
             // @ts-expect-error
-            this.rawCases.push([ncase, obj])
+            this.rawCases[ncase] = obj
             return this as any
         },
         // @ts-expect-error
         end() {
-            const modItemsMap = new Map<number | string, pito.Obj<Record<string, pito>>>()
-            // @ts-expect-error
-            for (const [k, v] of this.rawCases) {
-                const props: Record<string, pito> = {}
-                // @ts-expect-error
-                for (const k in v.properties) {
-                    // @ts-expect-error
-                    props[k] = v.properties[k]
-                }
-                props[key] = pito.Lit(k)
-                modItemsMap.set(k, pito.Obj(props))
-            }
+            const oneOf = Object.entries(this.rawCases).map(([k, v]) => {
+                return pito.Obj(Object.assign({}, v, { [key]: pito.Lit(k) }))
+            })
             return {
                 discriminator: { propertyName: key },
-                oneOf: Array.from(modItemsMap.values()),
-                $unionKey: key,
-                $unionMap: modItemsMap,
+                oneOf,
                 $wrap(raw) {
                     // @ts-expect-error
                     return modItemsMap.get(raw[key]).$wrap(raw)

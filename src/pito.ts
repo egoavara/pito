@@ -15,7 +15,7 @@ import { PitoUrl } from './std-url.js'
 import { PitoUUID } from './std-uuid.js'
 import { PitoTuple } from './tuple.js'
 import { PitoUnionLit } from './union-lit.js'
-import { PitoUnionObj } from './union-obj.js'
+import { PitoUnionObj, UnionObjSchema } from './union-obj.js'
 import { PitoUnion } from './union.js'
 
 export type pito<Raw = any, Type = any, Schema extends Record<string, any> = any, Option extends Record<string, any> = any, Extras extends Record<string, any> = any> = {
@@ -195,7 +195,7 @@ declare module './pito' {
         Uobj: typeof PitoUnionObj
     }
     namespace pito {
-        type Uobj<Key extends string, Union extends pito> = PitoUnionObj<Key, Union>
+        type Uobj<Key extends string, Unions extends pito> = PitoUnionObj<Key, Unions>
     }
 }
 // ============================================================================================================================================

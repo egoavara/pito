@@ -10,21 +10,33 @@ export type PitoPick<Obj, Keys extends string> =
     : never
 export function PitoPick<
     UKey extends string,
-    UVal extends pito.Obj<Record<string, pito>>,
+    UVal extends pito,
     Keys extends [string, ...string[]]
 >(def: pito.Uobj<UKey, UVal>, ...keys: Keys)
     : pito.Uobj<UKey, PickObj<UVal, Keys[number]>>
 export function PitoPick<T extends Record<string, pito>, Keys extends [string, ...string[]]>(def: pito.Obj<T>, ...keys: Keys)
     : pito.Obj<Pick<T, Keys[number]>>
-export function PitoPick(def: pito.Obj<Record<string, pito>> | pito.Uobj<string, pito>, ...keys: string[]): pito {
-    if ('anyOf' in def) {
-        if (!keys.includes(def.$unionKey)) {
-            throw new Error(`pito.Uobj not pick ${def.$unionKey}`)
+export function PitoPick(def: pito.Obj<Record<string, pito>> | pito.Uobj<string, any>, ...keys: string[]): pito {
+    if ('discriminator' in def) {
+        const key = def.discriminator.propertyName
+        if (!keys.includes(key)) {
+            throw new Error(`pito.Uobj not pick ${key}`)
         }
-        let temp: PitoUnionObjBuilder<string, [string | number, pito.Obj<Record<string, pito>>][]> = pito.Uobj(def.$unionKey)
-        for (const [k, v] of def.$unionMap.entries()) {
-            // @ts-expect-error
-            temp = temp.case(k, PitoPick(v, ...keys))
+        const keysExlcudeKey = keys.filter(v => v !== key)
+        let temp = pito.Uobj(key)
+        for (const v of def.oneOf) {
+            temp = temp.case(
+                v.properties[key].const,
+                // @ts-expect-error
+                Object.fromEntries(Object.entries(v.properties)
+                    .filter(([k, v]) => {
+                        return keysExlcudeKey.includes(k)
+                    })
+                    .map(([k, v]) => {
+                        return [k, v]
+                    })
+                )
+            )
         }
         return temp.end()
     } else {

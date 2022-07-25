@@ -12,3 +12,6 @@ esm/**/*.d.ts.map
 esm/**/*.js
 esm/**/*.js.map
 esm/**/*.tsbuildinfo
+
+# macos
+.DS_Store
