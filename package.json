@@ -28,12 +28,8 @@
   ],
   "scripts": {
     "test": "tap --ts",
-    "build": "npm run build:cjs & npm run build:esm",
-    "build:cjs": "npm run clear:cjs && tsc -p ./cjs/tsconfig.json",
-    "build:esm": "npm run clear:esm && tsc -p ./esm/tsconfig.json",
-    "clear": "npm run clear:cjs & npm run clear:esm",
-    "clear:cjs": "rimraf ./cjs/**/*.{js,js.map,d.ts,d.ts.map,tsbuildinfo}",
-    "clear:esm": "rimraf ./esm/**/*.{js,js.map,d.ts,d.ts.map,tsbuildinfo}",
+    "build": "rimraf ./{cjs,esm}/**/*.{js,js.map,d.ts,d.ts.map,tsbuildinfo} & tsc -b ./cjs/tsconfig.json ./esm/tsconfig.json",
+    "watch": "rimraf ./{cjs,esm}/**/*.{js,js.map,d.ts,d.ts.map,tsbuildinfo} & tsc -b ./cjs/tsconfig.json ./esm/tsconfig.json --watch",
     "prepack": "npm run build"
   },
   "keywords": [
