@@ -11,7 +11,7 @@ export type PitoUnionObjBuilder<Key extends string, Cases extends Record<string,
     rawKey: Key
     rawCases: Cases
     case<NewCase extends string, NewObj extends Record<string, pito>>(ncase: NewCase, obj: NewObj)
-        : PitoUnionObjBuilder<Key, Cases & Record<NewCase, pito.Obj<NewObj & Record<Key, NewCase>>>>
+        : PitoUnionObjBuilder<Key, Cases & Record<NewCase, pito.Obj<NewObj & Record<Key, pito.Lit<NewCase>>>>>
     end(): PitoUnionObj<Key, Cases[keyof Cases]>
 }
 export type PitoUnionObj<Key extends string, Unions extends pito> = pito<pito.Raw<Unions>, pito.Type<Unions>, UnionObjSchema<Key>, UnionObjOption, UnionObjExtra>
