@@ -1,4 +1,4 @@
-import { pito, plugin } from "./pito.js"
+import { pito } from "./pito.js"
 
 export type UnionSchema = { anyOf: any[], }
 export type PitoUnion<Elems extends pito> =

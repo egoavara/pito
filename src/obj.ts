@@ -1,5 +1,5 @@
 import { OptModifier } from "./modifier-opt.js"
-import { pito, plugin } from "./pito.js"
+import { pito } from "./pito.js"
 
 // Utils
 export type Required<Properties extends Record<string, pito>> = { [k in keyof Properties]: Properties[k] extends OptModifier ? never : k }[keyof Properties]

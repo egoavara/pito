@@ -1,22 +1,23 @@
-import { pito, plugin } from "./pito.js"
-import { PitoUnionObjBuilder } from "./union-obj.js"
-export type PickObj<O, Keys extends string> = O extends pito.Obj<infer Def> ? pito.Obj<Pick<Def, Keys>> : never
+import { pito } from "./pito.js"
+import { PitoObj } from "./obj.js"
+import { PitoUnionObj } from "./union-obj.js"
+export type PickObj<O, Keys extends string> = O extends PitoObj<infer Def> ? PitoObj<Pick<Def, Keys>> : never
 
 export type PitoPick<Obj, Keys extends string> =
-    Obj extends pito.Obj<infer O>
-    ? pito.Obj<Pick<O, Keys>>
-    : Obj extends pito.Uobj<infer K, infer V>
-    ? pito.Uobj<K, PickObj<V, Keys>>
+    Obj extends PitoObj<infer O>
+    ? PitoObj<Pick<O, Keys>>
+    : Obj extends PitoUnionObj<infer K, infer V>
+    ? PitoUnionObj<K, PickObj<V, Keys>>
     : never
 export function PitoPick<
     UKey extends string,
     UVal extends pito,
     Keys extends [string, ...string[]]
->(def: pito.Uobj<UKey, UVal>, ...keys: Keys)
-    : pito.Uobj<UKey, PickObj<UVal, Keys[number]>>
-export function PitoPick<T extends Record<string, pito>, Keys extends [string, ...string[]]>(def: pito.Obj<T>, ...keys: Keys)
-    : pito.Obj<Pick<T, Keys[number]>>
-export function PitoPick(def: pito.Obj<Record<string, pito>> | pito.Uobj<string, any>, ...keys: string[]): pito {
+>(def: PitoUnionObj<UKey, UVal>, ...keys: Keys)
+    : PitoUnionObj<UKey, PickObj<UVal, Keys[number]>>
+export function PitoPick<T extends Record<string, pito>, Keys extends [string, ...string[]]>(def: PitoObj<T>, ...keys: Keys)
+    : PitoObj<Pick<T, Keys[number]>>
+export function PitoPick(def: PitoObj<Record<string, pito>> | PitoUnionObj<string, any>, ...keys: string[]): pito {
     if ('discriminator' in def) {
         const key = def.discriminator.propertyName
         if (!keys.includes(key)) {

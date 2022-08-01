@@ -1,4 +1,4 @@
-import { pito, plugin } from "./pito.js"
+import { pito } from "./pito.js"
 
 export type ParseEnums<Enums extends Record<string, string | number>> = {
     [K in keyof Enums]:

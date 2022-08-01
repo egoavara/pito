@@ -1,4 +1,4 @@
-import { pito, plugin } from "./pito.js"
+import { pito } from "./pito.js"
 
 // Std-Types : Date
 export type HostnameOption = {}
